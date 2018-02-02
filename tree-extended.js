@@ -10,38 +10,36 @@ const noAsciiChars = {
     verticalDiv: '│', horizontalDiv: '─', expand: '├', final: '└' 
 };
 
-const printPrevious = (previous = [])=>{
-    let result = ''
-    previous.forEach(it=>result+=it)
-    return result
-}
-
-/**Print the directory and all sub directories
- * @param dir {string} directory to print
- * @param ascii {boolean} if use ascii characters or not (default false)
- * @param currentLevel {number} current level (for recursive)
- * @param maxLevel  {number} max deep level
- * @param previous  {array} strings to be printed before every line 
+/**Prints the directory and all sub-directories.
+ * @param {string} dir directory to print
+ * @param {boolean} ascii if use ascii characters or not (default false)
+ * @param {number} currentLevel current level (for recursive)
+ * @param {number} maxLevel  max deep level
+ * @param {string} previous  strings to be printed before every line 
 */
-const printDirectory = (dir, ascii = false, currentLevel = 0, maxLevel = null, previous = [])=>{
+const printDirectory = (dir, ascii = false, currentLevel = 0, maxLevel = null, previous = '')=>{
     let chars = ascii ? asciiChars : noAsciiChars;
     let children = fs.readdirSync(dir);
     let subDirs = children.filter(it=>fs.lstatSync(path.join(dir, it)).isDirectory());
     let files = children.filter(it=>fs.lstatSync(path.join(dir, it)).isFile());
     let result = '';
-    let itemPrevious = printPrevious(previous);
+
+    //prints subdirectories
     subDirs.forEach((it, index) => {
         let isLast = index === subDirs.length - 1 && files.length === 0;
         const prev = `${isLast ? chars.final : chars.expand}${chars.horizontalDiv}${chars.horizontalDiv}${chars.horizontalDiv}`;
-        const childPrev = `${isLast ? chars.verticalDiv : ' '}   `;
-        result += `${itemPrevious}${prev}${it}${breakLine}`;
-        //TODO: Here print children recs
+        const childPrev = `${isLast ? ' ' : chars.verticalDiv}   `;
+        result += `${previous}${prev}${it}${breakLine}`;
+
+        //Here print children recs
+        result += printDirectory(path.join(dir, it), ascii, currentLevel+1, maxLevel, previous + childPrev);
     })    
 
+    //print files
     files.forEach((it, index)=> {
         let isLast = index === files.length - 1
         const prev = `${isLast ? chars.final : chars.expand}${chars.horizontalDiv}${chars.horizontalDiv}${chars.horizontalDiv}`;
-        result += `${itemPrevious}${prev}${it}${breakLine}`;
+        result += `${previous}${prev}${it}${breakLine}`;
     });
     return result;
 }
