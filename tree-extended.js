@@ -2,6 +2,7 @@ let fs = require("fs");
 let path = require("path");
 
 const breakLine = '\n';
+const notEmptyString = '...';
 const asciiChars = {
     verticalDiv: '|', horizontalDiv: '-', expand: '+', final: '\\' 
 };
@@ -15,11 +16,18 @@ const noAsciiChars = {
  * @param {boolean} ascii if use ascii characters or not (default false)
  * @param {number} currentLevel current level (for recursive)
  * @param {number} maxLevel  max deep level
+ * @param {boolean} showNotEmpty  show the not empty string when get the max level of deep
  * @param {string} previous  strings to be printed before every line 
 */
-const printDirectory = (dir, ascii = false, currentLevel = 0, maxLevel = null, previous = '')=>{
+const printDirectory = (dir, ascii = false, currentLevel = 0, maxLevel = null, showNotEmpty = true, previous = '')=>{
     let chars = ascii ? asciiChars : noAsciiChars;
     let children = fs.readdirSync(dir);
+
+    //check if got the max level
+    if (maxLevel && maxLevel <= currentLevel && children.length > 0) {
+        return showNotEmpty ? `${previous}${chars.final}${notEmptyString}${breakLine}` : '';                        
+    }
+
     let subDirs = children.filter(it=>fs.lstatSync(path.join(dir, it)).isDirectory());
     let files = children.filter(it=>fs.lstatSync(path.join(dir, it)).isFile());
     let result = '';
@@ -29,10 +37,10 @@ const printDirectory = (dir, ascii = false, currentLevel = 0, maxLevel = null, p
         let isLast = index === subDirs.length - 1 && files.length === 0;
         const prev = `${isLast ? chars.final : chars.expand}${chars.horizontalDiv}${chars.horizontalDiv}${chars.horizontalDiv}`;
         const childPrev = `${isLast ? ' ' : chars.verticalDiv}   `;
-        result += `${previous}${prev}${it}${breakLine}`;
+        result += `${previous}${prev}${it}/${breakLine}`;
 
         //Here print children recs
-        result += printDirectory(path.join(dir, it), ascii, currentLevel+1, maxLevel, previous + childPrev);
+        result += printDirectory(path.join(dir, it), ascii, currentLevel+1, maxLevel, showNotEmpty, previous + childPrev);
     })    
 
     //print files
@@ -52,5 +60,5 @@ module.exports = treeExtended = (targetPath = './')=>{
             throw `Path ${targetPath} doesn't exist.`        
     }
     console.log(`Directory ${targetPath}`);
-    return printDirectory(targetPath);
+    return printDirectory(targetPath, false, 0, 1, false);
 }
