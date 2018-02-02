@@ -52,13 +52,17 @@ const printDirectory = (dir, ascii = false, currentLevel = 0, maxLevel = null, s
     return result;
 }
 
-/**Function for making a  */
-module.exports = treeExtended = (targetPath = './')=>{
+/**Function for making a directory tree in text format.
+ * @param {string} targetPath path of the directory to print childrens
+ * @param {boolean} ascii if must print the tree using ascii chars or not (default true)
+ * @param {number} maxLevel max deep level (default null)
+ * @param {boolean} showNotEmpty if maxLevel is setted and showNotEmpty, then print a string for saying that it is not empty.
+*/
+module.exports = treeExtended = (targetPath = './', ascii = false, maxLevel = null, showNotEmpty = false)=>{
     if (!fs.existsSync(targetPath)){
         targetPath = path.join(process.execPath, targetPath);
         if (!fs.existsSync(targetPath))
             throw `Path ${targetPath} doesn't exist.`        
     }
-    console.log(`Directory ${targetPath}`);
-    return printDirectory(targetPath, false, 0, 1, false);
+    return printDirectory(targetPath, ascii, 0, maxLevel, showNotEmpty);
 }
