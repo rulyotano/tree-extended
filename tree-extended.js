@@ -25,7 +25,7 @@ const printDirectory = (dir, ascii = false, currentLevel = 0, maxLevel = null, s
 
     //check if got the max level
     if (maxLevel && maxLevel <= currentLevel && children.length > 0) {
-        return showNotEmpty ? `${previous}${chars.final}${notEmptyString}${breakLine}` : '';                        
+        return showNotEmpty ? `${previous}${chars.final}${chars.horizontalDiv}${chars.horizontalDiv}${chars.horizontalDiv}${notEmptyString}${breakLine}` : '';                        
     }
 
     let subDirs = children.filter(it=>fs.lstatSync(path.join(dir, it)).isDirectory());
