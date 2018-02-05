@@ -2,7 +2,7 @@
 
 NodeJs make a raw text tree representation of a directory's content. Accept several options
 
-##Requires
+## Requires
 
 NodeJs >= 6.x
 
