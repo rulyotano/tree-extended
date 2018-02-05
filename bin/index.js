@@ -1,12 +1,14 @@
-const treeExtended = require('./tree-extended')
+const treeExtended = require('../tree-extended')
 const HELP = 'HELP';
 const MAX_LEVEL = 'MAX_LEVEL';
+const MAX_LEVEL_SPLITTED = 'MAX_LEVEL_SPLITTED';
 const SHOW_NOT_EMPTY = 'SHOW_NOT_EMPTY';
 const ASCII = 'ASCII';
 
 const parameters = {
     [HELP]: /^[-|/](\?|help|h)$/, // ['?', 'h', 'help']
     [MAX_LEVEL]: /^[-|/]max=(\d+)$/,
+    [MAX_LEVEL_SPLITTED]: /^[-|/]max$/,
     [SHOW_NOT_EMPTY]: /^[-|/]max-show-not-empty$/,
     [ASCII]: /^[-|/]ascii$/,
 }
@@ -44,6 +46,14 @@ arguments:
     let maxLevelParam = args.find(it => checkParam(MAX_LEVEL, it.toLowerCase()))
     if (maxLevelParam)
         maxLevel = parameters[MAX_LEVEL].exec(maxLevelParam)[1]*1   //convert to int so *1
-
-    console.log(treeExtended(path, ascii, maxLevel, showNotEmpty));    
+    else {
+        let maxLevelExplited = args.find(it => checkParam(MAX_LEVEL_SPLITTED, it.toLowerCase()))
+        console.log(maxLevelExplited)
+        if (maxLevelExplited){
+            let index = args.findIndex(it=>it === maxLevelExplited)
+            if (args.length > index && args[index+1]*1)
+                maxLevel = index && args[index+1]*1
+        }
+    }
+    console.log(treeExtended(path, ascii, maxLevel, showNotEmpty)); 
 }
