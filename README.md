@@ -19,3 +19,5 @@ arguments:
     (-max-show-not-empty): If -max is setted and -max-show-not-empty is setted, show '...' string when level prune.
     (-ascii): Show ascii characters.
 ```
+
+![Screenshot](image.png)
