@@ -1,6 +1,6 @@
 {
   "name": "tree-extended",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "`tree` command but with extra parameters like deep.",
   "main": "tree-extended.js",
   "scripts": {
