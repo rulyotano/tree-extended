@@ -1,13 +1,13 @@
 {
   "name": "tree-extended",
-  "version": "1.0.9",
+  "version": "1.0.12",
   "description": "`tree` command but with extra parameters like deep.",
   "main": "tree-extended.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "tree-extended": "./bin/index.bat"
+    "tree-extended": "./bin/index.js"
   },
   "keywords": [
     "tree",
