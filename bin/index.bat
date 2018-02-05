@@ -1,1 +1,1 @@
-node ./bin/index.js %1 %2 %3 %4 %5 %6 %7
+node %0/../bin/index.js %1 %2 %3 %4 %5 %6 %7
