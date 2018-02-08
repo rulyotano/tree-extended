@@ -6,7 +6,17 @@ NodeJs make a raw text tree representation of a directory's content. Accept seve
 
 NodeJs >= 6.x
 
+## Install
+
+Install as a node's package.
+
+`npm install tree-extended -g`
+
+Then, it is just running `tree-extended` in any directory.
+
 ## Doc
+
+Run `tree-extended -h` for view the help.
 
 ```
 "tree-extended" is a function for making a directory tree in a text format. You can configure if you want print ascii characters or not. Also has a deep parameter.
