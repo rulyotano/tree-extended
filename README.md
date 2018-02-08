@@ -30,4 +30,6 @@ arguments:
     (-ascii): Show ascii characters.
 ```
 
+## Screenshot
+
 ![Screenshot](image.png)
