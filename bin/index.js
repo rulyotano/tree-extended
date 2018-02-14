@@ -6,12 +6,14 @@ const HELP = 'HELP';
 const MAX_LEVEL = 'MAX_LEVEL';
 const SHOW_NOT_EMPTY = 'SHOW_NOT_EMPTY';
 const ASCII = 'ASCII';
+const GIT_IGNORE = 'GIT_IGNORE';
 
 const parameters = {
     [HELP]: /^[-|/](\?|help|h)$/, // ['?', 'h', 'help']
     [MAX_LEVEL]: /^[-|/]max=(\d+)$/,
     [SHOW_NOT_EMPTY]: /^[-|/]max-show-not-empty$/,
     [ASCII]: /^[-|/]ascii$/,
+    [GIT_IGNORE]: /^[-|/]gitignore$/,
 }
 
 /**Check if some test value match with one of the predefined parameters (testParam) 
@@ -45,13 +47,14 @@ arguments:
     if (Object.keys(parameters).some(key=>checkParam(key, path)))
         path = undefined;
 
-    let ascii = args.some(it => checkParam(ASCII, it.toLowerCase()))
-    let showNotEmpty = args.some(it => checkParam(SHOW_NOT_EMPTY, it.toLowerCase()))
-    let maxLevel = null
+    let ascii = args.some(it => checkParam(ASCII, it.toLowerCase()));
+    let showNotEmpty = args.some(it => checkParam(SHOW_NOT_EMPTY, it.toLowerCase()));
+    let gitignore = args.some(it => checkParam(GIT_IGNORE, it.toLowerCase()));
+    let maxLevel = null;
     
-    let maxLevelParam = args.find(it => checkParam(MAX_LEVEL, it.toLowerCase()))
+    let maxLevelParam = args.find(it => checkParam(MAX_LEVEL, it.toLowerCase()));
     if (maxLevelParam)
-        maxLevel = parameters[MAX_LEVEL].exec(maxLevelParam)[1]*1   //convert to int so *1
+        maxLevel = parameters[MAX_LEVEL].exec(maxLevelParam)[1]*1;   //convert to int so *1
 
-    console.log(treeExtended(path, ascii, maxLevel, showNotEmpty));
+    console.log(treeExtended(path, ascii, maxLevel, showNotEmpty, gitignore));
 }

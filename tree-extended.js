@@ -1,5 +1,6 @@
 let fs = require("fs");
 let path = require("path");
+let gitignoreParser = require('gitignore-parser');
 
 const breakLine = '\n';
 const notEmptyString = '...';
@@ -11,6 +12,8 @@ const noAsciiChars = {
     verticalDiv: '│', horizontalDiv: '─', expand: '├', final: '└' 
 };
 
+let _gitignore = false;
+let _gitignoreFile = null;
 let _ignores = [];
 let _ignoresMaps = {};
 let _only = [];
@@ -45,7 +48,10 @@ const applyFilter = (fullPath, level) => {
 */
 const printDirectory = (dir, ascii = false, currentLevel = 0, maxLevel = null, showNotEmpty = true, previous = '')=>{
     let chars = ascii ? asciiChars : noAsciiChars;
-    let children = fs.readdirSync(dir).filter(it=>applyFilter(path.join(dir, it), currentLevel));
+    let children = fs.readdirSync(dir).filter(it=>{
+        let tPath = path.join(dir, it);
+        return applyFilter(tPath, currentLevel) && (!_gitignoreFile || _gitignoreFile.accepts(tPath));
+    });
 
     //check if got the max level
     if (maxLevel && maxLevel <= currentLevel && children.length > 0) {
@@ -84,12 +90,16 @@ const printDirectory = (dir, ascii = false, currentLevel = 0, maxLevel = null, s
  * @param {Array<FilterRecord>} ignores array of filters to ignore.
  * @param {Array<FilterRecord>} only array of filters for only filtering.
 */
-module.exports = treeExtended = (targetPath = './', ascii = false, maxLevel = null, showNotEmpty = false, ignores = [], only = [])=>{
+module.exports = treeExtended = (targetPath = './', ascii = false, maxLevel = null, showNotEmpty = false, gitignore = false, ignores = [], only = [])=>{
     if (!fs.existsSync(targetPath)){
         targetPath = path.join(process.execPath, targetPath);
         if (!fs.existsSync(targetPath))
             throw `Path ${targetPath} doesn't exist.`        
     }
+    _gitignore = gitignore;
+    if (_gitignore && fs.existsSync(path.join(targetPath, '.gitignore')))
+        _gitignoreFile = gitignoreParser.compile(fs.readFileSync('.gitignore', 'utf8'));
+
     _igonres = ignores;
     _igonres.forEach(it=>{
         if (!_ignoresMaps[it.deep])
