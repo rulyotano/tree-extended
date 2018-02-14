@@ -1,5 +1,6 @@
 let fs = require("fs");
 let path = require("path");
+let gitignoreParser = require('gitignore-parser');
 
 const breakLine = '\n';
 const notEmptyString = '...';
@@ -11,6 +12,32 @@ const noAsciiChars = {
     verticalDiv: '│', horizontalDiv: '─', expand: '├', final: '└' 
 };
 
+let _gitignore = false;
+let _gitignoreFile = null;
+let _ignores = [];
+let _ignoresMaps = {};
+let _only = [];
+let _onlyMaps = {};
+
+/**Apply the filters based on ignores and only filter records. */
+const applyFilter = (fullPath, level) => {
+    //if exist general only filters, but all them missmatch the path, then return false
+    if (_onlyMaps[null] && _onlyMaps[null].every(it=>!it.isMatch(fullPath)))
+        return false;
+    //a more specific case, has only maps of its level
+    if (_onlyMaps[level] && _onlyMaps[level].every(it=>!it.isMatch(fullPath)))
+        return false;
+    
+    //if exist general ingore filters, and exist a match with the path, then return false
+    if (_ignoresMaps[null] && _ignoresMaps[null].some(it=>it.isMatch(fullPath)))
+        return false;    
+        
+    //a more specific case, has ignore maps of its level
+    if (_ignoresMaps[level] && _ignoresMaps[level].some(it=>it.isMatch(fullPath)))
+        return false;    
+    return true;
+}
+
 /**Prints the directory and all sub-directories.
  * @param {string} dir directory to print
  * @param {boolean} ascii if use ascii characters or not (default false)
@@ -21,7 +48,10 @@ const noAsciiChars = {
 */
 const printDirectory = (dir, ascii = false, currentLevel = 0, maxLevel = null, showNotEmpty = true, previous = '')=>{
     let chars = ascii ? asciiChars : noAsciiChars;
-    let children = fs.readdirSync(dir);
+    let children = fs.readdirSync(dir).filter(it=>{
+        let tPath = path.join(dir, it);
+        return applyFilter(tPath, currentLevel) && (!_gitignoreFile || _gitignoreFile.accepts(tPath));
+    });
 
     //check if got the max level
     if (maxLevel && maxLevel <= currentLevel && children.length > 0) {
@@ -57,12 +87,31 @@ const printDirectory = (dir, ascii = false, currentLevel = 0, maxLevel = null, s
  * @param {boolean} ascii if must print the tree using ascii chars or not (default true)
  * @param {number} maxLevel max deep level (default null)
  * @param {boolean} showNotEmpty if maxLevel is setted and showNotEmpty, then print a string for saying that it is not empty.
+ * @param {Array<FilterRecord>} ignores array of filters to ignore.
+ * @param {Array<FilterRecord>} only array of filters for only filtering.
 */
-module.exports = treeExtended = (targetPath = './', ascii = false, maxLevel = null, showNotEmpty = false)=>{
+module.exports = treeExtended = (targetPath = './', ascii = false, maxLevel = null, showNotEmpty = false, gitignore = false, ignores = [], only = [])=>{
     if (!fs.existsSync(targetPath)){
         targetPath = path.join(process.execPath, targetPath);
         if (!fs.existsSync(targetPath))
             throw `Path ${targetPath} doesn't exist.`        
     }
+    _gitignore = gitignore;
+    if (_gitignore && fs.existsSync(path.join(targetPath, '.gitignore')))
+        _gitignoreFile = gitignoreParser.compile(fs.readFileSync('.gitignore', 'utf8'));
+
+    _igonres = ignores;
+    _igonres.forEach(it=>{
+        if (!_ignoresMaps[it.deep])
+            _ignoresMaps[it.deep] = [];
+        _ignoresMaps[it.deep].push(it);
+    })
+    _only = only;
+    //fill onlyMap
+    _only.forEach(it=>{
+        if (!_onlyMaps[it.deep])
+            _onlyMaps[it.deep] = [];
+        _onlyMaps[it.deep].push(it);
+    })
     return printDirectory(targetPath, ascii, 0, maxLevel, showNotEmpty);
 }

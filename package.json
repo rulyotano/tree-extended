@@ -17,5 +17,8 @@
     "maps"
   ],
   "author": "Raúl Otaño Hurtado",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "gitignore-parser": "0.0.2"
+  }
 }
