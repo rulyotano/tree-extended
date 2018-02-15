@@ -33,4 +33,4 @@ arguments:
 
 ## Screenshot
 
-![Screenshot](image.png)
+![Screenshot](https://github.com/rulyotano/tree-extended/blob/master/image.png)
