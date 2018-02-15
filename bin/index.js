@@ -59,7 +59,9 @@ arguments:
     (-max=max_level): The max deep level
     (-max-show-not-empty): If -max is setted and -max-show-not-empty is setted, show '...' string when level prune.
     (-ascii): Show ascii characters.
-    (-gitignore): Ignore the .git/ folder and the content inside .gitignore file.`;
+    (-gitignore): Ignore the .git/ folder and the content inside .gitignore file.
+    (-ignore="[level1:]folder/file name1,  [level2:]folder/file name2, ..."): Ignores folders or files in an optional tree level.
+    (-only="[level1:]folder/file name1,  [level2:]folder/file name2, ..."): Filter and only show that folders or files in an optional tree level.`;
     console.log(helpString);
 } else {
     let path = args[0];
@@ -84,7 +86,6 @@ arguments:
         let ignoresStrValue = parameters[IGNORES].exec(ignoresParam)[1];
         ignores = parseFilterArgument(ignoresStrValue);
     }
-    console.log(args)
     let onlyParam = args.find(it => checkParam(ONLY, it.toLowerCase()));
     if (onlyParam){
         let onlyStrValue = parameters[ONLY].exec(onlyParam)[1];
