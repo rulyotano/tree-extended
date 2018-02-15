@@ -28,6 +28,7 @@ arguments:
     (-max=max_level): The max deep level
     (-max-show-not-empty): If -max is setted and -max-show-not-empty is setted, show '...' string when level prune.
     (-ascii): Show ascii characters.
+    (-gitignore): Ignore the .git/ folder and the content inside .gitignore file.
 ```
 
 ## Screenshot

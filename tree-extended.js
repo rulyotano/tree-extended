@@ -19,8 +19,33 @@ let _ignoresMaps = {};
 let _only = [];
 let _onlyMaps = {};
 
+
+/**Configurates global gitignore variables. Before compile gitingore file content, pre-process lines for removing slash ending.
+ * This is needed for the well performance of the `gitignore-parser` lib. 
+ * @param {boolean} useGitignore it is true if flag for gitignore is on.
+ * @param {string} targetPath path from where the dir tree is going to be generated
+ */
+const configGitingore = (useGitignore, targetPath) => {
+    _gitignore = useGitignore;
+    let gitignorePath = path.join(targetPath, '.gitignore');
+    if (_gitignore && fs.existsSync(gitignorePath))
+        _gitignoreFile = gitignoreParser.compile(fs.readFileSync(gitignorePath, 'utf8')
+                                        .split('\n')
+                                        .map(it=>{
+                                            let line = it.trimRight();
+                                            if (line.endsWith('/') || line.endsWith('\\'))
+                                                return line.slice(0,-1)
+                                        })
+                                        .join('\n'));
+}
+
+
 /**Apply the filters based on ignores and only filter records. */
-const applyFilter = (fullPath, level) => {
+const applyFilter = (fullPath, level) => {    
+    //when have gitignore config, ignore the .git/ folder
+    if (_gitignore && fullPath.match(/\.git[\/|\\]?$/))
+        return false;
+
     //if exist general only filters, but all them missmatch the path, then return false
     if (_onlyMaps[null] && _onlyMaps[null].every(it=>!it.isMatch(fullPath)))
         return false;
@@ -96,9 +121,9 @@ module.exports = treeExtended = (targetPath = './', ascii = false, maxLevel = nu
         if (!fs.existsSync(targetPath))
             throw `Path ${targetPath} doesn't exist.`        
     }
-    _gitignore = gitignore;
-    if (_gitignore && fs.existsSync(path.join(targetPath, '.gitignore')))
-        _gitignoreFile = gitignoreParser.compile(fs.readFileSync('.gitignore', 'utf8'));
+
+    //configurates git ingore
+    configGitingore(gitignore, targetPath);
 
     _igonres = ignores;
     _igonres.forEach(it=>{
