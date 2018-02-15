@@ -2,7 +2,7 @@ module.exports = class FilterRecord {
     /**@param {number?} deep - Deep in the tree where this pattern will be executed 
      * @param {string} pattern - Pattern or regex to match.
     */
-    constructor(deep = null, pattern){
+    constructor(pattern, deep = null){
         this.deep = deep;
         this.pattern = pattern;
     }
