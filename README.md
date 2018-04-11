@@ -14,6 +14,10 @@ Install as a node's package.
 
 Then, it is just running `tree-extended` in any directory.
 
+## Collaborate
+
+You can contribuite by forking the project on [GitHub](https://github.com/rulyotano/tree-extended).
+
 ## Doc
 
 Run `tree-extended -h` for view the help.
