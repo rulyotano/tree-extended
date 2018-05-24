@@ -9,6 +9,10 @@
   "bin": {
     "tree-extended": "./bin/index.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rulyotano/tree-extended"
+  },
   "keywords": [
     "tree",
     "extend",

@@ -16,7 +16,7 @@ Then, it is just running `tree-extended` in any directory.
 
 ## Collaborate
 
-You can contribuite by forking the project on [GitHub](https://github.com/rulyotano/tree-extended).
+You can contribute by forking the project on [GitHub](https://github.com/rulyotano/tree-extended).
 
 ## Doc
 
@@ -173,7 +173,7 @@ Directory Tree:
 └───ba/
 ```
 
-In this example you can see you can restrict to only one path (or many). But here we can see that like the restriction is `0:b` (in the level `0` restric to `b`) also `ba/` is included. For avoiding this, we can use regular expressions in the patterns.
+In this example you can see you can restrict to only one path (or many). But here we can see that like the restriction is `0:b` (in the level `0` restrict to `b`) also `ba/` is included. For avoiding this, we can use regular expressions in the patterns.
 
 Command: `tree-extended -only="0:b$, 1:bc, 2:bca"`
 
