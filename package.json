@@ -4,7 +4,7 @@
   "description": "`tree` command but with extra parameters like deep.",
   "main": "tree-extended.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest --watchAll --coverage"
   },
   "bin": {
     "tree-extended": "./bin/index.js"

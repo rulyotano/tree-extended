@@ -20,9 +20,7 @@ const noAsciiChars = {
 
 let _gitignore = false;
 let _gitignoreFile = null;
-let _ignores = [];
 let _ignoresMaps = {};
-let _only = [];
 let _onlyMaps = {};
 
 /**Configurates global gitignore variables. Before compile gitingore file content, pre-process lines for removing slash ending.
@@ -30,7 +28,7 @@ let _onlyMaps = {};
  * @param {boolean} useGitignore it is true if flag for gitignore is on.
  * @param {string} targetPath path from where the dir tree is going to be generated
  */
-const configGitingore = (useGitignore, targetPath) => {
+const configGitignore = (useGitignore, targetPath) => {
   _gitignore = useGitignore;
   let gitignorePath = path.join(targetPath, ".gitignore");
   if (_gitignore && fs.existsSync(gitignorePath))
@@ -154,16 +152,14 @@ module.exports = treeExtended = (
   }
 
   //configurates git ingore
-  configGitingore(gitignore, targetPath);
+  configGitignore(gitignore, targetPath);
 
-  _igonres = ignores;
-  _igonres.forEach(it => {
+  ignores.forEach(it => {
     if (!_ignoresMaps[it.deep]) _ignoresMaps[it.deep] = [];
     _ignoresMaps[it.deep].push(it);
   });
-  _only = only;
   //fill onlyMap
-  _only.forEach(it => {
+  only.forEach(it => {
     if (!_onlyMaps[it.deep]) _onlyMaps[it.deep] = [];
     _onlyMaps[it.deep].push(it);
   });
@@ -173,8 +169,6 @@ module.exports = treeExtended = (
 const initialize = () => {
   _gitignore = false;
   _gitignoreFile = null;
-  _ignores = [];
   _ignoresMaps = {};
-  _only = [];
   _onlyMaps = {};
 };
