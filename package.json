@@ -4,7 +4,7 @@
   "description": "`tree` command but with extra parameters like deep.",
   "main": "tree-extended.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "bin": {
     "tree-extended": "./bin/index.js"
@@ -26,5 +26,9 @@
   "license": "ISC",
   "dependencies": {
     "gitignore-parser": "0.0.2"
+  },
+  "devDependencies": {
+    "jest": "^25.4.0",
+    "mock-fs": "^4.12.0"
   }
 }
