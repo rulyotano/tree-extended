@@ -1,6 +1,7 @@
-let fs = require("fs");
-let path = require("path");
-let gitignoreParser = require("gitignore-parser");
+const fs = require("fs");
+const path = require("path");
+const gitignoreParser = require("gitignore-parser");
+const os = require('os');
 
 const breakLine = "\n";
 const notEmptyString = "...";
@@ -30,20 +31,26 @@ let _onlyMaps = {};
  */
 const configGitignore = (useGitignore, targetPath) => {
   _gitignore = useGitignore;
-  let gitignorePath = path.join(targetPath, ".gitignore");
+  const gitignorePath = path.join(targetPath, ".gitignore");
   if (_gitignore && fs.existsSync(gitignorePath))
     _gitignoreFile = gitignoreParser.compile(
-      fs
-        .readFileSync(gitignorePath, "utf8")
-        .split("\n")
-        .map(it => {
-          let line = it.trimRight();
-          if (line.endsWith("/") || line.endsWith("\\")) return line.slice(0, -1);
-          return line;
-        })
-        .join("\n")
+      parseGitFileWithRoutesEndingInName(gitignorePath)
     );
 };
+
+const parseGitFileWithRoutesEndingInName = gitignorePath => {
+  const endOfLine = os.EOL;
+  
+  return fs
+    .readFileSync(gitignorePath, "utf8")
+    .split(endOfLine)
+    .map(it => {
+      let line = it.trimRight();
+      if (line.endsWith("/") || line.endsWith("\\")) return line.slice(0, -1);
+      return line;
+    })
+    .join(endOfLine)
+}
 
 /**Apply the filters based on ignores and only filter records. */
 const applyFilter = (fullPath, level) => {
@@ -82,7 +89,7 @@ const printDirectory = (
   let chars = ascii ? asciiChars : noAsciiChars;
   let children = fs.readdirSync(dir).filter(it => {
     let tPath = path.join(dir, it);
-    return applyFilter(tPath, currentLevel) && (!_gitignoreFile || _gitignoreFile.accepts(tPath));
+    return applyFilter(tPath, currentLevel) && (!_gitignoreFile || _gitignoreFile.accepts(it));
   });
 
   //check if got the max level
