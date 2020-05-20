@@ -19,6 +19,7 @@ describe("bin > index.js", () => {
     originalProcessArgv = process.argv;
     treeExtended.mockReturnValue(FAKE_RESULT);
     consoleLogSpy = jest.spyOn(console, "log");
+    process.argv = [];
   });
 
   afterEach(() => {
