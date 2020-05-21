@@ -1,0 +1,33 @@
+trigger:
+    - master
+
+pr: none
+
+pool:
+    vmImage: 'ubuntu-latest'
+
+steps:
+    - task: NodeTool@0
+      inputs:
+          versionSpec: '12.x'
+      displayName: 'Install Node.js'
+
+    - script: |
+          npm install
+      displayName: 'Install dependencies'
+    - script: |
+          npm pack
+      displayName: 'Package package'
+
+    - task: CopyFiles@2
+      inputs:
+          contents: '*.tgz'
+          targetFolder: $(Build.ArtifactStagingDirectory)
+      displayName: 'Copy archives to artifacts staging directory'
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'package'
+        publishLocation: 'Container'
+      displayName: 'Publish artifacts'
