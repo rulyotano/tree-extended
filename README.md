@@ -1,3 +1,7 @@
+
+<a href="https://www.npmjs.com/package/tree-extended"><img src="https://img.shields.io/npm/v/tree-extended?logo=npm"/></a>
+<img src="https://img.shields.io/azure-devops/build/rulyotano/7a2b7bc6-9995-4c0d-a4b4-ea7e317c782d/8?logo=azure-devops"/>
+
 # Tree Extended
 
 NodeJs make a raw text tree representation of a directory's content. Accept several options
