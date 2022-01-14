@@ -1,18 +1,20 @@
-const GitignoreParser = require('../GitignoreParser');
+/* eslint-disable no-use-before-define */
 const mockFs = require("mock-fs");
-const os = require('os');
+const os = require("os");
+const GitignoreParser = require("../GitignoreParser");
 
-describe('src > GitignoreParser', () => {
+describe("src > GitignoreParser", () => {
   const directoryName = "fake-directory";
   const endOfLine = os.EOL;
-  
+
   afterEach(() => {
     mockFs.restore();
   });
 
   test("Should ignore text files (simple test)", () => {
+    // eslint-disable-next-line no-use-before-define
     mockFileSystem("*.txt");
-    
+
     const gitignoreParser = new GitignoreParser(directoryName);
     const gitIgnore = gitignoreParser.getGitignoreFile();
 
@@ -22,7 +24,7 @@ describe('src > GitignoreParser', () => {
 
   test("Should clean lines ending slash and backslash characters", () => {
     mockFileSystem(`*.txt/${endOfLine}*.jpg\\${endOfLine}*.png`);
-    
+
     const gitignoreParser = new GitignoreParser(directoryName);
     const gitIgnore = gitignoreParser.getGitignoreFile();
 
@@ -35,8 +37,8 @@ describe('src > GitignoreParser', () => {
   const mockFileSystem = (gitignoreContent) => {
     mockFs({
       [directoryName]: {
-        ".gitignore": gitignoreContent
-      }
+        ".gitignore": gitignoreContent,
+      },
     });
-  }
+  };
 });

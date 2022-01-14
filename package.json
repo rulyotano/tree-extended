@@ -5,7 +5,8 @@
   "main": "tree-extended.js",
   "scripts": {
     "test-local": "jest --watchAll --coverage",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "eslint": "eslint src bin"
   },
   "bin": {
     "tree-extended": "./bin/index.js"
@@ -29,7 +30,11 @@
     "gitignore-parser": "0.0.2"
   },
   "devDependencies": {
-    "jest": "^26.6.3",
-    "mock-fs": "^4.14.0"
+    "eslint": "^8.6.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jest": "^25.3.4",
+    "jest": "^27.4.7",
+    "mock-fs": "^5.1.2"
   }
 }

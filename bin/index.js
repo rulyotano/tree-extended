@@ -1,8 +1,10 @@
 #!/usr/bin/env node
+/* eslint-disable no-console */
 
 const treeExtended = require("../src/tree-extended");
 const FilterRecord = require("../src/FilterRecord");
 const helpString = require("./helpText");
+
 const HELP = "HELP";
 const MAX_LEVEL = "MAX_LEVEL";
 const SHOW_NOT_EMPTY = "SHOW_NOT_EMPTY";
@@ -18,60 +20,60 @@ const parameters = {
   [ASCII]: /^[-|/]ascii$/,
   [GIT_IGNORE]: /^[-|/]gitignore$/,
   [IGNORES]: /^[-|/]ignore=(.+)$/,
-  [ONLY]: /^[-|/]only=(.+)$/
+  [ONLY]: /^[-|/]only=(.+)$/,
 };
 
-/**Check if some test value match with one of the predefined parameters (testParam) 
+/** Check if some test value match with one of the predefined parameters (testParam)
  * @param {string} testParam some value of the parameters array for test if testVal is inside it
  * @param {string} testVal value to check in parameters array
-*/
-const checkParam = (testParam, testVal) =>
-  parameters[testParam] && parameters[testParam].test(testVal);
+ */
+const checkParam = (testParam, testVal) => parameters[testParam] && parameters[testParam].test(testVal);
 
-/**Parse the IGNORES and ONLY argument string.
- * @param {string} argString string in the format `[level1:]folder/file name1,  [level2:]folder/file name2, ...`
+/** Parse the IGNORES and ONLY argument string.
+ * @param {string} argString string in the format `[level1:]folder/file name1,
+ * [level2:]folder/file name2`
  * @returns {Array<FilterRecord>} list of FilterRecord items.
  */
-const parseFilterArgument = argString => {
-  let result = [];
-  argString.split(",").map(it => it.trim()).forEach(it => {
-    let itArray = it.split(":");
+const parseFilterArgument = (argString) => {
+  const result = [];
+  argString.split(",").map((it) => it.trim()).forEach((it) => {
+    const itArray = it.split(":");
     if (itArray.length === 1) result.push(new FilterRecord(itArray[0]));
     else if (itArray.length === 2) result.push(new FilterRecord(itArray[1], Number(itArray[0])));
   });
   return result;
 };
 
-let [ , , ...args ] = process.argv;
+const [, , ...args] = process.argv;
 
-//process the arguments
-//check for help
-if (args.some(it => checkParam(HELP, it.toLowerCase()))) {
+// process the arguments
+// check for help
+if (args.some((it) => checkParam(HELP, it.toLowerCase()))) {
   console.log(helpString);
 } else {
   let path = args[0];
 
-  //check if there is no path parameter (should be the first one)
-  if (Object.keys(parameters).some(key => checkParam(key, path))) path = undefined;
+  // check if there is no path parameter (should be the first one)
+  if (Object.keys(parameters).some((key) => checkParam(key, path))) path = undefined;
 
-  let ascii = args.some(it => checkParam(ASCII, it.toLowerCase()));
-  let showNotEmpty = args.some(it => checkParam(SHOW_NOT_EMPTY, it.toLowerCase()));
-  let gitignore = args.some(it => checkParam(GIT_IGNORE, it.toLowerCase()));
+  const ascii = args.some((it) => checkParam(ASCII, it.toLowerCase()));
+  const showNotEmpty = args.some((it) => checkParam(SHOW_NOT_EMPTY, it.toLowerCase()));
+  const gitignore = args.some((it) => checkParam(GIT_IGNORE, it.toLowerCase()));
   let maxLevel = null;
   let ignores = [];
   let only = [];
 
-  let maxLevelParam = args.find(it => checkParam(MAX_LEVEL, it.toLowerCase()));
+  const maxLevelParam = args.find((it) => checkParam(MAX_LEVEL, it.toLowerCase()));
   if (maxLevelParam) maxLevel = Number(parameters[MAX_LEVEL].exec(maxLevelParam)[1]);
 
-  let ignoresParam = args.find(it => checkParam(IGNORES, it.toLowerCase()));
+  const ignoresParam = args.find((it) => checkParam(IGNORES, it.toLowerCase()));
   if (ignoresParam) {
-    let ignoresStrValue = parameters[IGNORES].exec(ignoresParam)[1];
+    const ignoresStrValue = parameters[IGNORES].exec(ignoresParam)[1];
     ignores = parseFilterArgument(ignoresStrValue);
   }
-  let onlyParam = args.find(it => checkParam(ONLY, it.toLowerCase()));
+  const onlyParam = args.find((it) => checkParam(ONLY, it.toLowerCase()));
   if (onlyParam) {
-    let onlyStrValue = parameters[ONLY].exec(onlyParam)[1];
+    const onlyStrValue = parameters[ONLY].exec(onlyParam)[1];
     only = parseFilterArgument(onlyStrValue);
   }
 
