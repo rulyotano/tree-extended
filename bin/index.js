@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-const treeExtended = require("../tree-extended");
-const FilterRecord = require("../filterRecord");
+const treeExtended = require("../src/tree-extended");
+const FilterRecord = require("../src/FilterRecord");
 const helpString = require("./helpText");
 const HELP = "HELP";
 const MAX_LEVEL = "MAX_LEVEL";

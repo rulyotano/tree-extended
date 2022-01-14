@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
-const gitignoreParser = require("gitignore-parser");
 const os = require('os');
+const GitignoreParser = require('./GitignoreParser');
 
 const breakLine = "\n";
 const notEmptyString = "...";
@@ -24,33 +24,76 @@ let _gitignoreFile = null;
 let _ignoresMaps = {};
 let _onlyMaps = {};
 
-/**Configurates global gitignore variables. Before compile gitingore file content, pre-process lines for removing slash ending.
- * This is needed for the well performance of the `gitignore-parser` lib. 
- * @param {boolean} useGitignore it is true if flag for gitignore is on.
- * @param {string} targetPath path from where the dir tree is going to be generated
- */
-const configGitignore = (useGitignore, targetPath) => {
-  _gitignore = useGitignore;
-  const gitignorePath = path.join(targetPath, ".gitignore");
-  if (_gitignore && fs.existsSync(gitignorePath))
-    _gitignoreFile = gitignoreParser.compile(
-      parseGitFileWithRoutesEndingInName(gitignorePath)
-    );
+/**Function for making a directory tree in text format.
+ * @param {string} targetPath path of the directory to print childrens
+ * @param {boolean} ascii if must print the tree using ascii chars or not (default true)
+ * @param {number} maxLevel max deep level (default null)
+ * @param {boolean} showNotEmpty if maxLevel is setted and showNotEmpty, then print a string for saying that it is not empty.
+ * @param {Array<FilterRecord>} ignores array of filters to ignore.
+ * @param {Array<FilterRecord>} only array of filters for only filtering.
+*/
+module.exports = treeExtended = (
+  targetPath = "./",
+  ascii = false,
+  maxLevel = null,
+  showNotEmpty = false,
+  gitignore = false,
+  ignores = [],
+  only = []
+) => {
+  initializeEmptyConfigurations();
+
+  const absoluteTargetPath = getAbsolutePathOrThrow(targetPath);
+
+  configureGitignore(gitignore, absoluteTargetPath);
+
+  configureIgnoreFromInput(ignores);
+  
+  configureOnlyFilterFromInput(only);
+
+  return printDirectory(absoluteTargetPath, ascii, 0, maxLevel, showNotEmpty);
 };
 
-const parseGitFileWithRoutesEndingInName = gitignorePath => {
-  const endOfLine = os.EOL;
-  
-  return fs
-    .readFileSync(gitignorePath, "utf8")
-    .split(endOfLine)
-    .map(it => {
-      let line = it.trimRight();
-      if (line.endsWith("/") || line.endsWith("\\")) return line.slice(0, -1);
-      return line;
-    })
-    .join(endOfLine)
+function getAbsolutePathOrThrow(targetPath) {
+  if (!fs.existsSync(targetPath)) {
+    targetPath = path.join(process.execPath, targetPath);
+    if (!fs.existsSync(targetPath))
+      throw `Path ${targetPath} doesn't exist.`;
+  }
+  return targetPath;
 }
+
+const initializeEmptyConfigurations = () => {
+  _gitignore = false;
+  _gitignoreFile = null;
+  _ignoresMaps = {};
+  _onlyMaps = {};
+};
+
+
+function configureOnlyFilterFromInput(only) {
+  only.forEach(it => {
+    if (!_onlyMaps[it.deep])
+      _onlyMaps[it.deep] = [];
+    _onlyMaps[it.deep].push(it);
+  });
+}
+
+function configureIgnoreFromInput(ignores) {
+  ignores.forEach(it => {
+    if (!_ignoresMaps[it.deep])
+      _ignoresMaps[it.deep] = [];
+    _ignoresMaps[it.deep].push(it);
+  });
+}
+
+const configureGitignore = (useGitignore, targetPath) => {
+  _gitignore = useGitignore;
+  const gitIgnoreParser = new GitignoreParser(targetPath);
+
+  if (_gitignore && gitIgnoreParser.doesGitignoreFileExist())
+    _gitignoreFile = gitIgnoreParser.getGitignoreFile();
+};
 
 /**Apply the filters based on ignores and only filter records. */
 const applyFilter = (fullPath, level) => {
@@ -132,50 +175,4 @@ const printDirectory = (
     result += `${previous}${prev}${it}${breakLine}`;
   });
   return result;
-};
-
-/**Function for making a directory tree in text format.
- * @param {string} targetPath path of the directory to print childrens
- * @param {boolean} ascii if must print the tree using ascii chars or not (default true)
- * @param {number} maxLevel max deep level (default null)
- * @param {boolean} showNotEmpty if maxLevel is setted and showNotEmpty, then print a string for saying that it is not empty.
- * @param {Array<FilterRecord>} ignores array of filters to ignore.
- * @param {Array<FilterRecord>} only array of filters for only filtering.
-*/
-module.exports = treeExtended = (
-  targetPath = "./",
-  ascii = false,
-  maxLevel = null,
-  showNotEmpty = false,
-  gitignore = false,
-  ignores = [],
-  only = []
-) => {
-  initialize();
-
-  if (!fs.existsSync(targetPath)) {
-    targetPath = path.join(process.execPath, targetPath);
-    if (!fs.existsSync(targetPath)) throw `Path ${targetPath} doesn't exist.`;
-  }
-
-  //configurates git ingore
-  configGitignore(gitignore, targetPath);
-
-  ignores.forEach(it => {
-    if (!_ignoresMaps[it.deep]) _ignoresMaps[it.deep] = [];
-    _ignoresMaps[it.deep].push(it);
-  });
-  //fill onlyMap
-  only.forEach(it => {
-    if (!_onlyMaps[it.deep]) _onlyMaps[it.deep] = [];
-    _onlyMaps[it.deep].push(it);
-  });
-  return printDirectory(targetPath, ascii, 0, maxLevel, showNotEmpty);
-};
-
-const initialize = () => {
-  _gitignore = false;
-  _gitignoreFile = null;
-  _ignoresMaps = {};
-  _onlyMaps = {};
 };
