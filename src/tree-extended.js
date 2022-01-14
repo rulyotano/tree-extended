@@ -1,22 +1,10 @@
 const fs = require("fs");
 const path = require("path");
 const GitignoreParser = require("./GitignoreParser");
+const CharsetProvider = require("./printDirectory/CharsetProvider");
 
 const breakLine = "\n";
 const notEmptyString = "...";
-const asciiChars = {
-  verticalDiv: "|",
-  horizontalDiv: "-",
-  expand: "+",
-  final: "\\",
-};
-
-const noAsciiChars = {
-  verticalDiv: "│",
-  horizontalDiv: "─",
-  expand: "├",
-  final: "└",
-};
 
 let gitignoreConfigured = false;
 let gitignoreFile = null;
@@ -102,7 +90,7 @@ const printDirectory = (
   showNotEmpty = true,
   previous = "",
 ) => {
-  const chars = ascii ? asciiChars : noAsciiChars;
+  const charset = CharsetProvider.getCharset(ascii);
   const children = fs.readdirSync(dir).filter((it) => {
     const tPath = path.join(dir, it);
     return applyFilter(tPath, currentLevel) && (!gitignoreFile || gitignoreFile.accepts(it));
@@ -112,7 +100,7 @@ const printDirectory = (
   if (maxLevel && maxLevel <= currentLevel && children.length > 0) {
     return showNotEmpty
       // eslint-disable-next-line max-len
-      ? `${previous}${chars.final}${chars.horizontalDiv}${chars.horizontalDiv}${chars.horizontalDiv}${notEmptyString}${breakLine}` : "";
+      ? `${previous}${charset.final}${charset.horizontalDiv}${charset.horizontalDiv}${charset.horizontalDiv}${notEmptyString}${breakLine}` : "";
   }
 
   const subDirs = children.filter((it) => fs.lstatSync(path.join(dir, it)).isDirectory());
@@ -123,9 +111,9 @@ const printDirectory = (
   subDirs.forEach((it, index) => {
     const isLast = index === subDirs.length - 1 && files.length === 0;
     const prev = `${isLast
-      ? chars.final
-      : chars.expand}${chars.horizontalDiv}${chars.horizontalDiv}${chars.horizontalDiv}`;
-    const childPrev = `${isLast ? " " : chars.verticalDiv}   `;
+      ? charset.final
+      : charset.expand}${charset.horizontalDiv}${charset.horizontalDiv}${charset.horizontalDiv}`;
+    const childPrev = `${isLast ? " " : charset.verticalDiv}   `;
     result += `${previous}${prev}${it}/${breakLine}`;
 
     // Here print children recs
@@ -143,8 +131,8 @@ const printDirectory = (
   files.forEach((it, index) => {
     const isLast = index === files.length - 1;
     const prev = `${isLast
-      ? chars.final
-      : chars.expand}${chars.horizontalDiv}${chars.horizontalDiv}${chars.horizontalDiv}`;
+      ? charset.final
+      : charset.expand}${charset.horizontalDiv}${charset.horizontalDiv}${charset.horizontalDiv}`;
     result += `${previous}${prev}${it}${breakLine}`;
   });
   return result;
