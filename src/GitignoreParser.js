@@ -1,6 +1,6 @@
 const path = require("path");
 const fs = require("fs");
-const os = require('os');
+const os = require("os");
 const gitignoreParser = require("gitignore-parser");
 
 module.exports = class GitignoreParser {
@@ -22,14 +22,15 @@ module.exports = class GitignoreParser {
     return fs
       .readFileSync(this.gitignoreFilePath, "utf8")
       .split(endOfLine)
-      .map(this.getLineWithoutSlashesEndings)
+      .map(GitignoreParser.getLineWithoutSlashesEndings)
       .join(endOfLine);
   }
 
-  getLineWithoutSlashesEndings(line) {
+  static getLineWithoutSlashesEndings(line) {
     const trimmedLine = line.trimRight();
-    if (trimmedLine.endsWith("/") || trimmedLine.endsWith("\\"))
+    if (trimmedLine.endsWith("/") || trimmedLine.endsWith("\\")) {
       return trimmedLine.substr(0, trimmedLine.length - 1);
+    }
     return line;
   }
-}
+};

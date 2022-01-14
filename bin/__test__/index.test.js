@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 describe("bin > index.js", () => {
   const FAKE_RESULT = "fake-result";
   const FAKE_CUSTOM_PATH = "custom-path";
@@ -27,7 +28,7 @@ describe("bin > index.js", () => {
   });
 
   const setArguments = (...customArguments) => {
-    process.argv = [ process.argv[0], process.argv[1], ...customArguments ];
+    process.argv = [process.argv[0], process.argv[1], ...customArguments];
   };
 
   test("Default call should call treeExtended with default arguments", () => {
@@ -53,8 +54,8 @@ describe("bin > index.js", () => {
       "-max-show-not-empty",
       "-ascii",
       "-gitignore",
-      `-ignore=1:ba, 2:bafile1, c`,
-      `-only=0:b, 1:bc, 2:bca`
+      "-ignore=1:ba, 2:bafile1, c",
+      "-only=0:b, 1:bc, 2:bca",
     );
 
     require("../index");
@@ -65,8 +66,8 @@ describe("bin > index.js", () => {
       4,
       true,
       true,
-      [ new FilterRecord("ba", 1), new FilterRecord("bafile1", 2), new FilterRecord("c") ],
-      [ new FilterRecord("b", 0), new FilterRecord("bc", 1), new FilterRecord("bca", 2) ]
+      [new FilterRecord("ba", 1), new FilterRecord("bafile1", 2), new FilterRecord("c")],
+      [new FilterRecord("b", 0), new FilterRecord("bc", 1), new FilterRecord("bca", 2)],
     );
     expect(consoleLogSpy).toHaveBeenCalledWith(FAKE_RESULT);
   });
