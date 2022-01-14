@@ -13,10 +13,13 @@ steps:
       displayName: 'Install Node.js'
 
     - script: |
-          npm install
+          npm install --global yarn
+      displayName: 'Install Yarn'
+    - script: |
+          yarn
       displayName: 'Install dependencies'
     - script: |
-          npm pack
+          yarn pack
       displayName: 'Package package'
 
     - task: CopyFiles@2
