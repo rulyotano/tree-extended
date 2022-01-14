@@ -1,5 +1,5 @@
 const directories = require("./mockDirectories");
-const FilterRecord = require("../filterRecord");
+const FilterRecord = require("../FilterRecord");
 
 module.exports = {
   cases: [

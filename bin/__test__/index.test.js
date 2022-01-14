@@ -10,11 +10,11 @@ describe("bin > index.js", () => {
   beforeEach(() => {
     jest.resetModules();
 
-    treeExtended = require("../../tree-extended");
-    helpText = require("../../bin/helpText");
-    FilterRecord = require("../../filterRecord");
+    treeExtended = require("../../src/tree-extended");
+    FilterRecord = require("../../src/FilterRecord");
+    helpText = require("../helpText");
 
-    jest.mock("../../tree-extended");
+    jest.mock("../../src/tree-extended");
 
     originalProcessArgv = process.argv;
     treeExtended.mockReturnValue(FAKE_RESULT);
@@ -31,7 +31,7 @@ describe("bin > index.js", () => {
   };
 
   test("Default call should call treeExtended with default arguments", () => {
-    require("../../bin/index");
+    require("../index");
 
     expect(treeExtended).toHaveBeenCalledWith(undefined, false, null, false, false, [], []);
     expect(consoleLogSpy).toHaveBeenCalledWith(FAKE_RESULT);
@@ -40,7 +40,7 @@ describe("bin > index.js", () => {
   test("when help argument should return help string", () => {
     setArguments("-h");
 
-    require("../../bin/index");
+    require("../index");
 
     expect(treeExtended).not.toHaveBeenCalled();
     expect(consoleLogSpy).toHaveBeenCalledWith(helpText);
@@ -57,7 +57,7 @@ describe("bin > index.js", () => {
       `-only=0:b, 1:bc, 2:bca`
     );
 
-    require("../../bin/index");
+    require("../index");
 
     expect(treeExtended).toHaveBeenCalledWith(
       FAKE_CUSTOM_PATH,
