@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const GitignoreParser = require("./GitignoreParser");
+const GitignoreParser = require("./filters/GitignoreParser");
 const CharsetProvider = require("./printDirectory/CharsetProvider");
 
 const breakLine = "\n";
@@ -144,8 +144,8 @@ const printDirectory = (
  * @param {number} maxLevel max deep level (default null)
  * @param {boolean} showNotEmpty if maxLevel is set and showNotEmpty,
  * then print a string for saying that it is not empty.
- * @param {Array<FilterRecord>} ignores array of filters to ignore.
- * @param {Array<FilterRecord>} only array of filters for only filtering.
+ * @param {Array<FilterConfiguration>} ignores array of filters to ignore.
+ * @param {Array<FilterConfiguration>} only array of filters for only filtering.
  */
 module.exports = (
   targetPath = "./",

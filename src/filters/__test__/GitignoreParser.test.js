@@ -2,10 +2,12 @@
 const mockFs = require("mock-fs");
 const os = require("os");
 const GitignoreParser = require("../GitignoreParser");
+const { mockGitignoreInFileSystem } = require("../../__test__/testHelpers");
 
 describe("src > GitignoreParser", () => {
   const directoryName = "fake-directory";
   const endOfLine = os.EOL;
+  const mockFileSystem = (config) => mockGitignoreInFileSystem(config, directoryName);
 
   afterEach(() => {
     mockFs.restore();
@@ -33,12 +35,4 @@ describe("src > GitignoreParser", () => {
     expect(gitIgnore.accepts("testFile.png")).toBeFalsy();
     expect(gitIgnore.accepts("testFile.bmp")).toBeTruthy();
   });
-
-  const mockFileSystem = (gitignoreContent) => {
-    mockFs({
-      [directoryName]: {
-        ".gitignore": gitignoreContent,
-      },
-    });
-  };
 });
