@@ -2,7 +2,7 @@
 /* eslint-disable no-console */
 
 const treeExtended = require("../src/tree-extended");
-const FilterRecord = require("../src/FilterRecord");
+const FilterConfiguration = require("../src/filters/FilterConfiguration");
 const helpString = require("./helpText");
 
 const HELP = "HELP";
@@ -32,14 +32,14 @@ const checkParam = (testParam, testVal) => parameters[testParam] && parameters[t
 /** Parse the IGNORES and ONLY argument string.
  * @param {string} argString string in the format `[level1:]folder/file name1,
  * [level2:]folder/file name2`
- * @returns {Array<FilterRecord>} list of FilterRecord items.
+ * @returns {Array<FilterConfiguration>} list of FilterConfiguration items.
  */
 const parseFilterArgument = (argString) => {
   const result = [];
   argString.split(",").map((it) => it.trim()).forEach((it) => {
     const itArray = it.split(":");
-    if (itArray.length === 1) result.push(new FilterRecord(itArray[0]));
-    else if (itArray.length === 2) result.push(new FilterRecord(itArray[1], Number(itArray[0])));
+    if (itArray.length === 1) result.push(new FilterConfiguration(itArray[0]));
+    else if (itArray.length === 2) result.push(new FilterConfiguration(itArray[1], Number(itArray[0])));
   });
   return result;
 };

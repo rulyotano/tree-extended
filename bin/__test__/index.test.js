@@ -6,13 +6,13 @@ describe("bin > index.js", () => {
   let originalProcessArgv = null;
   let treeExtended = null;
   let helpText = null;
-  let FilterRecord = null;
+  let FilterConfiguration = null;
 
   beforeEach(() => {
     jest.resetModules();
 
     treeExtended = require("../../src/tree-extended");
-    FilterRecord = require("../../src/FilterRecord");
+    FilterConfiguration = require("../../src/filters/FilterConfiguration");
     helpText = require("../helpText");
 
     jest.mock("../../src/tree-extended");
@@ -66,8 +66,8 @@ describe("bin > index.js", () => {
       4,
       true,
       true,
-      [new FilterRecord("ba", 1), new FilterRecord("bafile1", 2), new FilterRecord("c")],
-      [new FilterRecord("b", 0), new FilterRecord("bc", 1), new FilterRecord("bca", 2)],
+      [new FilterConfiguration("ba", 1), new FilterConfiguration("bafile1", 2), new FilterConfiguration("c")],
+      [new FilterConfiguration("b", 0), new FilterConfiguration("bc", 1), new FilterConfiguration("bca", 2)],
     );
     expect(consoleLogSpy).toHaveBeenCalledWith(FAKE_RESULT);
   });

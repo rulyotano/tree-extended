@@ -1,5 +1,5 @@
 const directories = require("./mockDirectories");
-const FilterRecord = require("../FilterRecord");
+const FilterConfiguration = require("../filters/FilterConfiguration");
 
 module.exports = {
   cases: [{
@@ -129,9 +129,9 @@ module.exports = {
       showNotEmpty: undefined,
       gitignore: undefined,
       ignores: [
-        new FilterRecord("ba", 1),
-        new FilterRecord("bafile1", 2),
-        new FilterRecord("c"),
+        new FilterConfiguration("ba", 1),
+        new FilterConfiguration("bafile1", 2),
+        new FilterConfiguration("c"),
       ],
       only: undefined,
     },
@@ -158,7 +158,7 @@ module.exports = {
       showNotEmpty: undefined,
       gitignore: undefined,
       ignores: undefined,
-      only: [new FilterRecord("b", 0), new FilterRecord("bc", 1), new FilterRecord("bca", 2)],
+      only: [new FilterConfiguration("b", 0), new FilterConfiguration("bc", 1), new FilterConfiguration("bca", 2)],
     },
     expected: `├───b/
 │   └───bc/
@@ -177,7 +177,7 @@ module.exports = {
       showNotEmpty: undefined,
       gitignore: undefined,
       ignores: undefined,
-      only: [new FilterRecord("b$", 0), new FilterRecord("bc", 1), new FilterRecord("bca", 2)],
+      only: [new FilterConfiguration("b$", 0), new FilterConfiguration("bc", 1), new FilterConfiguration("bca", 2)],
     },
     expected: `└───b/
     └───bc/
