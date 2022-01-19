@@ -1,19 +1,18 @@
-const Filter = require("./Filter");
+const FilterByLevel = require("./FilterByLevel");
 
-module.exports = class FilterIgnore extends Filter {
-  constructor(filterConfigurationByLevel) {
-    super();
-    this.filterConfigurationByLevel = filterConfigurationByLevel || {};
+module.exports = class FilterIgnore extends FilterByLevel {
+  constructor(configurationItems = []) {
+    super(configurationItems);
   }
 
   matchFilter(path, deep) {
-    const existGlobalFilterAndSomeIsIgnoring = this.filterConfigurationByLevel.null
-      && this.filterConfigurationByLevel.null.some((it) => it.isMatch(path));
+    const existGlobalFilterAndSomeIsIgnoring = this.configurationByLevel.null
+      && this.configurationByLevel.null.some((it) => it.isMatch(path));
 
     if (existGlobalFilterAndSomeIsIgnoring) return false;
 
-    const existLevelSpecificFilterAndSomeIsIgnoring = this.filterConfigurationByLevel[deep]
-     && this.filterConfigurationByLevel[deep].some((it) => it.isMatch(path));
+    const existLevelSpecificFilterAndSomeIsIgnoring = this.configurationByLevel[deep]
+     && this.configurationByLevel[deep].some((it) => it.isMatch(path));
 
     return !existLevelSpecificFilterAndSomeIsIgnoring;
   }

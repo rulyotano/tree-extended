@@ -3,11 +3,11 @@ const treeExtended = require("../tree-extended");
 const testCases = require("./testCases");
 
 describe("tree-extended.js", () => {
-  beforeEach(() => {});
-
-  afterEach(() => {
+  beforeEach(() => {
     mockFs.restore();
   });
+
+  afterEach(() => {});
 
   const runTestCase = (testCase) => test(`Test Case Description: ${testCase.description}`, () => {
     mockFs(testCase.directories);

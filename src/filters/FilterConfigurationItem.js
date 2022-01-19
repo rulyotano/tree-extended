@@ -1,16 +1,16 @@
-module.exports = class FilterConfiguration {
+module.exports = class FilterConfigurationItem {
   /** @param {number?} deep - Deep in the tree where this pattern will be executed
    * @param {string} pattern - Pattern or regex to match
    */
   constructor(pattern, deep = null) {
     this.deep = deep;
     this.pattern = pattern;
-    this.regex = FilterConfiguration.getRegexFromPatter(pattern);
+    this.regex = FilterConfigurationItem.getRegexFromPatter(pattern);
   }
 
   /** Returns true if is match */
   isMatch(path, testDeep = null) {
-    if (FilterConfiguration.deepsAreDifferentAndNotEmpty(testDeep)) {
+    if (FilterConfigurationItem.deepsAreDifferentAndNotEmpty(testDeep)) {
       return false;
     }
     return this.regex.test(path);

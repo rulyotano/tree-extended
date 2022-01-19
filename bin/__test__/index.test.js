@@ -12,7 +12,7 @@ describe("bin > index.js", () => {
     jest.resetModules();
 
     treeExtended = require("../../src/tree-extended");
-    FilterConfiguration = require("../../src/filters/FilterConfiguration");
+    FilterConfiguration = require("../../src/filters/FilterConfigurationItem");
     helpText = require("../helpText");
 
     jest.mock("../../src/tree-extended");

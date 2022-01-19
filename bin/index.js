@@ -2,7 +2,7 @@
 /* eslint-disable no-console */
 
 const treeExtended = require("../src/tree-extended");
-const FilterConfiguration = require("../src/filters/FilterConfiguration");
+const FilterConfigurationItem = require("../src/filters/FilterConfigurationItem");
 const helpString = require("./helpText");
 
 const HELP = "HELP";
@@ -38,8 +38,8 @@ const parseFilterArgument = (argString) => {
   const result = [];
   argString.split(",").map((it) => it.trim()).forEach((it) => {
     const itArray = it.split(":");
-    if (itArray.length === 1) result.push(new FilterConfiguration(itArray[0]));
-    else if (itArray.length === 2) result.push(new FilterConfiguration(itArray[1], Number(itArray[0])));
+    if (itArray.length === 1) result.push(new FilterConfigurationItem(itArray[0]));
+    else if (itArray.length === 2) result.push(new FilterConfigurationItem(itArray[1], Number(itArray[0])));
   });
   return result;
 };
