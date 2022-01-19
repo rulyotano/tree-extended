@@ -9,7 +9,7 @@ describe("src > GitignoreParser", () => {
   const endOfLine = os.EOL;
   const mockFileSystem = (config) => mockGitignoreInFileSystem(config, directoryName);
 
-  afterEach(() => {
+  beforeEach(() => {
     mockFs.restore();
   });
 

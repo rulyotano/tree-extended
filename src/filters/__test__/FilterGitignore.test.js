@@ -1,4 +1,5 @@
 const os = require("os");
+const mockFs = require("mock-fs");
 const { mockGitignoreInFileSystem } = require("../../__test__/testHelpers");
 const FilterGitignore = require("../FilterGitignore");
 
@@ -6,9 +7,10 @@ describe("filters > FilterGitignore", () => {
   const directoryName = "fake-directory";
   const endOfLine = os.EOL;
   const mockFileSystem = (config) => mockGitignoreInFileSystem(config, directoryName);
-  beforeEach(() => {});
 
-  afterEach(() => {});
+  beforeEach(() => {
+    mockFs.restore();
+  });
 
   test("When git ignore filter is configured, should filter .git folder", () => {
     const filter = new FilterGitignore(true, directoryName);

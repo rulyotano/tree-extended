@@ -1,5 +1,5 @@
 const FilterIgnore = require("../FilterIgnore");
-const FilterConfiguration = require("../FilterConfiguration");
+const FilterConfigurationItem = require("../FilterConfigurationItem");
 
 describe("filters > FilterIgnore", () => {
   beforeEach(() => {});
@@ -7,8 +7,7 @@ describe("filters > FilterIgnore", () => {
   afterEach(() => {});
 
   test("When global filter should filter no matter level", () => {
-    const filterConfigurations = { [null]: [new FilterConfiguration("abc")] };
-    const filter = new FilterIgnore(filterConfigurations);
+    const filter = new FilterIgnore([new FilterConfigurationItem("abc")]);
 
     expect(filter.matchFilter("/path/file-abc.txt", 1)).toBeFalsy();
     expect(filter.matchFilter("/path/second/abc-def.txt", 2)).toBeFalsy();
@@ -16,8 +15,7 @@ describe("filters > FilterIgnore", () => {
   });
 
   test("When specific level filter should filter only in that level", () => {
-    const filterConfigurations = { 2: [new FilterConfiguration("abc")] };
-    const filter = new FilterIgnore(filterConfigurations);
+    const filter = new FilterIgnore([new FilterConfigurationItem("abc", 2)]);
 
     expect(filter.matchFilter("/path/file.txt", 0)).toBeTruthy();
     expect(filter.matchFilter("/path/file-any.txt", 1)).toBeTruthy();

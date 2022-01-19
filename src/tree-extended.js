@@ -1,15 +1,12 @@
 const fs = require("fs");
 const path = require("path");
-const GitignoreParser = require("./filters/GitignoreParser");
 const CharsetProvider = require("./printDirectory/CharsetProvider");
+const CustomFilterCollection = require("./filters/CustomFilterCollection");
 
 const breakLine = "\n";
 const notEmptyString = "...";
 
-let gitignoreConfigured = false;
-let gitignoreFile = null;
-let ignoresMaps = {};
-let onlyMaps = {};
+let filters = null;
 
 function getAbsolutePathOrThrow(targetPath) {
   if (fs.existsSync(targetPath)) {
@@ -21,58 +18,6 @@ function getAbsolutePathOrThrow(targetPath) {
   }
   return absolutePath;
 }
-
-const initializeEmptyConfigurations = () => {
-  gitignoreConfigured = false;
-  gitignoreFile = null;
-  ignoresMaps = {};
-  onlyMaps = {};
-};
-
-function configureOnlyFilterFromInput(only) {
-  only.forEach((it) => {
-    if (!onlyMaps[it.deep]) {
-      onlyMaps[it.deep] = [];
-    }
-    onlyMaps[it.deep].push(it);
-  });
-}
-
-function configureIgnoreFromInput(ignores) {
-  ignores.forEach((it) => {
-    if (!ignoresMaps[it.deep]) {
-      ignoresMaps[it.deep] = [];
-    }
-    ignoresMaps[it.deep].push(it);
-  });
-}
-
-const configureGitignore = (useGitignore, targetPath) => {
-  gitignoreConfigured = useGitignore;
-  const gitIgnoreParser = new GitignoreParser(targetPath);
-
-  if (gitignoreConfigured && gitIgnoreParser.doesGitignoreFileExist()) {
-    gitignoreFile = gitIgnoreParser.getGitignoreFile();
-  }
-};
-
-/** Apply the filters based on ignores and only filter records. */
-const applyFilter = (fullPath, level) => {
-  // when have gitignore config, ignore the .git/ folder
-  if (gitignoreConfigured && fullPath.match(/\.git[/|\\]?$/)) return false;
-
-  // if exist general only filters, but all them mismatch the path, then return false
-  if (onlyMaps.null && onlyMaps.null.every((it) => !it.isMatch(fullPath))) return false;
-  // a more specific case, has only maps of its level
-  if (onlyMaps[level] && onlyMaps[level].every((it) => !it.isMatch(fullPath))) return false;
-
-  // if exist general ignore filters, and exist a match with the path, then return false
-  if (ignoresMaps.null && ignoresMaps.null.some((it) => it.isMatch(fullPath))) return false;
-
-  // a more specific case, has ignore maps of its level
-  if (ignoresMaps[level] && ignoresMaps[level].some((it) => it.isMatch(fullPath))) return false;
-  return true;
-};
 
 /** Prints the directory and all sub-directories.
  * @param {string} dir directory to print
@@ -93,7 +38,7 @@ const printDirectory = (
   const charset = CharsetProvider.getCharset(ascii);
   const children = fs.readdirSync(dir).filter((it) => {
     const tPath = path.join(dir, it);
-    return applyFilter(tPath, currentLevel) && (!gitignoreFile || gitignoreFile.accepts(it));
+    return filters.matchFilters(tPath, currentLevel);
   });
 
   // check if got the max level
@@ -156,15 +101,9 @@ module.exports = (
   ignores = [],
   only = [],
 ) => {
-  initializeEmptyConfigurations();
-
   const absoluteTargetPath = getAbsolutePathOrThrow(targetPath);
 
-  configureGitignore(gitignore, absoluteTargetPath);
-
-  configureIgnoreFromInput(ignores);
-
-  configureOnlyFilterFromInput(only);
+  filters = new CustomFilterCollection(ignores, only, gitignore, absoluteTargetPath);
 
   return printDirectory(absoluteTargetPath, ascii, 0, maxLevel, showNotEmpty);
 };
