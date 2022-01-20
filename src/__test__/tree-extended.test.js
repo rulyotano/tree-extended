@@ -7,7 +7,13 @@ describe("tree-extended.js", () => {
     mockFs.restore();
   });
 
-  afterEach(() => {});
+  afterEach(() => {
+    mockFs.restore();
+  });
+
+  afterAll(() => {
+    mockFs.restore();
+  });
 
   const runTestCase = (testCase) => test(`Test Case Description: ${testCase.description}`, () => {
     mockFs(testCase.directories);

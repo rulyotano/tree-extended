@@ -13,6 +13,14 @@ describe("src > GitignoreParser", () => {
     mockFs.restore();
   });
 
+  afterEach(() => {
+    mockFs.restore();
+  });
+
+  afterAll(() => {
+    mockFs.restore();
+  });
+
   test("Should ignore text files (simple test)", () => {
     // eslint-disable-next-line no-use-before-define
     mockFileSystem("*.txt");

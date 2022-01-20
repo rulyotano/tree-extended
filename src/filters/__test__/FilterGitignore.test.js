@@ -12,6 +12,14 @@ describe("filters > FilterGitignore", () => {
     mockFs.restore();
   });
 
+  afterEach(() => {
+    mockFs.restore();
+  });
+
+  afterAll(() => {
+    mockFs.restore();
+  });
+
   test("When git ignore filter is configured, should filter .git folder", () => {
     const filter = new FilterGitignore(true, directoryName);
 
