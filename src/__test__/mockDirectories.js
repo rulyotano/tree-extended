@@ -45,6 +45,6 @@ module.exports = {
   directory2,
   directory1Gitignore: {
     ...directory1,
-    ".gitignore": "*.txt",
+    ".gitignore": "**.txt",
   },
 };

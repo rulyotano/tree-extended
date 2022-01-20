@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const CharsetProvider = require("./printDirectory/CharsetProvider");
+const CharsetProvider = require("./directoryWriter/CharsetProvider");
 const CustomFilterCollection = require("./filters/CustomFilterCollection");
 
 const breakLine = "\n";
