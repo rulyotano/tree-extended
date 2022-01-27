@@ -3,4 +3,6 @@ module.exports = {
   horizontalDiv: "─",
   expand: "├",
   final: "└",
+  breakLine: "\n",
+  notEmpty: "...",
 };
