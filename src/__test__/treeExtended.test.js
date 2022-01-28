@@ -1,5 +1,5 @@
 const mockFs = require("mock-fs");
-const treeExtended = require("../tree-extended");
+const treeExtended = require("../treeExtended");
 const testCases = require("./testCases");
 
 describe("tree-extended.js", () => {
@@ -20,23 +20,10 @@ describe("tree-extended.js", () => {
 
     const {
       targetPath,
-      ascii,
-      maxLevel,
-      showNotEmpty,
-      gitignore,
-      ignores,
-      only,
+      configuration,
     } = testCase.arguments;
 
-    const result = treeExtended(
-      targetPath,
-      ascii,
-      maxLevel,
-      showNotEmpty,
-      gitignore,
-      ignores,
-      only,
-    );
+    const result = treeExtended(targetPath, configuration);
 
     // console.warn(result)
     expect(result).toEqual(testCase.expected);

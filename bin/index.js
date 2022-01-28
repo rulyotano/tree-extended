@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
 
-const treeExtended = require("../src/tree-extended");
+const treeExtended = require("../src/treeExtended");
 const FilterConfigurationItem = require("../src/filters/FilterConfigurationItem");
+const Configuration = require("../src/Configuration");
 const helpString = require("./helpText");
 
 const HELP = "HELP";
@@ -77,5 +78,5 @@ if (args.some((it) => checkParam(HELP, it.toLowerCase()))) {
     only = parseFilterArgument(onlyStrValue);
   }
 
-  console.log(treeExtended(path, ascii, maxLevel, showNotEmpty, gitignore, ignores, only));
+  console.log(treeExtended(path, new Configuration(ascii, maxLevel, showNotEmpty, gitignore, ignores, only)));
 }

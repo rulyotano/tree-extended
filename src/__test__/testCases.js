@@ -1,5 +1,6 @@
 const directories = require("./mockDirectories");
 const FilterConfigurationItem = require("../filters/FilterConfigurationItem");
+const Configuration = require("../Configuration");
 
 module.exports = {
   cases: [{
@@ -7,12 +8,7 @@ module.exports = {
     directories: directories.directory1,
     arguments: {
       targetPath: undefined,
-      ascii: undefined,
-      maxLevel: undefined,
-      showNotEmpty: undefined,
-      gitignore: undefined,
-      ignores: undefined,
-      only: undefined,
+      configuration: new Configuration(),
     },
     expected: `├───a/
 │   ├───aa/
@@ -41,12 +37,7 @@ module.exports = {
     directories: directories.directory1,
     arguments: {
       targetPath: undefined,
-      ascii: undefined,
-      maxLevel: 2,
-      showNotEmpty: undefined,
-      gitignore: undefined,
-      ignores: undefined,
-      only: undefined,
+      configuration: new Configuration(undefined, 2),
     },
     expected: `├───a/
 │   ├───aa/
@@ -71,12 +62,7 @@ module.exports = {
     directories: directories.directory1,
     arguments: {
       targetPath: undefined,
-      ascii: undefined,
-      maxLevel: 1,
-      showNotEmpty: true,
-      gitignore: undefined,
-      ignores: undefined,
-      only: undefined,
+      configuration: new Configuration(undefined, 1, true),
     },
     expected: `├───a/
 │   └───...
@@ -94,12 +80,7 @@ module.exports = {
     directories: directories.directory1,
     arguments: {
       targetPath: undefined,
-      ascii: true,
-      maxLevel: 2,
-      showNotEmpty: undefined,
-      gitignore: undefined,
-      ignores: undefined,
-      only: undefined,
+      configuration: new Configuration(true, 2),
     },
     expected: `+---a/
 |   +---aa/
@@ -124,16 +105,11 @@ module.exports = {
     directories: directories.directory1,
     arguments: {
       targetPath: undefined,
-      ascii: undefined,
-      maxLevel: undefined,
-      showNotEmpty: undefined,
-      gitignore: undefined,
-      ignores: [
+      configuration: new Configuration(undefined, undefined, undefined, undefined, [
         new FilterConfigurationItem("ba", 1),
         new FilterConfigurationItem("bafile1", 2),
         new FilterConfigurationItem("c"),
-      ],
-      only: undefined,
+      ]),
     },
     expected: `├───a/
 │   ├───aa/
@@ -153,16 +129,11 @@ module.exports = {
     directories: directories.directory2,
     arguments: {
       targetPath: undefined,
-      ascii: undefined,
-      maxLevel: undefined,
-      showNotEmpty: undefined,
-      gitignore: undefined,
-      ignores: undefined,
-      only: [
+      configuration: new Configuration(undefined, undefined, undefined, undefined, undefined, [
         new FilterConfigurationItem("b", 0),
         new FilterConfigurationItem("bc", 1),
         new FilterConfigurationItem("bca", 2),
-      ],
+      ]),
     },
     expected: `├───b/
 │   └───bc/
@@ -176,17 +147,11 @@ module.exports = {
     directories: directories.directory2,
     arguments: {
       targetPath: undefined,
-      ascii: undefined,
-      maxLevel: undefined,
-      showNotEmpty: undefined,
-      gitignore: undefined,
-      ignores: undefined,
-      only:
-      [
+      configuration: new Configuration(undefined, undefined, undefined, undefined, undefined, [
         new FilterConfigurationItem("b$", 0),
         new FilterConfigurationItem("bc", 1),
         new FilterConfigurationItem("bca", 2),
-      ],
+      ]),
     },
     expected: `└───b/
     └───bc/
@@ -199,12 +164,7 @@ module.exports = {
     directories: directories.directory1,
     arguments: {
       targetPath: "./b",
-      ascii: undefined,
-      maxLevel: undefined,
-      showNotEmpty: undefined,
-      gitignore: undefined,
-      ignores: undefined,
-      only: undefined,
+      configuration: new Configuration(),
     },
     expected: `├───ba/
 │   ├───bafile1.txt
@@ -222,12 +182,7 @@ module.exports = {
     directories: directories.directory1Gitignore,
     arguments: {
       targetPath: undefined,
-      ascii: undefined,
-      maxLevel: undefined,
-      showNotEmpty: undefined,
-      gitignore: true,
-      ignores: undefined,
-      only: undefined,
+      configuration: new Configuration(undefined, undefined, undefined, true),
     },
     expected: `├───a/
 │   ├───aa/
