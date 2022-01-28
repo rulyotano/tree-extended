@@ -1,8 +1,8 @@
 {
   "name": "tree-extended",
-  "version": "1.2.9",
-  "description": "`tree` command but with extra parameters like deep.",
-  "main": "tree-extended.js",
+  "version": "2.0.0",
+  "description": "Big refactor to the source code with code improvements as target",
+  "main": "src/treeExtended.js",
   "scripts": {
     "test-local": "jest --watchAll --coverage",
     "test": "jest --coverage",
@@ -24,6 +24,10 @@
     "ascii",
     "gitignore"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rulyotano/tree-extended.git"
+  },
   "author": "Raúl Otaño Hurtado",
   "license": "ISC",
   "dependencies": {
