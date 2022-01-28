@@ -1,6 +1,6 @@
 {
   "name": "tree-extended",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Big refactor to the source code with code improvements as target",
   "main": "src/treeExtended.js",
   "scripts": {
