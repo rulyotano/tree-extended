@@ -22,10 +22,11 @@ const getChildrenFiles = (children, directory) =>
   children.filter((it) => fs.lstatSync(path.join(directory, it)).isFile());
 
 module.exports = class DirectoryParser {
-  constructor(directoryPath, filters, maxLevel = null) {
+  constructor(directoryPath, filters, maxLevel = null, markNoEmptyDirectories = true) {
     this.directoryPath = directoryPath;
     this.filters = filters;
     this.maxLevel = maxLevel;
+    this.markNoEmptyDirectories = markNoEmptyDirectories;
   }
 
   parse() {
@@ -39,7 +40,9 @@ module.exports = class DirectoryParser {
     const subdirectories = getSubdirectoriesMatchingFilters(currentDirectory, currentLevel, this.filters);
 
     if (isMaxLevelButDirectoryIsNotEmpty(this.maxLevel, currentLevel, subdirectories)) {
-      parent.markDirectoryAsNoEmpty();
+      if (this.markNoEmptyDirectories) {
+        parent.markDirectoryAsNoEmpty();
+      }
       return;
     }
 

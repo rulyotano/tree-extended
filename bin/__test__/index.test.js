@@ -1,4 +1,6 @@
 /* eslint-disable global-require */
+const Configuration = require("../../src/Configuration");
+
 describe("bin > index.js", () => {
   const FAKE_RESULT = "fake-result";
   const FAKE_CUSTOM_PATH = "custom-path";
@@ -11,11 +13,11 @@ describe("bin > index.js", () => {
   beforeEach(() => {
     jest.resetModules();
 
-    treeExtended = require("../../src/tree-extended");
+    treeExtended = require("../../src/treeExtended");
     FilterConfiguration = require("../../src/filters/FilterConfigurationItem");
     helpText = require("../helpText");
 
-    jest.mock("../../src/tree-extended");
+    jest.mock("../../src/treeExtended");
 
     originalProcessArgv = process.argv;
     treeExtended.mockReturnValue(FAKE_RESULT);
@@ -34,7 +36,7 @@ describe("bin > index.js", () => {
   test("Default call should call treeExtended with default arguments", () => {
     require("../index");
 
-    expect(treeExtended).toHaveBeenCalledWith(undefined, false, null, false, false, [], []);
+    expect(treeExtended).toHaveBeenCalledWith(undefined, new Configuration());
     expect(consoleLogSpy).toHaveBeenCalledWith(FAKE_RESULT);
   });
 
@@ -62,12 +64,14 @@ describe("bin > index.js", () => {
 
     expect(treeExtended).toHaveBeenCalledWith(
       FAKE_CUSTOM_PATH,
-      true,
-      4,
-      true,
-      true,
-      [new FilterConfiguration("ba", 1), new FilterConfiguration("bafile1", 2), new FilterConfiguration("c")],
-      [new FilterConfiguration("b", 0), new FilterConfiguration("bc", 1), new FilterConfiguration("bca", 2)],
+      new Configuration(
+        true,
+        4,
+        true,
+        true,
+        [new FilterConfiguration("ba", 1), new FilterConfiguration("bafile1", 2), new FilterConfiguration("c")],
+        [new FilterConfiguration("b", 0), new FilterConfiguration("bc", 1), new FilterConfiguration("bca", 2)],
+      ),
     );
     expect(consoleLogSpy).toHaveBeenCalledWith(FAKE_RESULT);
   });

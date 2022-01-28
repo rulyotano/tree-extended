@@ -136,6 +136,30 @@ describe("directoryParse > DirectoryParser", () => {
     expect(nodeSecondLevelDir.isDirectoryEmpty()).toBeFalsy();
   });
 
+  // eslint-disable-next-line max-len
+  test("When when max level and directory no-empty but option markNoEmptyDirectories = false should NOT mark it as no empty", () => {
+    mockFs({
+      c: {
+        [fakeDir1]: {
+          [fakeDir2]: {
+            [fakeFile1]: "",
+          },
+        },
+      },
+    });
+
+    const maxLevel = 2;
+    const parser = new DirectoryParser("c", emptyFilters, maxLevel, false);
+    const result = parser.parse();
+
+    checkDirectoryNode(result, null, true, null, null, 1);
+    checkDirectoryNode(result.children[0], fakeDir1, false, false, 1, 1);
+    checkDirectoryNode(result.children[0].children[0], fakeDir2, false, false, 2, 0);
+    const nodeSecondLevelDir = result.children[0].children[0];
+    expect(nodeSecondLevelDir.isLeaf()).toBeTruthy();
+    expect(nodeSecondLevelDir.isDirectoryEmpty()).toBeTruthy();
+  });
+
   test("When filters should apply them", () => {
     mockFs({
       c: {
