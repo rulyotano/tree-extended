@@ -3,6 +3,8 @@ const directoryNodeTypes = require("./DirectoryNodeTypes");
 module.exports = class DirectoryNode {
   static ROOT_NAME = "root";
 
+  static ROOT_DIRECTORY_INDEX = -1;
+
   constructor(
     name = DirectoryNode.ROOT_NAME,
     deep = 0,
@@ -15,10 +17,11 @@ module.exports = class DirectoryNode {
     this.kind = kind;
     this.children = children;
     this.directoryEmpty = directoryEmpty;
+    this.directoryIndex = DirectoryNode.ROOT_DIRECTORY_INDEX;
   }
 
-  static createDirectory(name, deep) {
-    return new DirectoryNode(name, deep, directoryNodeTypes.DIRECTORY_TYPE);
+  static createDirectory(name, deep, children = []) {
+    return new DirectoryNode(name, deep, directoryNodeTypes.DIRECTORY_TYPE, children);
   }
 
   static createFile(name, deep) {
@@ -55,5 +58,31 @@ module.exports = class DirectoryNode {
 
   addChildren(newChildren = []) {
     this.children = [...this.children, ...newChildren];
+    this.childrenIndexes = null;
+  }
+
+  setDirectoryIndex(directoryIndex) {
+    this.directoryIndex = directoryIndex;
+  }
+
+  isLastChild(child) {
+    const childrenIndexes = this.getChildrenIndexes();
+    const lastIndex = this.children.length - 1;
+    return childrenIndexes[child.getHashCode()] === lastIndex;
+  }
+
+  getChildrenIndexes() {
+    if (!this.childrenIndexes) {
+      this.childrenIndexes = this.children.reduce((prev, current, index) => ({
+        ...prev,
+        [current.getHashCode()]: index,
+      }), {});
+    }
+
+    return this.childrenIndexes;
+  }
+
+  getHashCode() {
+    return this.name;
   }
 };

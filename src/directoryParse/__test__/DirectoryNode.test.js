@@ -13,7 +13,7 @@ describe("printDirectory > DirectoryNode", () => {
   describe("ctor()", () => {
     test("Should initialize correctly", () => {
       const expectedDeep = 2;
-      const children = ["fake-children"];
+      const children = [DirectoryNode.createDirectory()];
       const directoryEmpty = false;
       const directoryNode = new DirectoryNode(
         fakeDirectoryName,
@@ -28,6 +28,8 @@ describe("printDirectory > DirectoryNode", () => {
       expect(directoryNode.kind).toBe(directoryNodeTypes.DIRECTORY_TYPE);
       expect(directoryNode.children).toBe(children);
       expect(directoryNode.directoryEmpty).toBe(directoryEmpty);
+      expect(directoryNode.directoryIndex).toBe(DirectoryNode.ROOT_DIRECTORY_INDEX);
+      expect(directoryNode.childrenIndexes).toBeFalsy();
     });
   });
 
@@ -48,6 +50,15 @@ describe("printDirectory > DirectoryNode", () => {
       const [child1, child2] = directoryNode.children;
       expect(child1.name).toBe(fakeFileName);
       expect(child2.name).toBe(secondFakeFileName);
+    });
+
+    test("Should reset children indexes after adding", () => {
+      const directoryNode = new DirectoryNode(fakeDirectoryName);
+      directoryNode.childrenIndexes = [{ [DirectoryNode.createFile()]: 0 }];
+
+      directoryNode.addChildren([new DirectoryNode(fakeFileName)]);
+
+      expect(directoryNode.childrenIndexes).toBeFalsy();
     });
   });
 
@@ -128,9 +139,23 @@ describe("printDirectory > DirectoryNode", () => {
     });
     test("When isLeaf() is false and isDirectoryEmpty() [this case is edge - error] should be false", () => {
       const directoryNode = DirectoryNode.createDirectory();
-      directoryNode.addChildren(["fake"]);
+      directoryNode.addChildren([DirectoryNode.createFile()]);
       directoryNode.markDirectoryAsNoEmpty();
       expect(directoryNode.isLeafNotEmpty()).toBeFalsy();
+    });
+  });
+
+  describe("isLastChild()", () => {
+    test("Is last child should work correctly", () => {
+      const root = new DirectoryNode();
+      const dir1 = DirectoryNode.createDirectory("dir1");
+      const dir2 = DirectoryNode.createDirectory("dir2");
+      const file3 = DirectoryNode.createDirectory("file1");
+
+      root.addChildren([dir1, dir2, file3]);
+      expect(root.isLastChild(dir1)).toBeFalsy();
+      expect(root.isLastChild(dir2)).toBeFalsy();
+      expect(root.isLastChild(file3)).toBeTruthy();
     });
   });
 });
