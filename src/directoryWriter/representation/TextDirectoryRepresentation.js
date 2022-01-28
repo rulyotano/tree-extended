@@ -17,13 +17,14 @@ module.exports = class TextDirectoryRepresentation {
     return `${isLast ? " " : charset.verticalDiv}   `;
   }
 
-  directoryItem(isLast, previousContent = "", itemName = "") {
+  directoryItem(isLast, previousContent = "", itemName = "", isDirectory = false) {
     const { charset } = this;
     // eslint-disable-next-line object-curly-newline
-    const { final, horizontalDiv, expand, breakLine } = charset;
+    const { final, horizontalDiv, expand, breakLine, getFolderRepresentation, getFileRepresentation } = charset;
 
     const linePrefix = isLast ? final : expand;
-    const directoryItemRepresentation = `${linePrefix}${horizontalDiv}${horizontalDiv}${horizontalDiv}${itemName}`;
+    const itemText = isDirectory ? getFolderRepresentation(itemName) : getFileRepresentation(itemName);
+    const directoryItemRepresentation = `${linePrefix}${horizontalDiv}${horizontalDiv}${horizontalDiv}${itemText}`;
 
     return `${previousContent}${directoryItemRepresentation}${breakLine}`;
   }

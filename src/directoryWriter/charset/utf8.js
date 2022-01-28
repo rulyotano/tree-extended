@@ -5,4 +5,6 @@ module.exports = {
   final: "└",
   breakLine: "\n",
   notEmpty: "...",
+  getFolderRepresentation: (folderName) => `${folderName}/`,
+  getFileRepresentation: (fileName) => fileName,
 };
