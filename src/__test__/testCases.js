@@ -1,6 +1,8 @@
 const directories = require("./mockDirectories");
 const FilterConfigurationItem = require("../filters/FilterConfigurationItem");
 const Configuration = require("../Configuration");
+const asciiCharset = require("../directoryWriter/charset/ascii");
+const utf8Charset = require("../directoryWriter/charset/utf8");
 
 module.exports = {
   cases: [{
@@ -37,7 +39,7 @@ module.exports = {
     directories: directories.directory1,
     arguments: {
       targetPath: undefined,
-      configuration: new Configuration(undefined, 2),
+      configuration: new Configuration(utf8Charset.key, 2),
     },
     expected: `├───a/
 │   ├───aa/
@@ -80,7 +82,7 @@ module.exports = {
     directories: directories.directory1,
     arguments: {
       targetPath: undefined,
-      configuration: new Configuration(true, 2),
+      configuration: new Configuration(asciiCharset.key, 2),
     },
     expected: `+---a/
 |   +---aa/
