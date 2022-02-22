@@ -20,7 +20,7 @@ module.exports = (
     absoluteTargetPath,
   );
   const directoryRepresentation = DirectoryRepresentationProvider.getDirectoryRepresentation(
-    configuration.useLegacyCharacters,
+    configuration.charset,
   );
 
   const directoryParser = new DirectoryParser(

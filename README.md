@@ -35,7 +35,7 @@ arguments:
     (-?, -h, -help): Prints this help
     (-max=max_level): The max deep level
     (-max-show-not-empty): If -max is setted and -max-show-not-empty is setted, show '...' string when level prune.
-    (-ascii): Show ascii characters.
+    (-[c|charset]=ascii|utf8|utf8-icons): Show an specific charset (default: utf8).
     (-gitignore): Ignore the .git/ folder and the content inside .gitignore file.
     (-ignore="[level1:]folder/file name1,  [level2:]folder/file name2, ..."): Ignores folders or files in an optional tree level.
     (-only="[level1:]folder/file name1,  [level2:]folder/file name2, ..."): Filter and only show that folders or files in an optional tree level.
@@ -118,9 +118,11 @@ Directory Tree:
     └───...
 ```
 
-### Ascii chars
+### Custom Charset(s)
 
-Command: `tree-extended -max=2 -ascii`
+#### With Ascii charset
+
+Command: `tree-extended -max=2 -c=ascii`
 
 Directory Tree:
 
@@ -141,6 +143,25 @@ Directory Tree:
 \---d/
     +---d1/
     \---d2/
+```
+
+#### With Utf8 Icons charset
+
+Command: `tree-extended -max=2 -charset=utf8-icons`
+
+Directory Tree:
+
+```
+├───📁 a/
+│   ├───📁 aa/
+│   └───📁 ab/
+├───📁 a1/
+├───📁 b/
+│   ├───📁 bb/
+│   ├───📁 bd/
+│   └───📄 bfile1.txt
+└───📁 d/
+    └───📁 d1/
 ```
 
 ### Ignores

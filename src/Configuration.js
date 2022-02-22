@@ -1,13 +1,13 @@
 module.exports = class Configuration {
   constructor(
-    useLegacyCharacters = false,
+    charset = null,
     maximumDeep = null,
     showIndicatorWhenDirectoryIsNotEmpty = false,
     includeGitIgnore = false,
     ignoreFilters = [],
     onlyFilters = [],
   ) {
-    this.useLegacyCharacters = useLegacyCharacters;
+    this.charset = charset;
     this.maximumDeep = maximumDeep;
     this.showIndicatorWhenDirectoryIsNotEmpty = showIndicatorWhenDirectoryIsNotEmpty;
     this.includeGitIgnore = includeGitIgnore;

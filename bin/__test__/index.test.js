@@ -40,6 +40,16 @@ describe("bin > index.js", () => {
     expect(consoleLogSpy).toHaveBeenCalledWith(FAKE_RESULT);
   });
 
+  test("Should receive argument -charset={charset} and pass it to configuration", () => {
+    const fakeCharset = "fake-charset";
+    setArguments(`-charset=${fakeCharset}`);
+
+    require("../index");
+
+    expect(treeExtended).toHaveBeenCalledWith(undefined, new Configuration(fakeCharset));
+    expect(consoleLogSpy).toHaveBeenCalledWith(FAKE_RESULT);
+  });
+
   test("when help argument should return help string", () => {
     setArguments("-h");
 
@@ -50,14 +60,15 @@ describe("bin > index.js", () => {
   });
 
   test("when all arguments should transform them correctly", () => {
+    const fakeCharset = "fake-charset";
     setArguments(
       FAKE_CUSTOM_PATH,
       "-max=4",
       "-max-show-not-empty",
-      "-ascii",
       "-gitignore",
       "-ignore=1:ba, 2:bafile1, c",
       "-only=0:b, 1:bc, 2:bca",
+      `-c=${fakeCharset}`,
     );
 
     require("../index");
@@ -65,7 +76,7 @@ describe("bin > index.js", () => {
     expect(treeExtended).toHaveBeenCalledWith(
       FAKE_CUSTOM_PATH,
       new Configuration(
-        true,
+        fakeCharset,
         4,
         true,
         true,

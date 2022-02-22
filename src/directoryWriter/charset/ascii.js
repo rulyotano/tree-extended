@@ -1,4 +1,5 @@
 module.exports = {
+  key: "ascii",
   verticalDiv: "|",
   horizontalDiv: "-",
   expand: "+",
