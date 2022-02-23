@@ -1,7 +1,7 @@
 {
   "name": "tree-extended",
-  "version": "3.0.0",
-  "description": "Remove ascii argument and add charset argument",
+  "version": "3.0.1",
+  "description": "Update help text.",
   "main": "src/treeExtended.js",
   "scripts": {
     "test-local": "jest --watchAll --coverage",
