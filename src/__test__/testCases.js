@@ -1,10 +1,10 @@
-const directories = require("./mockDirectories");
-const FilterConfigurationItem = require("../filters/FilterConfigurationItem");
-const Configuration = require("../Configuration");
-const asciiCharset = require("../directoryWriter/charset/ascii");
-const utf8Charset = require("../directoryWriter/charset/utf8");
+import directories from "./mockDirectories";
+import FilterConfigurationItem from "../filters/FilterConfigurationItem";
+import Configuration from "../Configuration";
+import asciiCharset from "../directoryWriter/charset/ascii";
+import utf8Charset from "../directoryWriter/charset/utf8";
 
-module.exports = {
+export default {
   cases: [{
     description: "Default configuration should return full directory",
     directories: directories.directory1,

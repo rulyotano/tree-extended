@@ -1,6 +1,6 @@
-const directoryNodeTypes = require("./DirectoryNodeTypes");
+import directoryNodeTypes from "./DirectoryNodeTypes";
 
-module.exports = class DirectoryNode {
+export default class DirectoryNode {
   static ROOT_NAME = "root";
 
   static ROOT_DIRECTORY_INDEX = -1;
@@ -85,4 +85,4 @@ module.exports = class DirectoryNode {
   getHashCode() {
     return this.name;
   }
-};
+}

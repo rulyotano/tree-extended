@@ -1,4 +1,4 @@
-const DirectoryRepresentationProvider = require("../DirectoryRepresentationProvider");
+import DirectoryRepresentationProvider from "../DirectoryRepresentationProvider";
 
 describe("directoryWriter > DirectoryRepresentationProvider", () => {
   beforeEach(() => {});

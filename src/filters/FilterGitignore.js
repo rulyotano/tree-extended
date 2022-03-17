@@ -1,7 +1,7 @@
-const Filter = require("./Filter");
-const GitignoreParser = require("./GitignoreParser");
+import Filter from "./Filter";
+import GitignoreParser from "./GitignoreParser";
 
-module.exports = class FilterGitignore extends Filter {
+export default class FilterGitignore extends Filter {
   constructor(useGitignore, absolutePath) {
     super();
     this.useGitignore = useGitignore;
@@ -25,4 +25,4 @@ module.exports = class FilterGitignore extends Filter {
 
     return null;
   }
-};
+}

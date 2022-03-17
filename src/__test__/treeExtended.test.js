@@ -1,6 +1,6 @@
-const mockFs = require("mock-fs");
-const treeExtended = require("../treeExtended");
-const testCases = require("./testCases");
+import mockFs from "mock-fs";
+import treeExtended from "../treeExtended";
+import testCases from "./testCases";
 
 describe("tree-extended.js", () => {
   beforeEach(() => {

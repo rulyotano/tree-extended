@@ -1,5 +1,5 @@
-const FilterOnly = require("../FilterOnly");
-const FilterConfigurationItem = require("../FilterConfigurationItem");
+import FilterOnly from "../FilterOnly";
+import FilterConfigurationItem from "../FilterConfigurationItem";
 
 describe("filters > FilterOnly", () => {
   beforeEach(() => {});

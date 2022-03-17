@@ -1,4 +1,4 @@
-module.exports = class FilterConfigurationItem {
+export default class FilterConfigurationItem {
   /** @param {number?} deep - Deep in the tree where this pattern will be executed
    * @param {string} pattern - Pattern or regex to match
    */
@@ -23,4 +23,4 @@ module.exports = class FilterConfigurationItem {
   static deepsAreDifferentAndNotEmpty(currentDeep, testDeep) {
     return currentDeep !== null && testDeep !== null && currentDeep !== testDeep;
   }
-};
+}

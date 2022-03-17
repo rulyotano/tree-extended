@@ -1,4 +1,4 @@
-module.exports = class DirectoryWriter {
+export default class DirectoryWriter {
   constructor(directoryRepresentation) {
     this.directoryRepresentation = directoryRepresentation;
   }
@@ -30,4 +30,4 @@ module.exports = class DirectoryWriter {
 
     return result;
   }
-};
+}

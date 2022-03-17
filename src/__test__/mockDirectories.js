@@ -40,7 +40,7 @@ const directory2 = {
 
 delete directory2.b.ba;
 
-module.exports = {
+export default {
   directory1,
   directory2,
   directory1Gitignore: {

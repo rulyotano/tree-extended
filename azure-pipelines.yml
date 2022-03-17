@@ -17,6 +17,9 @@ steps:
       displayName: 'Install Yarn'
     - script: |
           yarn
+      displayName: 'Build bind & dist'
+    - script: |
+          yarn build
       displayName: 'Install dependencies'
     - script: |
           yarn pack

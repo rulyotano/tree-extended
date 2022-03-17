@@ -1,6 +1,6 @@
-const fs = require("fs");
-const path = require("path");
-const DirectoryNode = require("./DirectoryNode");
+import fs from "fs";
+import path from "path";
+import DirectoryNode from "./DirectoryNode";
 
 function getSubdirectoriesMatchingFilters(directory, currentLevel, filters) {
   return fs.readdirSync(directory).filter((it) => {
@@ -21,7 +21,7 @@ const getChildrenFiles = (children, directory) =>
   // eslint-disable-next-line implicit-arrow-linebreak
   children.filter((it) => fs.lstatSync(path.join(directory, it)).isFile());
 
-module.exports = class DirectoryParser {
+export default class DirectoryParser {
   constructor(directoryPath, filters, maxLevel = null, markNoEmptyDirectories = true) {
     this.directoryPath = directoryPath;
     this.filters = filters;
@@ -62,4 +62,4 @@ module.exports = class DirectoryParser {
     parent.addChildren(getChildrenDirectoryNodes());
     parent.addChildren(getChildrenFileNodes());
   }
-};
+}
