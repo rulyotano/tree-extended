@@ -1,5 +1,5 @@
-const DirectoryNode = require("../DirectoryNode");
-const directoryNodeTypes = require("../DirectoryNodeTypes");
+import DirectoryNode from "../DirectoryNode";
+import directoryNodeTypes from "../DirectoryNodeTypes";
 
 describe("printDirectory > DirectoryNode", () => {
   const fakeDirectoryName = "test-directory";

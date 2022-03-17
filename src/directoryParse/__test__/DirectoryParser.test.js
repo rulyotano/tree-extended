@@ -1,8 +1,8 @@
-const mockFs = require("mock-fs");
-const DirectoryParser = require("../DirectoryParser");
-const FilterCollection = require("../../filters/FilterCollection");
-const FilterIgnore = require("../../filters/FilterIgnore");
-const FilterConfigurationItem = require("../../filters/FilterConfigurationItem");
+import mockFs from "mock-fs";
+import DirectoryParser from "../DirectoryParser";
+import FilterCollection from "../../filters/FilterCollection";
+import FilterIgnore from "../../filters/FilterIgnore";
+import FilterConfigurationItem from "../../filters/FilterConfigurationItem";
 
 describe("directoryParse > DirectoryParser", () => {
   const emptyFilters = new FilterCollection();

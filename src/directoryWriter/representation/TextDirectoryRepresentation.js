@@ -1,4 +1,4 @@
-module.exports = class TextDirectoryRepresentation {
+export default class TextDirectoryRepresentation {
   constructor(charset) {
     this.charset = charset;
   }
@@ -28,4 +28,4 @@ module.exports = class TextDirectoryRepresentation {
 
     return `${previousContent}${directoryItemRepresentation}${breakLine}`;
   }
-};
+}

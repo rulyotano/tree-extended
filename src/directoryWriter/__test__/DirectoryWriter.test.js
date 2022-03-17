@@ -1,8 +1,8 @@
-const DirectoryWriter = require("../DirectoryWriter");
-const TextDirectoryRepresentation = require("../representation/TextDirectoryRepresentation");
-const charsetAscii = require("../charset/ascii");
-const charsetUtf8 = require("../charset/utf8");
-const DirectoryNode = require("../../directoryParse/DirectoryNode");
+import DirectoryWriter from "../DirectoryWriter";
+import TextDirectoryRepresentation from "../representation/TextDirectoryRepresentation";
+import charsetAscii from "../charset/ascii";
+import charsetUtf8 from "../charset/utf8";
+import DirectoryNode from "../../directoryParse/DirectoryNode";
 
 describe("directoryWriter > DirectoryWriter", () => {
   let directoryWriter = null;

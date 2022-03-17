@@ -1,13 +1,11 @@
-const DirectoryRepresentationProvider = require("./directoryWriter/DirectoryRepresentationProvider");
-const CustomFilterCollection = require("./filters/CustomFilterCollection");
-const DirectoryParser = require("./directoryParse/DirectoryParser");
-const DirectoryWriter = require("./directoryWriter/DirectoryWriter");
-const {
-  getAbsolutePathOrThrow,
-} = require("./helpers");
-const Configuration = require("./Configuration");
+import DirectoryRepresentationProvider from "./directoryWriter/DirectoryRepresentationProvider";
+import CustomFilterCollection from "./filters/CustomFilterCollection";
+import DirectoryParser from "./directoryParse/DirectoryParser";
+import DirectoryWriter from "./directoryWriter/DirectoryWriter";
+import { getAbsolutePathOrThrow } from "./helpers";
+import Configuration from "./Configuration";
 
-module.exports = (
+export default (
   targetPath = "./",
   configuration = new Configuration(),
 ) => {

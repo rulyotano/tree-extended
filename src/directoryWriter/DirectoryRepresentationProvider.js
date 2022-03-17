@@ -1,7 +1,7 @@
-const TextDirectoryRepresentation = require("./representation/TextDirectoryRepresentation");
-const asciiCharset = require("./charset/ascii");
-const utf8Charset = require("./charset/utf8");
-const utf8IconsCharset = require("./charset/utf8Icons");
+import TextDirectoryRepresentation from "./representation/TextDirectoryRepresentation";
+import asciiCharset from "./charset/ascii";
+import utf8Charset from "./charset/utf8";
+import utf8IconsCharset from "./charset/utf8Icons";
 
 const charsetByKey = {
   [asciiCharset.key]: asciiCharset,
@@ -9,7 +9,7 @@ const charsetByKey = {
   [utf8IconsCharset.key]: utf8IconsCharset,
 };
 
-module.exports = class DirectoryRepresentationProvider {
+export default class DirectoryRepresentationProvider {
   static getDirectoryRepresentation(charset = utf8Charset.key) {
     let charsetToUse = charset;
 
@@ -19,4 +19,4 @@ module.exports = class DirectoryRepresentationProvider {
 
     return new TextDirectoryRepresentation(charsetByKey[charsetToUse]);
   }
-};
+}

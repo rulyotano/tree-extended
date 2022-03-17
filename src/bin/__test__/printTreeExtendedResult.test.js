@@ -1,40 +1,26 @@
 /* eslint-disable global-require */
-const Configuration = require("../../src/Configuration");
+import Configuration from "../../Configuration";
+import FilterConfiguration from "../../filters/FilterConfigurationItem";
+import helpText from "../helpText";
+import treeExtended from "../../treeExtended";
+import printTreeExtendedResult from "../printTreeExtendedResult";
+
+jest.mock("../../treeExtended");
 
 describe("bin > index.js", () => {
   const FAKE_RESULT = "fake-result";
   const FAKE_CUSTOM_PATH = "custom-path";
   let consoleLogSpy = null;
-  let originalProcessArgv = null;
-  let treeExtended = null;
-  let helpText = null;
-  let FilterConfiguration = null;
 
   beforeEach(() => {
     jest.resetModules();
 
-    treeExtended = require("../../src/treeExtended");
-    FilterConfiguration = require("../../src/filters/FilterConfigurationItem");
-    helpText = require("../helpText");
-
-    jest.mock("../../src/treeExtended");
-
-    originalProcessArgv = process.argv;
     treeExtended.mockReturnValue(FAKE_RESULT);
     consoleLogSpy = jest.spyOn(console, "log");
-    process.argv = [];
   });
-
-  afterEach(() => {
-    process.argv = originalProcessArgv;
-  });
-
-  const setArguments = (...customArguments) => {
-    process.argv = [process.argv[0], process.argv[1], ...customArguments];
-  };
 
   test("Default call should call treeExtended with default arguments", () => {
-    require("../index");
+    printTreeExtendedResult();
 
     expect(treeExtended).toHaveBeenCalledWith(undefined, new Configuration());
     expect(consoleLogSpy).toHaveBeenCalledWith(FAKE_RESULT);
@@ -42,18 +28,14 @@ describe("bin > index.js", () => {
 
   test("Should receive argument -charset={charset} and pass it to configuration", () => {
     const fakeCharset = "fake-charset";
-    setArguments(`-charset=${fakeCharset}`);
-
-    require("../index");
+    printTreeExtendedResult([`-charset=${fakeCharset}`]);
 
     expect(treeExtended).toHaveBeenCalledWith(undefined, new Configuration(fakeCharset));
     expect(consoleLogSpy).toHaveBeenCalledWith(FAKE_RESULT);
   });
 
   test("when help argument should return help string", () => {
-    setArguments("-h");
-
-    require("../index");
+    printTreeExtendedResult(["-h"]);
 
     expect(treeExtended).not.toHaveBeenCalled();
     expect(consoleLogSpy).toHaveBeenCalledWith(helpText);
@@ -61,7 +43,7 @@ describe("bin > index.js", () => {
 
   test("when all arguments should transform them correctly", () => {
     const fakeCharset = "fake-charset";
-    setArguments(
+    printTreeExtendedResult([
       FAKE_CUSTOM_PATH,
       "-max=4",
       "-max-show-not-empty",
@@ -69,9 +51,7 @@ describe("bin > index.js", () => {
       "-ignore=1:ba, 2:bafile1, c",
       "-only=0:b, 1:bc, 2:bca",
       `-c=${fakeCharset}`,
-    );
-
-    require("../index");
+    ]);
 
     expect(treeExtended).toHaveBeenCalledWith(
       FAKE_CUSTOM_PATH,

@@ -1,9 +1,9 @@
-const path = require("path");
-const fs = require("fs");
-const os = require("os");
-const gitignoreParser = require("gitignore-parser");
+import path from "path";
+import fs from "fs";
+import os from "os";
+import gitignoreParser from "gitignore-parser";
 
-module.exports = class GitignoreParser {
+export default class GitignoreParser {
   constructor(targetPath) {
     this.gitignoreFilePath = path.join(targetPath, ".gitignore");
   }
@@ -33,4 +33,4 @@ module.exports = class GitignoreParser {
     }
     return line;
   }
-};
+}

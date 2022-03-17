@@ -1,4 +1,4 @@
-module.exports = class Configuration {
+export default class Configuration {
   constructor(
     charset = null,
     maximumDeep = null,
@@ -14,4 +14,4 @@ module.exports = class Configuration {
     this.ignoreFilters = ignoreFilters;
     this.onlyFilters = onlyFilters;
   }
-};
+}

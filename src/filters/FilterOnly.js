@@ -1,6 +1,6 @@
-const FilterByLevel = require("./FilterByLevel");
+import FilterByLevel from "./FilterByLevel";
 
-module.exports = class FilterOnly extends FilterByLevel {
+export default class FilterOnly extends FilterByLevel {
   constructor(configurationItems = []) {
     super(configurationItems);
   }
@@ -16,4 +16,4 @@ module.exports = class FilterOnly extends FilterByLevel {
 
     return !existLevelSpecificFilterAndThereIsNoOneMatching;
   }
-};
+}

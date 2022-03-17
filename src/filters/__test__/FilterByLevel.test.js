@@ -1,5 +1,5 @@
-const FilterByLevel = require("../FilterByLevel");
-const FilterConfigurationItem = require("../FilterConfigurationItem");
+import FilterByLevel from "../FilterByLevel";
+import FilterConfigurationItem from "../FilterConfigurationItem";
 
 describe("filters > FilterByLevel", () => {
   beforeEach(() => {});

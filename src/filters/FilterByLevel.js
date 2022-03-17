@@ -1,6 +1,6 @@
-const Filter = require("./Filter");
+import Filter from "./Filter";
 
-module.exports = class FilterByLevel extends Filter {
+export default class FilterByLevel extends Filter {
   constructor(configurationItems = []) {
     super();
     this.configurationByLevel = FilterByLevel.getConfigurationByLevels(configurationItems);
@@ -16,4 +16,4 @@ module.exports = class FilterByLevel extends Filter {
     });
     return configurationByLevel;
   }
-};
+}

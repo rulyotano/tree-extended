@@ -1,7 +1,7 @@
-const os = require("os");
-const mockFs = require("mock-fs");
-const { mockGitignoreInFileSystem } = require("../../__test__/testHelpers");
-const FilterGitignore = require("../FilterGitignore");
+import os from "os";
+import mockFs from "mock-fs";
+import { mockGitignoreInFileSystem } from "../../__test__/testHelpers";
+import FilterGitignore from "../FilterGitignore";
 
 describe("filters > FilterGitignore", () => {
   const directoryName = "fake-directory";

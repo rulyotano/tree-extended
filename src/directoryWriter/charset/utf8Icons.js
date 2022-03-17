@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   key: "utf8-icons",
   verticalDiv: "│",
   horizontalDiv: "─",

@@ -1,12 +1,13 @@
 {
   "name": "tree-extended",
-  "version": "3.0.1",
+  "version": "3.0.9",
   "description": "Update help text.",
-  "main": "src/treeExtended.js",
+  "main": "./dist/treeExtended.js",
   "scripts": {
+    "build": "webpack --config webpack.config.js",
     "test-local": "jest --watchAll --coverage",
     "test": "jest --coverage",
-    "eslint": "eslint src bin"
+    "eslint": "eslint src"
   },
   "bin": {
     "tree-extended": "./bin/index.js"
@@ -34,11 +35,15 @@
     "gitignore-parser": "0.0.2"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.16.11",
+    "babel-jest": "^27.5.1",
     "eslint": "^8.7.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jest": "^25.7.0",
     "jest": "^27.4.7",
-    "mock-fs": "^5.1.2"
+    "mock-fs": "^5.1.2",
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.9.2"
   }
 }

@@ -1,4 +1,4 @@
-module.exports = class FilterCollection {
+export default class FilterCollection {
   constructor(filters = []) {
     this.filters = filters;
   }
@@ -10,4 +10,4 @@ module.exports = class FilterCollection {
   matchFilters(path, deep) {
     return this.filters.every((filter) => filter.matchFilter(path, deep));
   }
-};
+}

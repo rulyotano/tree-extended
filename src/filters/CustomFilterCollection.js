@@ -1,9 +1,9 @@
-const FilterCollection = require("./FilterCollection");
-const FilterGitignore = require("./FilterGitignore");
-const FilterIgnore = require("./FilterIgnore");
-const FilterOnly = require("./FilterOnly");
+import FilterCollection from "./FilterCollection";
+import FilterGitignore from "./FilterGitignore";
+import FilterIgnore from "./FilterIgnore";
+import FilterOnly from "./FilterOnly";
 
-module.exports = class CustomFilterCollection extends FilterCollection {
+export default class CustomFilterCollection extends FilterCollection {
   constructor(ignoreItems = [], onlyItems = [], useGitignore = false, absolutePath = "") {
     super();
     this.addIgnoreFilter(ignoreItems);
@@ -22,4 +22,4 @@ module.exports = class CustomFilterCollection extends FilterCollection {
   addOnlyFilter(configurationItems = []) {
     this.addFilter(new FilterOnly(configurationItems));
   }
-};
+}

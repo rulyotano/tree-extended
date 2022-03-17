@@ -1,7 +1,7 @@
-const FilterConfigurationItem = require("../FilterConfigurationItem");
-const FilterCollection = require("../FilterCollection");
-const FilterOnly = require("../FilterOnly");
-const FilterIgnore = require("../FilterIgnore");
+import FilterConfigurationItem from "../FilterConfigurationItem";
+import FilterCollection from "../FilterCollection";
+import FilterOnly from "../FilterOnly";
+import FilterIgnore from "../FilterIgnore";
 
 describe("filters > FilterCollection", () => {
   beforeEach(() => {});

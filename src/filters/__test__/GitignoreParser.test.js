@@ -1,8 +1,8 @@
 /* eslint-disable no-use-before-define */
-const mockFs = require("mock-fs");
-const os = require("os");
-const GitignoreParser = require("../GitignoreParser");
-const { mockGitignoreInFileSystem } = require("../../__test__/testHelpers");
+import mockFs from "mock-fs";
+import os from "os";
+import GitignoreParser from "../GitignoreParser";
+import { mockGitignoreInFileSystem } from "../../__test__/testHelpers";
 
 describe("src > GitignoreParser", () => {
   const directoryName = "fake-directory";
