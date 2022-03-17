@@ -25,6 +25,15 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install --global yarn
+
+    - name: Install Yarn
     - run: yarn
+
+    - name: Check Lint
     - run: yarn eslint
+
+    - name: Run Tests
     - run: yarn test
+
+    - name: Build
+    - run: yarn build
