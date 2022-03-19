@@ -1,13 +1,18 @@
+import { DirectoryNode } from "../directoryParse";
+import TextDirectoryRepresentation from "./representation/TextDirectoryRepresentation";
+
 export default class DirectoryWriter {
-  constructor(directoryRepresentation) {
+  directoryRepresentation: TextDirectoryRepresentation;
+
+  constructor(directoryRepresentation: TextDirectoryRepresentation) {
     this.directoryRepresentation = directoryRepresentation;
   }
 
-  getDirectoryRepresentation(rootDirectoryNode) {
+  getDirectoryRepresentation(rootDirectoryNode: DirectoryNode) {
     return this.getDirectoryStringRepresentation(rootDirectoryNode, "");
   }
 
-  getDirectoryStringRepresentation(directoryNode, previousLevelContent) {
+  getDirectoryStringRepresentation(directoryNode: DirectoryNode, previousLevelContent: string) {
     const representation = this.directoryRepresentation;
     if (directoryNode.isLeafNotEmpty()) {
       return representation.directoryNotEmpty(previousLevelContent);

@@ -1,16 +1,23 @@
-import directoryNodeTypes from "./DirectoryNodeTypes";
+import directoryNodeTypes from './DirectoryNodeTypes';
 
 export default class DirectoryNode {
-  static ROOT_NAME = "root";
+  static ROOT_NAME = 'root';
 
   static ROOT_DIRECTORY_INDEX = -1;
+  name: string;
+  deep: number;
+  kind: number;
+  children: DirectoryNode[];
+  directoryEmpty: boolean;
+  directoryIndex: number;
+  childrenIndexes: { [hashCode: string]: number };
 
   constructor(
     name = DirectoryNode.ROOT_NAME,
     deep = 0,
     kind = directoryNodeTypes.DIRECTORY_TYPE,
-    children = [],
-    directoryEmpty = true,
+    children: DirectoryNode[] = [],
+    directoryEmpty = true
   ) {
     this.name = name;
     this.deep = deep;
@@ -20,11 +27,11 @@ export default class DirectoryNode {
     this.directoryIndex = DirectoryNode.ROOT_DIRECTORY_INDEX;
   }
 
-  static createDirectory(name, deep, children = []) {
+  static createDirectory(name: string, deep: number, children: DirectoryNode[] = []) {
     return new DirectoryNode(name, deep, directoryNodeTypes.DIRECTORY_TYPE, children);
   }
 
-  static createFile(name, deep) {
+  static createFile(name: string, deep: number) {
     return new DirectoryNode(name, deep, directoryNodeTypes.FILE_TYPE);
   }
 
@@ -56,16 +63,16 @@ export default class DirectoryNode {
     return this.kind === directoryNodeTypes.DIRECTORY_TYPE;
   }
 
-  addChildren(newChildren = []) {
+  addChildren(newChildren: DirectoryNode[] = []) {
     this.children = [...this.children, ...newChildren];
     this.childrenIndexes = null;
   }
 
-  setDirectoryIndex(directoryIndex) {
+  setDirectoryIndex(directoryIndex: number) {
     this.directoryIndex = directoryIndex;
   }
 
-  isLastChild(child) {
+  isLastChild(child: DirectoryNode) {
     const childrenIndexes = this.getChildrenIndexes();
     const lastIndex = this.children.length - 1;
     return childrenIndexes[child.getHashCode()] === lastIndex;
@@ -73,10 +80,13 @@ export default class DirectoryNode {
 
   getChildrenIndexes() {
     if (!this.childrenIndexes) {
-      this.childrenIndexes = this.children.reduce((prev, current, index) => ({
-        ...prev,
-        [current.getHashCode()]: index,
-      }), {});
+      this.childrenIndexes = this.children.reduce(
+        (prev, current, index) => ({
+          ...prev,
+          [current.getHashCode()]: index,
+        }),
+        {}
+      );
     }
 
     return this.childrenIndexes;

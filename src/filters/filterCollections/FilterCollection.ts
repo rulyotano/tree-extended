@@ -1,13 +1,17 @@
+import type IFilter from "../IFilter";
+
 export default class FilterCollection {
-  constructor(filters = []) {
+  filters: IFilter[];
+
+  constructor(filters: IFilter[] = []) {
     this.filters = filters;
   }
 
-  addFilter(filter) {
+  addFilter(filter: IFilter) {
     this.filters.push(filter);
   }
 
-  matchFilters(path, deep) {
+  matchFilters(path: string, deep: number) {
     return this.filters.every((filter) => filter.matchFilter(path, deep));
   }
 }

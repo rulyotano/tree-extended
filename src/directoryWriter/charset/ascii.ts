@@ -1,4 +1,6 @@
-export default {
+import type ICharset from "./ICharset";
+
+const ascii: ICharset = {
   key: "ascii",
   verticalDiv: "|",
   horizontalDiv: "-",
@@ -9,3 +11,5 @@ export default {
   getFolderRepresentation: (folderName) => `${folderName}/`,
   getFileRepresentation: (fileName) => fileName,
 };
+
+export default ascii;

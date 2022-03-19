@@ -1,4 +1,6 @@
-export default {
+import type ICharset from "./ICharset";
+
+const utf8Icons: ICharset = {
   key: "utf8-icons",
   verticalDiv: "│",
   horizontalDiv: "─",
@@ -9,3 +11,5 @@ export default {
   getFolderRepresentation: (folderName) => `📁 ${folderName}/`,
   getFileRepresentation: (fileName) => `📄 ${fileName}`,
 };
+
+export default utf8Icons;
