@@ -6,16 +6,18 @@ import treeExtended from "../../treeExtended";
 import printTreeExtendedResult from "../printTreeExtendedResult";
 
 jest.mock("../../treeExtended");
+const mockTreeExtended = treeExtended as jest.MockedFunction<typeof treeExtended>;
 
 describe("bin > index.js", () => {
   const FAKE_RESULT = "fake-result";
   const FAKE_CUSTOM_PATH = "custom-path";
-  let consoleLogSpy = null;
+  let consoleLogSpy: jest.SpyInstance = null;
 
   beforeEach(() => {
     jest.resetModules();
 
-    treeExtended.mockReturnValue(FAKE_RESULT);
+    mockTreeExtended.mockClear();
+    mockTreeExtended.mockReturnValue(FAKE_RESULT);
     consoleLogSpy = jest.spyOn(console, "log");
   });
 

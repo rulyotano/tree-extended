@@ -1,4 +1,5 @@
-import FilterByLevel from "../FilterByLevel";
+import type FilterByLevel from "../FilterByLevel";
+import FilterOnly from "../FilterOnly";
 import FilterConfigurationItem from "../FilterConfigurationItem";
 
 describe("filters > FilterByLevel", () => {
@@ -13,7 +14,7 @@ describe("filters > FilterByLevel", () => {
       new FilterConfigurationItem(key2, 1),
       new FilterConfigurationItem(key3, 1),
     ];
-    const filterByLevel = new FilterByLevel(filterItems);
+    const filterByLevel: FilterByLevel = new FilterOnly(filterItems);
 
     expect(Object.keys(filterByLevel.configurationByLevel)).toHaveLength(2);
     expect(filterByLevel.configurationByLevel[2][0].pattern).toBe(key1);

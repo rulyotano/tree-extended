@@ -15,7 +15,7 @@ export default class FilterIgnore extends FilterByLevel {
 
     const existLevelSpecificFilterAndSomeIsIgnoring =
       this.configurationByLevel[deep] &&
-      this.configurationByLevel[deep].some(it => it.isMatch(path));
+      this.configurationByLevel[deep].some(it => it.isMatch(path, deep));
 
     return !existLevelSpecificFilterAndSomeIsIgnoring;
   }

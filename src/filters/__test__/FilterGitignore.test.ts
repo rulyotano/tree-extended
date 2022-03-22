@@ -1,12 +1,12 @@
-import os from "os";
-import mockFs from "mock-fs";
+import * as os from "os";
+import * as mockFs from "mock-fs";
 import { mockGitignoreInFileSystem } from "../../__test__/testHelpers";
 import FilterGitignore from "../FilterGitignore";
 
 describe("filters > FilterGitignore", () => {
   const directoryName = "fake-directory";
   const endOfLine = os.EOL;
-  const mockFileSystem = (config) => mockGitignoreInFileSystem(config, directoryName);
+  const mockFileSystem = (config: any) => mockGitignoreInFileSystem(config, directoryName);
 
   beforeEach(() => {
     mockFs.restore();
@@ -37,7 +37,7 @@ describe("filters > FilterGitignore", () => {
   });
 
   test("Should apply git ignore filters", () => {
-    mockFileSystem(`*.txt/${endOfLine}*.jpg\\${endOfLine}*.png`, directoryName);
+    mockFileSystem(`*.txt/${endOfLine}*.jpg\\${endOfLine}*.png`);
 
     const filter = new FilterGitignore(true, directoryName);
 

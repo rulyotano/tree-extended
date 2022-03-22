@@ -6,14 +6,10 @@ describe("printDirectory > DirectoryNode", () => {
   const fakeFileName = "test-file.txt";
   const secondFakeFileName = "test-file-2.txt";
 
-  beforeEach(() => {});
-
-  afterEach(() => {});
-
   describe("ctor()", () => {
     test("Should initialize correctly", () => {
       const expectedDeep = 2;
-      const children = [DirectoryNode.createDirectory()];
+      const children = [DirectoryNode.createDirectory("", 0)];
       const directoryEmpty = false;
       const directoryNode = new DirectoryNode(
         fakeDirectoryName,
@@ -54,7 +50,8 @@ describe("printDirectory > DirectoryNode", () => {
 
     test("Should reset children indexes after adding", () => {
       const directoryNode = new DirectoryNode(fakeDirectoryName);
-      directoryNode.childrenIndexes = [{ [DirectoryNode.createFile()]: 0 }];
+      const childNode = DirectoryNode.createFile("", 0);
+      directoryNode.childrenIndexes = { [childNode.getHashCode()]: 0 };
 
       directoryNode.addChildren([new DirectoryNode(fakeFileName)]);
 
@@ -120,7 +117,7 @@ describe("printDirectory > DirectoryNode", () => {
 
   describe("isDirectoryEmpty()", () => {
     test("Should return the same than directoryEmpty field", () => {
-      const directoryNode = DirectoryNode.createDirectory();
+      const directoryNode = DirectoryNode.createDirectory("", 0);
       expect(directoryNode.isDirectoryEmpty()).toBeTruthy();
       directoryNode.markDirectoryAsNoEmpty();
       expect(directoryNode.isDirectoryEmpty()).toBeFalsy();
@@ -129,17 +126,17 @@ describe("printDirectory > DirectoryNode", () => {
 
   describe("isLeafNotEmpty()", () => {
     test("When isLeaf() and isDirectoryEmpty() should be false", () => {
-      const directoryNode = DirectoryNode.createDirectory();
+      const directoryNode = DirectoryNode.createDirectory("", 0);
       expect(directoryNode.isLeafNotEmpty()).toBeFalsy();
     });
     test("When isLeaf() and isDirectoryEmpty() is false should be true", () => {
-      const directoryNode = DirectoryNode.createDirectory();
+      const directoryNode = DirectoryNode.createDirectory("", 0);
       directoryNode.markDirectoryAsNoEmpty();
       expect(directoryNode.isLeafNotEmpty()).toBeTruthy();
     });
     test("When isLeaf() is false and isDirectoryEmpty() [this case is edge - error] should be false", () => {
-      const directoryNode = DirectoryNode.createDirectory();
-      directoryNode.addChildren([DirectoryNode.createFile()]);
+      const directoryNode = DirectoryNode.createDirectory("", 0);
+      directoryNode.addChildren([DirectoryNode.createFile("", 0)]);
       directoryNode.markDirectoryAsNoEmpty();
       expect(directoryNode.isLeafNotEmpty()).toBeFalsy();
     });
@@ -148,9 +145,9 @@ describe("printDirectory > DirectoryNode", () => {
   describe("isLastChild()", () => {
     test("Is last child should work correctly", () => {
       const root = new DirectoryNode();
-      const dir1 = DirectoryNode.createDirectory("dir1");
-      const dir2 = DirectoryNode.createDirectory("dir2");
-      const file3 = DirectoryNode.createDirectory("file1");
+      const dir1 = DirectoryNode.createDirectory("dir1", 0);
+      const dir2 = DirectoryNode.createDirectory("dir2", 0);
+      const file3 = DirectoryNode.createDirectory("file1", 0);
 
       root.addChildren([dir1, dir2, file3]);
       expect(root.isLastChild(dir1)).toBeFalsy();

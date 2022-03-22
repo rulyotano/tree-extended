@@ -1,13 +1,13 @@
 /* eslint-disable no-use-before-define */
-import mockFs from "mock-fs";
-import os from "os";
+import * as mockFs from "mock-fs";
+import * as os from "os";
 import GitignoreParser from "../GitignoreParser";
 import { mockGitignoreInFileSystem } from "../../__test__/testHelpers";
 
 describe("src > GitignoreParser", () => {
   const directoryName = "fake-directory";
   const endOfLine = os.EOL;
-  const mockFileSystem = (config) => mockGitignoreInFileSystem(config, directoryName);
+  const mockFileSystem = (config: any) => mockGitignoreInFileSystem(config, directoryName);
 
   beforeEach(() => {
     mockFs.restore();

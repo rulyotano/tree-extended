@@ -5,7 +5,7 @@ import charsetUtf8 from "../charset/utf8";
 import DirectoryNode from "../../directoryParse/DirectoryNode";
 
 describe("directoryWriter > DirectoryWriter", () => {
-  let directoryWriter = null;
+  let directoryWriter: DirectoryWriter = null;
 
   beforeEach(() => {
     directoryWriter = new DirectoryWriter(new TextDirectoryRepresentation(charsetAscii));
@@ -18,8 +18,8 @@ describe("directoryWriter > DirectoryWriter", () => {
 `;
       const root = new DirectoryNode();
       root.addChildren([
-        DirectoryNode.createFile("file1.txt"),
-        DirectoryNode.createFile("file2.txt"),
+        DirectoryNode.createFile("file1.txt", 0),
+        DirectoryNode.createFile("file2.txt", 0),
       ]);
       const result = directoryWriter.getDirectoryRepresentation(root);
       expect(result).toBe(expected);
@@ -32,9 +32,9 @@ describe("directoryWriter > DirectoryWriter", () => {
 `;
       const root = new DirectoryNode();
       root.addChildren([
-        DirectoryNode.createDirectory("dir1"),
-        DirectoryNode.createDirectory("dir2"),
-        DirectoryNode.createDirectory("dir3"),
+        DirectoryNode.createDirectory("dir1", 0),
+        DirectoryNode.createDirectory("dir2", 0),
+        DirectoryNode.createDirectory("dir3", 0),
       ]);
       const result = directoryWriter.getDirectoryRepresentation(root);
       expect(result).toBe(expected);
@@ -49,11 +49,11 @@ describe("directoryWriter > DirectoryWriter", () => {
 `;
       const root = new DirectoryNode();
       root.addChildren([
-        DirectoryNode.createDirectory("dir1"),
-        DirectoryNode.createDirectory("dir2"),
-        DirectoryNode.createDirectory("dir3"),
-        DirectoryNode.createFile("file1.txt"),
-        DirectoryNode.createFile("file2.txt"),
+        DirectoryNode.createDirectory("dir1", 0),
+        DirectoryNode.createDirectory("dir2", 0),
+        DirectoryNode.createDirectory("dir3", 0),
+        DirectoryNode.createFile("file1.txt", 0),
+        DirectoryNode.createFile("file2.txt", 0),
       ]);
       const result = directoryWriter.getDirectoryRepresentation(root);
       expect(result).toBe(expected);
@@ -72,10 +72,10 @@ describe("directoryWriter > DirectoryWriter", () => {
         DirectoryNode.createDirectory("dir1", 1, [
           DirectoryNode.createDirectory("dir3", 2, [
             DirectoryNode.createDirectory("dir4", 3, [
-              DirectoryNode.createFile("file2.txt"),
+              DirectoryNode.createFile("file2.txt", 0),
             ]),
           ]),
-          DirectoryNode.createFile("file1.txt"),
+          DirectoryNode.createFile("file1.txt", 0),
         ]),
         DirectoryNode.createDirectory("dir2", 1, []),
       ]);
@@ -97,7 +97,7 @@ describe("directoryWriter > DirectoryWriter", () => {
         DirectoryNode.createDirectory("b", 1, [
           DirectoryNode.createDirectory("bc", 2, [
             DirectoryNode.createDirectory("bca", 3, [
-              DirectoryNode.createFile("bca-file1.txt"),
+              DirectoryNode.createFile("bca-file1.txt", 0),
             ]),
           ]),
         ]),
@@ -123,10 +123,10 @@ describe("directoryWriter > DirectoryWriter", () => {
     └───...
 `;
       const root = new DirectoryNode();
-      const directoryA = DirectoryNode.createDirectory("a");
-      const directoryB = DirectoryNode.createDirectory("b");
-      const directoryD = DirectoryNode.createDirectory("d");
-      const directoryC2 = DirectoryNode.createDirectory("c2");
+      const directoryA = DirectoryNode.createDirectory("a", 0);
+      const directoryB = DirectoryNode.createDirectory("b", 0);
+      const directoryD = DirectoryNode.createDirectory("d", 0);
+      const directoryC2 = DirectoryNode.createDirectory("c2", 0);
       directoryA.markDirectoryAsNoEmpty();
       directoryB.markDirectoryAsNoEmpty();
       directoryD.markDirectoryAsNoEmpty();
@@ -134,9 +134,9 @@ describe("directoryWriter > DirectoryWriter", () => {
 
       root.addChildren([
         directoryA,
-        DirectoryNode.createDirectory("a1"),
+        DirectoryNode.createDirectory("a1", 0),
         directoryB,
-        DirectoryNode.createDirectory("c"),
+        DirectoryNode.createDirectory("c", 0),
         DirectoryNode.createDirectory("c1", 1, [directoryC2]),
         directoryD,
       ]);

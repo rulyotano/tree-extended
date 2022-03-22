@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import mockFs from "mock-fs";
+import * as mockFs from "mock-fs";
 
-export const mockGitignoreInFileSystem = (gitignoreContent, directoryName) => {
+export const mockGitignoreInFileSystem = (gitignoreContent: any, directoryName: string) => {
   mockFs({
     [directoryName]: {
       ".gitignore": gitignoreContent,

@@ -1,6 +1,6 @@
-import mockFs from "mock-fs";
+import * as mockFs from "mock-fs";
 import treeExtended from "../treeExtended";
-import testCases from "./testCases";
+import testCases, { type IDirectory, type ITestCase } from "./testCases";
 
 describe("tree-extended.js", () => {
   beforeEach(() => {
@@ -15,7 +15,7 @@ describe("tree-extended.js", () => {
     mockFs.restore();
   });
 
-  const runTestCase = (testCase) => test(`Test Case Description: ${testCase.description}`, () => {
+  const runTestCase = (testCase: ITestCase) => test(`Test Case Description: ${testCase.description}`, () => {
     mockFs(testCase.directories);
 
     const {
@@ -25,9 +25,8 @@ describe("tree-extended.js", () => {
 
     const result = treeExtended(targetPath, configuration);
 
-    // console.warn(result)
     expect(result).toEqual(testCase.expected);
   });
 
-  testCases.cases.map((testCase) => runTestCase(testCase));
+  testCases.cases.map((testCase: ITestCase) => runTestCase(testCase));
 });

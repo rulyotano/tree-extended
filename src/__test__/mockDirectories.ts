@@ -27,12 +27,12 @@ const directory1 = {
   },
 };
 
+const bWithoutBa = {...directory1.b};
+delete bWithoutBa.ba;
+
 const directory2 = {
   ...directory1,
-  b: {
-    ...directory1.b,
-    ba: undefined,
-  },
+  b: bWithoutBa,
   ba: {
     ...directory1.b.ba,
   },

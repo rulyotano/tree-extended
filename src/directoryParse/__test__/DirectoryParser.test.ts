@@ -1,13 +1,14 @@
-import mockFs from "mock-fs";
-import DirectoryParser from "../DirectoryParser";
-import FilterCollection from "../../filters/FilterCollection";
-import FilterIgnore from "../../filters/FilterIgnore";
-import FilterConfigurationItem from "../../filters/FilterConfigurationItem";
+import * as mockFs from 'mock-fs';
+import DirectoryParser from '../DirectoryParser';
+import { FilterCollection } from '../../filters';
+import FilterIgnore from '../../filters/FilterIgnore';
+import FilterConfigurationItem from '../../filters/FilterConfigurationItem';
+import DirectoryNode from '../DirectoryNode';
 
-describe("directoryParse > DirectoryParser", () => {
+describe('directoryParse > DirectoryParser', () => {
   const emptyFilters = new FilterCollection();
-  const [fakeFile1, fakeFile2, fakeFile3] = ["aaFile1.txt", "abFile2.txt", "cdFile3.txt"];
-  const [fakeDir1, fakeDir2, fakeDir3] = ["ccDir1.txt", "ddDir2.txt", "ffDir3.txt"];
+  const [fakeFile1, fakeFile2, fakeFile3] = ['aaFile1.txt', 'abFile2.txt', 'cdFile3.txt'];
+  const [fakeDir1, fakeDir2, fakeDir3] = ['ccDir1.txt', 'ddDir2.txt', 'ffDir3.txt'];
   beforeEach(() => {
     mockFs.restore();
   });
@@ -20,7 +21,14 @@ describe("directoryParse > DirectoryParser", () => {
     mockFs.restore();
   });
 
-  const checkDirectoryNode = (node, name = null, isRoot = null, isFile = null, level = null, childrenCount = null) => {
+  const checkDirectoryNode = (
+    node: DirectoryNode,
+    name: string = null,
+    isRoot: boolean = null,
+    isFile: boolean = null,
+    level: number = null,
+    childrenCount: number = null
+  ) => {
     if (name !== null) {
       expect(node.name).toBe(name);
     }
@@ -42,15 +50,15 @@ describe("directoryParse > DirectoryParser", () => {
     }
   };
 
-  test("When only has files should return root with all the files", () => {
+  test('When only has files should return root with all the files', () => {
     mockFs({
       c: {
-        [fakeFile1]: "",
-        [fakeFile2]: "",
+        [fakeFile1]: '',
+        [fakeFile2]: '',
       },
     });
 
-    const parser = new DirectoryParser("c", emptyFilters);
+    const parser = new DirectoryParser('c', emptyFilters);
     const result = parser.parse();
 
     checkDirectoryNode(result, null, true);
@@ -58,21 +66,21 @@ describe("directoryParse > DirectoryParser", () => {
     checkDirectoryNode(result.children[1], fakeFile2, false, true, 1);
   });
 
-  test("When we have subdirectories", () => {
+  test('When we have subdirectories', () => {
     mockFs({
       c: {
         [fakeDir1]: {
-          [fakeFile1]: "",
-          [fakeFile2]: "",
+          [fakeFile1]: '',
+          [fakeFile2]: '',
         },
         [fakeDir2]: {
-          [fakeFile3]: "",
+          [fakeFile3]: '',
         },
         [fakeDir3]: {},
       },
     });
 
-    const parser = new DirectoryParser("c", emptyFilters);
+    const parser = new DirectoryParser('c', emptyFilters);
     const result = parser.parse();
 
     checkDirectoryNode(result, null, true, null, null, 3);
@@ -86,22 +94,22 @@ describe("directoryParse > DirectoryParser", () => {
     checkDirectoryNode(result.children[1].children[0], fakeFile3, false, true, 2);
   });
 
-  test("When deeper (3) level should nest correctly", () => {
+  test('When deeper (3) level should nest correctly', () => {
     mockFs({
       c: {
         [fakeDir1]: {
-          [fakeFile1]: "",
-          [fakeFile2]: "",
+          [fakeFile1]: '',
+          [fakeFile2]: '',
           [fakeDir2]: {
             [fakeDir3]: {
-              [fakeFile3]: "",
+              [fakeFile3]: '',
             },
           },
         },
       },
     });
 
-    const parser = new DirectoryParser("c", emptyFilters);
+    const parser = new DirectoryParser('c', emptyFilters);
     const result = parser.parse();
 
     checkDirectoryNode(result, null, true, null, null, 1);
@@ -110,22 +118,28 @@ describe("directoryParse > DirectoryParser", () => {
     checkDirectoryNode(result.children[0].children[1], fakeFile1, false, true, 2);
     checkDirectoryNode(result.children[0].children[2], fakeFile2, false, true, 2);
     checkDirectoryNode(result.children[0].children[0].children[0], fakeDir3, false, false, 3, 1);
-    checkDirectoryNode(result.children[0].children[0].children[0].children[0], fakeFile3, false, true, 4);
+    checkDirectoryNode(
+      result.children[0].children[0].children[0].children[0],
+      fakeFile3,
+      false,
+      true,
+      4
+    );
   });
 
-  test("When when max level and directory no-empty should mark it as no empty (and still is leaf)", () => {
+  test('When when max level and directory no-empty should mark it as no empty (and still is leaf)', () => {
     mockFs({
       c: {
         [fakeDir1]: {
           [fakeDir2]: {
-            [fakeFile1]: "",
+            [fakeFile1]: '',
           },
         },
       },
     });
 
     const maxLevel = 2;
-    const parser = new DirectoryParser("c", emptyFilters, maxLevel);
+    const parser = new DirectoryParser('c', emptyFilters, maxLevel);
     const result = parser.parse();
 
     checkDirectoryNode(result, null, true, null, null, 1);
@@ -137,19 +151,19 @@ describe("directoryParse > DirectoryParser", () => {
   });
 
   // eslint-disable-next-line max-len
-  test("When when max level and directory no-empty but option markNoEmptyDirectories = false should NOT mark it as no empty", () => {
+  test('When when max level and directory no-empty but option markNoEmptyDirectories = false should NOT mark it as no empty', () => {
     mockFs({
       c: {
         [fakeDir1]: {
           [fakeDir2]: {
-            [fakeFile1]: "",
+            [fakeFile1]: '',
           },
         },
       },
     });
 
     const maxLevel = 2;
-    const parser = new DirectoryParser("c", emptyFilters, maxLevel, false);
+    const parser = new DirectoryParser('c', emptyFilters, maxLevel, false);
     const result = parser.parse();
 
     checkDirectoryNode(result, null, true, null, null, 1);
@@ -160,20 +174,20 @@ describe("directoryParse > DirectoryParser", () => {
     expect(nodeSecondLevelDir.isDirectoryEmpty()).toBeTruthy();
   });
 
-  test("When filters should apply them", () => {
+  test('When filters should apply them', () => {
     mockFs({
       c: {
         [fakeDir1]: {
           [fakeDir2]: {
-            [fakeFile1]: "",
+            [fakeFile1]: '',
           },
         },
       },
     });
 
     const filters = new FilterCollection();
-    filters.addFilter(new FilterIgnore([new FilterConfigurationItem("dd")]));
-    const parser = new DirectoryParser("c", filters);
+    filters.addFilter(new FilterIgnore([new FilterConfigurationItem('dd')]));
+    const parser = new DirectoryParser('c', filters);
     const result = parser.parse();
 
     checkDirectoryNode(result, null, true, null, null, 1);

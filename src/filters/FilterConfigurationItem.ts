@@ -23,6 +23,6 @@ export default class FilterConfigurationItem {
   }
 
   static deepsAreDifferentAndNotEmpty(currentDeep: number, testDeep: number): boolean {
-    return currentDeep !== null && testDeep !== null && currentDeep !== testDeep;
+    return currentDeep !== EMPTY_DEEP && testDeep !== EMPTY_DEEP && currentDeep !== testDeep;
   }
 }

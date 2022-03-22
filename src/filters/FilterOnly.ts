@@ -13,7 +13,7 @@ export default class FilterOnly extends FilterByLevel {
     if (existGlobalFilterAndThereIsNoOneMatching) return false;
 
     const existLevelSpecificFilterAndThereIsNoOneMatching = this.configurationByLevel[deep]
-     && this.configurationByLevel[deep].every((it) => !it.isMatch(path));
+     && this.configurationByLevel[deep].every((it) => !it.isMatch(path, deep));
 
     return !existLevelSpecificFilterAndThereIsNoOneMatching;
   }

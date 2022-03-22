@@ -1,7 +1,7 @@
-import FilterConfigurationItem from "../FilterConfigurationItem";
+import FilterConfigurationItem from "../../FilterConfigurationItem";
 import FilterCollection from "../FilterCollection";
-import FilterOnly from "../FilterOnly";
-import FilterIgnore from "../FilterIgnore";
+import FilterOnly from "../../FilterOnly";
+import FilterIgnore from "../../FilterIgnore";
 
 describe("filters > FilterCollection", () => {
   beforeEach(() => {});
