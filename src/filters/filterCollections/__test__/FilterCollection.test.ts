@@ -4,10 +4,6 @@ import FilterOnly from "../../FilterOnly";
 import FilterIgnore from "../../FilterIgnore";
 
 describe("filters > FilterCollection", () => {
-  beforeEach(() => {});
-
-  afterEach(() => {});
-
   test("Should add filters correctly", () => {
     const collection = new FilterCollection();
     collection.addFilter(new FilterOnly([new FilterConfigurationItem("es", 2)]));

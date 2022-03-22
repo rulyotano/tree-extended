@@ -2,10 +2,6 @@ import FilterOnly from "../FilterOnly";
 import FilterConfigurationItem from "../FilterConfigurationItem";
 
 describe("filters > FilterOnly", () => {
-  beforeEach(() => {});
-
-  afterEach(() => {});
-
   test("When global filter should filter no matter level", () => {
     const filter = new FilterOnly([new FilterConfigurationItem("abc")]);
 

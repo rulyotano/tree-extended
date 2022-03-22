@@ -6,6 +6,7 @@ import FilterGitignore from "../FilterGitignore";
 describe("filters > FilterGitignore", () => {
   const directoryName = "fake-directory";
   const endOfLine = os.EOL;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mockFileSystem = (config: any) => mockGitignoreInFileSystem(config, directoryName);
 
   beforeEach(() => {

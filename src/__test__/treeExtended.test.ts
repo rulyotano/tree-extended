@@ -1,6 +1,6 @@
 import * as mockFs from "mock-fs";
 import treeExtended from "../treeExtended";
-import testCases, { type IDirectory, type ITestCase } from "./testCases";
+import testCases, { type ITestCase } from "./testCases";
 
 describe("tree-extended.js", () => {
   beforeEach(() => {

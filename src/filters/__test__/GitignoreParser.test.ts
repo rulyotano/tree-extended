@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 import * as mockFs from "mock-fs";
 import * as os from "os";
 import GitignoreParser from "../GitignoreParser";
@@ -7,6 +6,7 @@ import { mockGitignoreInFileSystem } from "../../__test__/testHelpers";
 describe("src > GitignoreParser", () => {
   const directoryName = "fake-directory";
   const endOfLine = os.EOL;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mockFileSystem = (config: any) => mockGitignoreInFileSystem(config, directoryName);
 
   beforeEach(() => {
@@ -22,7 +22,6 @@ describe("src > GitignoreParser", () => {
   });
 
   test("Should ignore text files (simple test)", () => {
-    // eslint-disable-next-line no-use-before-define
     mockFileSystem("*.txt");
 
     const gitignoreParser = new GitignoreParser(directoryName);

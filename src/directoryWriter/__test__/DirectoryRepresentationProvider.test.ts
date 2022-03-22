@@ -1,10 +1,6 @@
 import DirectoryRepresentationProvider from "../DirectoryRepresentationProvider";
 
 describe("directoryWriter > DirectoryRepresentationProvider", () => {
-  beforeEach(() => {});
-
-  afterEach(() => {});
-
   test("When charset is set to 'ascii' should return ascii charset", () => {
     const charset = "ascii";
     const directoryRepresentation = DirectoryRepresentationProvider.getDirectoryRepresentation(charset);

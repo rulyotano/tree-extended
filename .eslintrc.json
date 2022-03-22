@@ -1,19 +1,12 @@
 {
-  "env": {
-    "browser": true,
-    "commonjs": true,
-    "es2021": true,
-    "jest": true
-  },
-  "extends": [
-    "airbnb-base"
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint"
   ],
-  "parserOptions": {
-    "ecmaVersion": 13
-  },
-  "rules": {
-    "linebreak-style": 0,
-    "max-len": ["error", 120],
-    "quotes": ["error", "double"]
-  }
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ]
 }

@@ -6,7 +6,7 @@ import { getAbsolutePathOrThrow } from './helpers';
 import Configuration from './Configuration';
 
 export default (
-  targetPath: string = './',
+  targetPath = './',
   configuration: Configuration = new Configuration()
 ): string => {
   const absoluteTargetPath = getAbsolutePathOrThrow(targetPath);

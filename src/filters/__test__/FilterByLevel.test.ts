@@ -3,10 +3,6 @@ import FilterOnly from "../FilterOnly";
 import FilterConfigurationItem from "../FilterConfigurationItem";
 
 describe("filters > FilterByLevel", () => {
-  beforeEach(() => {});
-
-  afterEach(() => {});
-
   test("Should create filter FilterByLevel by level", () => {
     const [key1, key2, key3] = ["es", "abc", "cde"];
     const filterItems = [

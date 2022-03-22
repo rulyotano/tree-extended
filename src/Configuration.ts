@@ -20,8 +20,8 @@ export default class Configuration implements IConfiguration {
   constructor(
     charset: string = null,
     maximumDeep: number = null,
-    showIndicatorWhenDirectoryIsNotEmpty: boolean = false,
-    includeGitIgnore: boolean = false,
+    showIndicatorWhenDirectoryIsNotEmpty = false,
+    includeGitIgnore = false,
     ignoreFilters: FilterConfigurationItem[] = [],
     onlyFilters: FilterConfigurationItem[] = []
   ) {

@@ -2,10 +2,6 @@ import FilterIgnore from "../FilterIgnore";
 import FilterConfigurationItem from "../FilterConfigurationItem";
 
 describe("filters > FilterIgnore", () => {
-  beforeEach(() => {});
-
-  afterEach(() => {});
-
   test("When global filter should filter no matter level", () => {
     const filter = new FilterIgnore([new FilterConfigurationItem("abc")]);
 
