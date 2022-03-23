@@ -1,10 +1,10 @@
 {
   "name": "tree-extended",
-  "version": "3.0.11",
+  "version": "3.0.12",
   "description": "Update help text.",
-  "main": "./dist/treeExtended.js",
+  "main": "./dist/index.js",
   "scripts": {
-    "build": "webpack --config webpack.config.js",
+    "build": "webpack --config webpack.config.js & npx tsc",
     "test-local": "jest --watchAll --coverage",
     "test": "jest --coverage",
     "eslint": "eslint src"
