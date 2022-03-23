@@ -1,7 +1,7 @@
 {
   "name": "tree-extended",
-  "version": "3.0.13",
-  "description": "Update help text.",
+  "version": "3.1.0",
+  "description": "Helper library and tool for getting customized directory tree representation.",
   "main": "./dist/index.js",
   "scripts": {
     "build": "webpack --config webpack.config.js & npx tsc",
