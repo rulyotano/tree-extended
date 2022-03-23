@@ -1,6 +1,6 @@
 {
   "name": "tree-extended",
-  "version": "3.0.12",
+  "version": "3.0.13",
   "description": "Update help text.",
   "main": "./dist/index.js",
   "scripts": {
