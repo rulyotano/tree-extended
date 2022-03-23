@@ -1,6 +1,2 @@
-import treeExtended from "./treeExtended";
-import LocalConfiguration from "./Configuration";
-
-export const Configuration = LocalConfiguration;
-
-export default treeExtended;
+export { default as Configuration } from './Configuration';
+export { default } from './treeExtended';
