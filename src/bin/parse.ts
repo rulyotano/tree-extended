@@ -59,7 +59,7 @@ export function isHelp(args: string[]): boolean {
 function getConfigurationAndPathFromArguments(args: string[]) {
   let path: string = args[0];
 
-  if (Object.keys(parameters).some((key: parameterKey) => parameters[key].check(path)))
+  if (Object.keys(parameters).some((key: string) => parameters[key as parameterKey].check(path)))
     path = undefined;
 
   const charsetArgument = args.find(it => parameters.CHARSET.check(it.toLowerCase()));
