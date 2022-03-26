@@ -17,6 +17,7 @@ export default class TreeExtended {
     const absoluteTargetPath = getAbsolutePathOrThrow(targetPath, this.runningEnvironment);
 
     const filters = new CustomFilterCollection(
+      this.runningEnvironment,
       configuration.ignoreFilters,
       configuration.onlyFilters,
       configuration.includeGitIgnore,
