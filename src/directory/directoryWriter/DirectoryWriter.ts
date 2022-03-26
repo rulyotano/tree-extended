@@ -1,4 +1,4 @@
-import { DirectoryNode } from "../directoryParse";
+import { DirectoryNode } from "../";
 import TextDirectoryRepresentation from "./representation/TextDirectoryRepresentation";
 
 export default class DirectoryWriter {

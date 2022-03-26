@@ -1,7 +1,5 @@
-import DirectoryRepresentationProvider from './directoryWriter/DirectoryRepresentationProvider';
 import { CustomFilterCollection } from './filters';
-import DirectoryParser from './directoryParse/DirectoryParser';
-import DirectoryWriter from './directoryWriter/DirectoryWriter';
+import { DirectoryParser, DirectoryWriter, DirectoryRepresentationProvider } from './directory';
 import { getAbsolutePathOrThrow } from './helpers';
 import Configuration from './Configuration';
 import type IRunningEnvironment from './IRunningEnvironment';

@@ -1,10 +1,10 @@
 import * as mockFs from 'mock-fs';
 import DirectoryParser from '../DirectoryParser';
-import { FilterCollection } from '../../filters';
-import FilterIgnore from '../../filters/FilterIgnore';
-import FilterConfigurationItem from '../../filters/FilterConfigurationItem';
-import DirectoryNode from '../DirectoryNode';
-import NodeRunningEnvironment from '../../bin/NodeRunningEnvironment';
+import { FilterCollection } from '../../../filters';
+import FilterIgnore from '../../../filters/FilterIgnore';
+import FilterConfigurationItem from '../../../filters/FilterConfigurationItem';
+import { DirectoryNode } from '../../';
+import NodeRunningEnvironment from '../../../bin/NodeRunningEnvironment';
 
 describe('directoryParse > DirectoryParser', () => {
   const emptyFilters = new FilterCollection();

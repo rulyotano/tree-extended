@@ -1,6 +1,6 @@
-import { FilterCollection } from '../filters';
-import DirectoryNode from './DirectoryNode';
-import type IRunningEnvironment from '../IRunningEnvironment';
+import { FilterCollection } from '../../filters';
+import { DirectoryNode } from '../';
+import type IRunningEnvironment from '../../IRunningEnvironment';
 
 function getSubdirectoriesMatchingFilters(
   directoryPath: string,

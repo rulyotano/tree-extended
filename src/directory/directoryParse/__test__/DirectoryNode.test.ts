@@ -1,22 +1,22 @@
-import DirectoryNode from "../DirectoryNode";
-import directoryNodeTypes from "../DirectoryNodeTypes";
+import { DirectoryNode } from '../../';
+import directoryNodeTypes from '../../DirectoryNodeTypes';
 
-describe("printDirectory > DirectoryNode", () => {
-  const fakeDirectoryName = "test-directory";
-  const fakeFileName = "test-file.txt";
-  const secondFakeFileName = "test-file-2.txt";
+describe('printDirectory > DirectoryNode', () => {
+  const fakeDirectoryName = 'test-directory';
+  const fakeFileName = 'test-file.txt';
+  const secondFakeFileName = 'test-file-2.txt';
 
-  describe("ctor()", () => {
-    test("Should initialize correctly", () => {
+  describe('ctor()', () => {
+    test('Should initialize correctly', () => {
       const expectedDeep = 2;
-      const children = [DirectoryNode.createDirectory("", 0)];
+      const children = [DirectoryNode.createDirectory('', 0)];
       const directoryEmpty = false;
       const directoryNode = new DirectoryNode(
         fakeDirectoryName,
         expectedDeep,
         directoryNodeTypes.DIRECTORY_TYPE,
         children,
-        directoryEmpty,
+        directoryEmpty
       );
 
       expect(directoryNode.name).toBe(fakeDirectoryName);
@@ -29,15 +29,15 @@ describe("printDirectory > DirectoryNode", () => {
     });
   });
 
-  describe("addChildren()", () => {
-    test("Should add children correctly", () => {
+  describe('addChildren()', () => {
+    test('Should add children correctly', () => {
       const directoryNode = new DirectoryNode(fakeDirectoryName);
       directoryNode.addChildren([new DirectoryNode(fakeFileName)]);
 
       expect(directoryNode.children.length).toBe(1);
     });
 
-    test("When already has children should append", () => {
+    test('When already has children should append', () => {
       const directoryNode = new DirectoryNode(fakeDirectoryName);
       directoryNode.addChildren([new DirectoryNode(fakeFileName)]);
       directoryNode.addChildren([new DirectoryNode(secondFakeFileName)]);
@@ -48,9 +48,9 @@ describe("printDirectory > DirectoryNode", () => {
       expect(child2.name).toBe(secondFakeFileName);
     });
 
-    test("Should reset children indexes after adding", () => {
+    test('Should reset children indexes after adding', () => {
       const directoryNode = new DirectoryNode(fakeDirectoryName);
-      const childNode = DirectoryNode.createFile("", 0);
+      const childNode = DirectoryNode.createFile('', 0);
       directoryNode.childrenIndexes = { [childNode.getHashCode()]: 0 };
 
       directoryNode.addChildren([new DirectoryNode(fakeFileName)]);
@@ -59,25 +59,25 @@ describe("printDirectory > DirectoryNode", () => {
     });
   });
 
-  describe("isLeaf()", () => {
-    test("When have no children isLeaf should be true", () => {
+  describe('isLeaf()', () => {
+    test('When have no children isLeaf should be true', () => {
       const directoryNode = new DirectoryNode(fakeDirectoryName);
       expect(directoryNode.isLeaf()).toBeTruthy();
     });
 
-    test("When any children isLeaf should be false", () => {
+    test('When any children isLeaf should be false', () => {
       const directoryNode = new DirectoryNode(
         fakeDirectoryName,
         0,
         directoryNodeTypes.DIRECTORY_TYPE,
-        [new DirectoryNode(fakeFileName)],
+        [new DirectoryNode(fakeFileName)]
       );
       expect(directoryNode.isLeaf()).toBeFalsy();
     });
   });
 
-  describe("markDirectoryAsNoEmpty()", () => {
-    test("Should mark node as no empty", () => {
+  describe('markDirectoryAsNoEmpty()', () => {
+    test('Should mark node as no empty', () => {
       const directoryNode = new DirectoryNode(fakeDirectoryName);
       expect(directoryNode.directoryEmpty).toBeTruthy();
       directoryNode.markDirectoryAsNoEmpty();
@@ -85,8 +85,8 @@ describe("printDirectory > DirectoryNode", () => {
     });
   });
 
-  describe("isRoot()", () => {
-    test("Should be root by default", () => {
+  describe('isRoot()', () => {
+    test('Should be root by default', () => {
       const directoryNode = new DirectoryNode();
       expect(directoryNode.isRoot()).toBeTruthy();
     });
@@ -97,8 +97,8 @@ describe("printDirectory > DirectoryNode", () => {
     });
   });
 
-  describe("createDirectory()", () => {
-    test("Should create new directory node", () => {
+  describe('createDirectory()', () => {
+    test('Should create new directory node', () => {
       const directoryNode = DirectoryNode.createDirectory(fakeDirectoryName, 2);
       expect(directoryNode.name).toBe(fakeDirectoryName);
       expect(directoryNode.deep).toBe(2);
@@ -106,8 +106,8 @@ describe("printDirectory > DirectoryNode", () => {
     });
   });
 
-  describe("createFile()", () => {
-    test("Should create new file node", () => {
+  describe('createFile()', () => {
+    test('Should create new file node', () => {
       const directoryNode = DirectoryNode.createFile(fakeDirectoryName, 2);
       expect(directoryNode.name).toBe(fakeDirectoryName);
       expect(directoryNode.deep).toBe(2);
@@ -115,39 +115,39 @@ describe("printDirectory > DirectoryNode", () => {
     });
   });
 
-  describe("isDirectoryEmpty()", () => {
-    test("Should return the same than directoryEmpty field", () => {
-      const directoryNode = DirectoryNode.createDirectory("", 0);
+  describe('isDirectoryEmpty()', () => {
+    test('Should return the same than directoryEmpty field', () => {
+      const directoryNode = DirectoryNode.createDirectory('', 0);
       expect(directoryNode.isDirectoryEmpty()).toBeTruthy();
       directoryNode.markDirectoryAsNoEmpty();
       expect(directoryNode.isDirectoryEmpty()).toBeFalsy();
     });
   });
 
-  describe("isLeafNotEmpty()", () => {
-    test("When isLeaf() and isDirectoryEmpty() should be false", () => {
-      const directoryNode = DirectoryNode.createDirectory("", 0);
+  describe('isLeafNotEmpty()', () => {
+    test('When isLeaf() and isDirectoryEmpty() should be false', () => {
+      const directoryNode = DirectoryNode.createDirectory('', 0);
       expect(directoryNode.isLeafNotEmpty()).toBeFalsy();
     });
-    test("When isLeaf() and isDirectoryEmpty() is false should be true", () => {
-      const directoryNode = DirectoryNode.createDirectory("", 0);
+    test('When isLeaf() and isDirectoryEmpty() is false should be true', () => {
+      const directoryNode = DirectoryNode.createDirectory('', 0);
       directoryNode.markDirectoryAsNoEmpty();
       expect(directoryNode.isLeafNotEmpty()).toBeTruthy();
     });
-    test("When isLeaf() is false and isDirectoryEmpty() [this case is edge - error] should be false", () => {
-      const directoryNode = DirectoryNode.createDirectory("", 0);
-      directoryNode.addChildren([DirectoryNode.createFile("", 0)]);
+    test('When isLeaf() is false and isDirectoryEmpty() [this case is edge - error] should be false', () => {
+      const directoryNode = DirectoryNode.createDirectory('', 0);
+      directoryNode.addChildren([DirectoryNode.createFile('', 0)]);
       directoryNode.markDirectoryAsNoEmpty();
       expect(directoryNode.isLeafNotEmpty()).toBeFalsy();
     });
   });
 
-  describe("isLastChild()", () => {
-    test("Is last child should work correctly", () => {
+  describe('isLastChild()', () => {
+    test('Is last child should work correctly', () => {
       const root = new DirectoryNode();
-      const dir1 = DirectoryNode.createDirectory("dir1", 0);
-      const dir2 = DirectoryNode.createDirectory("dir2", 0);
-      const file3 = DirectoryNode.createDirectory("file1", 0);
+      const dir1 = DirectoryNode.createDirectory('dir1', 0);
+      const dir2 = DirectoryNode.createDirectory('dir2', 0);
+      const file3 = DirectoryNode.createDirectory('file1', 0);
 
       root.addChildren([dir1, dir2, file3]);
       expect(root.isLastChild(dir1)).toBeFalsy();
