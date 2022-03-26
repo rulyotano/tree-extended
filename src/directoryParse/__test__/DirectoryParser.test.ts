@@ -4,11 +4,13 @@ import { FilterCollection } from '../../filters';
 import FilterIgnore from '../../filters/FilterIgnore';
 import FilterConfigurationItem from '../../filters/FilterConfigurationItem';
 import DirectoryNode from '../DirectoryNode';
+import NodeRunningEnvironment from '../../bin/NodeRunningEnvironment';
 
 describe('directoryParse > DirectoryParser', () => {
   const emptyFilters = new FilterCollection();
   const [fakeFile1, fakeFile2, fakeFile3] = ['aaFile1.txt', 'abFile2.txt', 'cdFile3.txt'];
   const [fakeDir1, fakeDir2, fakeDir3] = ['ccDir1.txt', 'ddDir2.txt', 'ffDir3.txt'];
+  const runningEnvironment = new NodeRunningEnvironment();
   beforeEach(() => {
     mockFs.restore();
   });
@@ -58,7 +60,7 @@ describe('directoryParse > DirectoryParser', () => {
       },
     });
 
-    const parser = new DirectoryParser('c', emptyFilters);
+    const parser = new DirectoryParser('c', emptyFilters, runningEnvironment);
     const result = parser.parse();
 
     checkDirectoryNode(result, null, true);
@@ -80,7 +82,7 @@ describe('directoryParse > DirectoryParser', () => {
       },
     });
 
-    const parser = new DirectoryParser('c', emptyFilters);
+    const parser = new DirectoryParser('c', emptyFilters, runningEnvironment);
     const result = parser.parse();
 
     checkDirectoryNode(result, null, true, null, null, 3);
@@ -109,7 +111,7 @@ describe('directoryParse > DirectoryParser', () => {
       },
     });
 
-    const parser = new DirectoryParser('c', emptyFilters);
+    const parser = new DirectoryParser('c', emptyFilters, runningEnvironment);
     const result = parser.parse();
 
     checkDirectoryNode(result, null, true, null, null, 1);
@@ -139,7 +141,7 @@ describe('directoryParse > DirectoryParser', () => {
     });
 
     const maxLevel = 2;
-    const parser = new DirectoryParser('c', emptyFilters, maxLevel);
+    const parser = new DirectoryParser('c', emptyFilters, runningEnvironment, maxLevel);
     const result = parser.parse();
 
     checkDirectoryNode(result, null, true, null, null, 1);
@@ -163,7 +165,7 @@ describe('directoryParse > DirectoryParser', () => {
     });
 
     const maxLevel = 2;
-    const parser = new DirectoryParser('c', emptyFilters, maxLevel, false);
+    const parser = new DirectoryParser('c', emptyFilters, runningEnvironment, maxLevel, false);
     const result = parser.parse();
 
     checkDirectoryNode(result, null, true, null, null, 1);
@@ -187,7 +189,7 @@ describe('directoryParse > DirectoryParser', () => {
 
     const filters = new FilterCollection();
     filters.addFilter(new FilterIgnore([new FilterConfigurationItem('dd')]));
-    const parser = new DirectoryParser('c', filters);
+    const parser = new DirectoryParser('c', filters, runningEnvironment);
     const result = parser.parse();
 
     checkDirectoryNode(result, null, true, null, null, 1);

@@ -30,6 +30,7 @@ export default class TreeExtended {
     const directoryParser = new DirectoryParser(
       absoluteTargetPath,
       filters,
+      this.runningEnvironment,
       configuration.maximumDeep,
       configuration.showIndicatorWhenDirectoryIsNotEmpty
     );
