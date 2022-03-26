@@ -1,8 +1,8 @@
 import directories from "./mockDirectories";
 import FilterConfigurationItem from "../filters/FilterConfigurationItem";
 import Configuration from "../Configuration";
-import asciiCharset from "../directoryWriter/charset/ascii";
-import utf8Charset from "../directoryWriter/charset/utf8";
+import asciiCharset from "../directory/directoryWriter/charset/ascii";
+import utf8Charset from "../directory/directoryWriter/charset/utf8";
 
 export interface IDirectory {
   [key: string]: IDirectory | string | undefined

@@ -1,5 +1,6 @@
 import type Filter from './IFilter';
 import GitignoreParser from './GitignoreParser';
+import type IRunningEnvironment from '../IRunningEnvironment';
 
 export default class FilterGitignore implements Filter {
   useGitignore: boolean;
@@ -10,10 +11,18 @@ export default class FilterGitignore implements Filter {
     maybe(input: string): boolean;
   };
 
-  constructor(useGitignore: boolean, absolutePath: string) {
+  constructor(
+    useGitignore: boolean,
+    absolutePath: string,
+    runningEnvironment: IRunningEnvironment
+  ) {
     this.useGitignore = useGitignore;
     this.absolutePath = absolutePath;
-    this.gitIgnore = FilterGitignore.configureGitignore(useGitignore, absolutePath);
+    this.gitIgnore = FilterGitignore.configureGitignore(
+      useGitignore,
+      absolutePath,
+      runningEnvironment
+    );
   }
 
   matchFilter(path: string) {
@@ -23,8 +32,12 @@ export default class FilterGitignore implements Filter {
     return !this.gitIgnore || this.gitIgnore.accepts(path);
   }
 
-  static configureGitignore(useGitignore: boolean, absolutePath: string) {
-    const gitIgnoreParser = new GitignoreParser(absolutePath);
+  static configureGitignore(
+    useGitignore: boolean,
+    absolutePath: string,
+    runningEnvironment: IRunningEnvironment
+  ) {
+    const gitIgnoreParser = new GitignoreParser(absolutePath, runningEnvironment);
 
     if (useGitignore && gitIgnoreParser.doesGitignoreFileExist()) {
       return gitIgnoreParser.getGitignoreFile();

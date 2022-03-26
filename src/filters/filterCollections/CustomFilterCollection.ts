@@ -3,9 +3,11 @@ import FilterCollection from './FilterCollection';
 import FilterGitignore from '../FilterGitignore';
 import FilterIgnore from '../FilterIgnore';
 import FilterOnly from '../FilterOnly';
+import type IRunningEnvironment from '../../IRunningEnvironment';
 
 export default class CustomFilterCollection extends FilterCollection {
   constructor(
+    runningEnvironment: IRunningEnvironment,
     ignoreItems: FilterConfigurationItem[] = [],
     onlyItems: FilterConfigurationItem[] = [],
     useGitignore = false,
@@ -14,11 +16,15 @@ export default class CustomFilterCollection extends FilterCollection {
     super();
     this.addIgnoreFilter(ignoreItems);
     this.addOnlyFilter(onlyItems);
-    this.addGitignoreFilter(useGitignore, absolutePath);
+    this.addGitignoreFilter(runningEnvironment, useGitignore, absolutePath);
   }
 
-  addGitignoreFilter(useGitignore = false, absolutePath = '') {
-    this.addFilter(new FilterGitignore(useGitignore, absolutePath));
+  addGitignoreFilter(
+    runningEnvironment: IRunningEnvironment,
+    useGitignore = false,
+    absolutePath = ''
+  ) {
+    this.addFilter(new FilterGitignore(useGitignore, absolutePath, runningEnvironment));
   }
 
   addIgnoreFilter(configurationItems: FilterConfigurationItem[] = []) {

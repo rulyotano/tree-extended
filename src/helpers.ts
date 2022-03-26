@@ -1,12 +1,17 @@
-import { existsSync } from "fs";
-import { join } from "path";
+import type IRunningEnvironment from './IRunningEnvironment';
 
-export function getAbsolutePathOrThrow(targetPath: string) {
-  if (existsSync(targetPath)) {
+export function getAbsolutePathOrThrow(
+  targetPath: string,
+  runningEnvironment: IRunningEnvironment
+) {
+  if (runningEnvironment.pathExist(targetPath)) {
     return targetPath;
   }
-  const absolutePath = join(process.execPath, targetPath);
-  if (!existsSync(absolutePath)) {
+  const absolutePath = runningEnvironment.pathJoins(
+    runningEnvironment.getCurrentPath(),
+    targetPath
+  );
+  if (!runningEnvironment.pathExist(absolutePath)) {
     throw new Error(`Path ${absolutePath} doesn't exist.`);
   }
   return absolutePath;

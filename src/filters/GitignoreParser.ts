@@ -1,17 +1,17 @@
-import {join} from "path";
-import {existsSync, readFileSync} from "fs";
-import {EOL} from "os";
 import { compile } from "gitignore-parser";
+import type IRunningEnvironment from "../IRunningEnvironment";
 
 export default class GitignoreParser {
   gitignoreFilePath: string;
+  runningEnvironment: IRunningEnvironment;
 
-  constructor(targetPath: string) {
-    this.gitignoreFilePath = join(targetPath, ".gitignore");
+  constructor(targetPath: string, runningEnvironment: IRunningEnvironment) {
+    this.gitignoreFilePath = runningEnvironment.pathJoins(targetPath, ".gitignore");
+    this.runningEnvironment = runningEnvironment;
   }
 
   doesGitignoreFileExist() {
-    return existsSync(this.gitignoreFilePath);
+    return this.runningEnvironment.pathExist(this.gitignoreFilePath);
   }
 
   getGitignoreFile() {
@@ -19,9 +19,9 @@ export default class GitignoreParser {
   }
 
   getCleanedGitignoreFileContent() {
-    const endOfLine = EOL;
+    const endOfLine = this.runningEnvironment.getEndOfLine();
 
-    return readFileSync(this.gitignoreFilePath, "utf8")
+    return this.runningEnvironment.readTextFile(this.gitignoreFilePath)
       .split(endOfLine)
       .map(GitignoreParser.getLineWithoutSlashesEndings)
       .join(endOfLine);

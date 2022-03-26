@@ -1,33 +1,39 @@
-import DirectoryRepresentationProvider from './directoryWriter/DirectoryRepresentationProvider';
 import { CustomFilterCollection } from './filters';
-import DirectoryParser from './directoryParse/DirectoryParser';
-import DirectoryWriter from './directoryWriter/DirectoryWriter';
+import { DirectoryParser, DirectoryWriter, DirectoryRepresentationProvider } from './directory';
 import { getAbsolutePathOrThrow } from './helpers';
 import Configuration from './Configuration';
+import type IRunningEnvironment from './IRunningEnvironment';
 
-export default (
-  targetPath = './',
-  configuration: Configuration = new Configuration()
-): string => {
-  const absoluteTargetPath = getAbsolutePathOrThrow(targetPath);
+export default class TreeExtended {
+  runningEnvironment: IRunningEnvironment;
 
-  const filters = new CustomFilterCollection(
-    configuration.ignoreFilters,
-    configuration.onlyFilters,
-    configuration.includeGitIgnore,
-    absoluteTargetPath
-  );
-  const directoryRepresentation = DirectoryRepresentationProvider.getDirectoryRepresentation(
-    configuration.charset
-  );
+  constructor(runningEnvironment: IRunningEnvironment) {
+    this.runningEnvironment = runningEnvironment;
+  }
 
-  const directoryParser = new DirectoryParser(
-    absoluteTargetPath,
-    filters,
-    configuration.maximumDeep,
-    configuration.showIndicatorWhenDirectoryIsNotEmpty
-  );
-  const directoryWriter = new DirectoryWriter(directoryRepresentation);
+  getDirectoryTree(targetPath = './', configuration: Configuration = new Configuration()) {
+    const absoluteTargetPath = getAbsolutePathOrThrow(targetPath, this.runningEnvironment);
 
-  return directoryWriter.getDirectoryRepresentation(directoryParser.parse());
-};
+    const filters = new CustomFilterCollection(
+      this.runningEnvironment,
+      configuration.ignoreFilters,
+      configuration.onlyFilters,
+      configuration.includeGitIgnore,
+      absoluteTargetPath
+    );
+    const directoryRepresentation = DirectoryRepresentationProvider.getDirectoryRepresentation(
+      configuration.charset
+    );
+
+    const directoryParser = new DirectoryParser(
+      absoluteTargetPath,
+      filters,
+      this.runningEnvironment,
+      configuration.maximumDeep,
+      configuration.showIndicatorWhenDirectoryIsNotEmpty
+    );
+    const directoryWriter = new DirectoryWriter(directoryRepresentation);
+
+    return directoryWriter.getDirectoryRepresentation(directoryParser.parse());
+  }
+}

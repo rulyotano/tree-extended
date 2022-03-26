@@ -1,16 +1,16 @@
-import { FilterCollection } from '../filters';
-import { readdirSync, lstatSync } from 'fs';
-import { join } from 'path';
-import DirectoryNode from './DirectoryNode';
+import { FilterCollection } from '../../filters';
+import { DirectoryNode } from '../';
+import type IRunningEnvironment from '../../IRunningEnvironment';
 
 function getSubdirectoriesMatchingFilters(
-  directory: string,
+  directoryPath: string,
   currentLevel: number,
-  filters: FilterCollection
+  filters: FilterCollection,
+  runningEnvironment: IRunningEnvironment
 ) {
-  return readdirSync(directory).filter(it => {
-    const tPath = join(directory, it);
-    return filters.matchFilters(tPath, currentLevel);
+  return runningEnvironment.getDirectoryContent(directoryPath).filter(directoryEntry => {
+    const fullDirectoryEntryPath = runningEnvironment.pathJoins(directoryPath, directoryEntry);
+    return filters.matchFilters(fullDirectoryEntryPath, currentLevel);
   });
 }
 
@@ -20,21 +20,32 @@ const isMaxLevelButDirectoryIsNotEmpty = (
   subdirectories: string[]
 ) => maxLevel && maxLevel <= currentLevel && subdirectories.length > 0;
 
-const getChildrenFolders = (children: string[], directory: string) =>
-  children.filter(it => lstatSync(join(directory, it)).isDirectory());
+const getChildrenFolders = (
+  children: string[],
+  directory: string,
+  runningEnvironment: IRunningEnvironment
+) =>
+  children.filter(it =>
+    runningEnvironment.isDirectory(runningEnvironment.pathJoins(directory, it))
+  );
 
-const getChildrenFiles = (children: string[], directory: string) =>
-  children.filter(it => lstatSync(join(directory, it)).isFile());
+const getChildrenFiles = (
+  children: string[],
+  directory: string,
+  runningEnvironment: IRunningEnvironment
+) => children.filter(it => runningEnvironment.isFile(runningEnvironment.pathJoins(directory, it)));
 
 export default class DirectoryParser {
   directoryPath: string;
   filters: FilterCollection;
   maxLevel: number;
   markNoEmptyDirectories: boolean;
+  runningEnvironment: IRunningEnvironment;
 
   constructor(
     directoryPath: string,
     filters: FilterCollection,
+    runningEnvironment: IRunningEnvironment,
     maxLevel: number | null = null,
     markNoEmptyDirectories = true
   ) {
@@ -42,6 +53,7 @@ export default class DirectoryParser {
     this.filters = filters;
     this.maxLevel = maxLevel;
     this.markNoEmptyDirectories = markNoEmptyDirectories;
+    this.runningEnvironment = runningEnvironment;
   }
 
   parse() {
@@ -59,7 +71,8 @@ export default class DirectoryParser {
     const subdirectories = getSubdirectoriesMatchingFilters(
       currentDirectory,
       currentLevel,
-      this.filters
+      this.filters,
+      this.runningEnvironment
     );
 
     if (isMaxLevelButDirectoryIsNotEmpty(this.maxLevel, currentLevel, subdirectories)) {
@@ -69,15 +82,23 @@ export default class DirectoryParser {
       return;
     }
 
-    const childrenDirectories = getChildrenFolders(subdirectories, currentDirectory);
-    const childrenFiles = getChildrenFiles(subdirectories, currentDirectory);
+    const childrenDirectories = getChildrenFolders(
+      subdirectories,
+      currentDirectory,
+      this.runningEnvironment
+    );
+    const childrenFiles = getChildrenFiles(
+      subdirectories,
+      currentDirectory,
+      this.runningEnvironment
+    );
 
     const getChildrenDirectoryNodes = () =>
       childrenDirectories.map(childDirectory => {
         const newNodeItem = DirectoryNode.createDirectory(childDirectory, currentLevel + 1);
         this.includeChildrenFromDirectories(
           newNodeItem,
-          join(currentDirectory, childDirectory),
+          this.runningEnvironment.pathJoins(currentDirectory, childDirectory),
           currentLevel + 1
         );
         return newNodeItem;

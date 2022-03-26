@@ -1,4 +1,4 @@
-import ICharset from '../charset/ICharset';
+import type ICharset from '../charset/ICharset';
 
 export default class TextDirectoryRepresentation {
   charset: ICharset;

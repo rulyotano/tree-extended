@@ -1,6 +1,7 @@
 import * as mockFs from "mock-fs";
 import * as os from "os";
 import GitignoreParser from "../GitignoreParser";
+import NodeRunningEnvironment from "../../bin/NodeRunningEnvironment";
 import { mockGitignoreInFileSystem } from "../../__test__/testHelpers";
 
 describe("src > GitignoreParser", () => {
@@ -8,6 +9,7 @@ describe("src > GitignoreParser", () => {
   const endOfLine = os.EOL;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mockFileSystem = (config: any) => mockGitignoreInFileSystem(config, directoryName);
+  const runningEnvironment = new NodeRunningEnvironment();
 
   beforeEach(() => {
     mockFs.restore();
@@ -24,7 +26,7 @@ describe("src > GitignoreParser", () => {
   test("Should ignore text files (simple test)", () => {
     mockFileSystem("*.txt");
 
-    const gitignoreParser = new GitignoreParser(directoryName);
+    const gitignoreParser = new GitignoreParser(directoryName, runningEnvironment);
     const gitIgnore = gitignoreParser.getGitignoreFile();
 
     expect(gitIgnore.accepts("testFile.txt")).toBeFalsy();
@@ -34,7 +36,7 @@ describe("src > GitignoreParser", () => {
   test("Should clean lines ending slash and backslash characters", () => {
     mockFileSystem(`*.txt/${endOfLine}*.jpg\\${endOfLine}*.png`);
 
-    const gitignoreParser = new GitignoreParser(directoryName);
+    const gitignoreParser = new GitignoreParser(directoryName, runningEnvironment);
     const gitIgnore = gitignoreParser.getGitignoreFile();
 
     expect(gitIgnore.accepts("testFile.txt")).toBeFalsy();
