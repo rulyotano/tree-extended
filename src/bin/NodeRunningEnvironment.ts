@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { existsSync, readdirSync, lstatSync, readFileSync } from 'fs';
+import { access, constants, readdirSync, lstatSync, readFileSync } from 'fs';
 import { EOL } from 'os';
 import type IRunningEnvironment from '../IRunningEnvironment';
 
@@ -7,8 +7,12 @@ export default class NodeRunningEnvironment implements IRunningEnvironment {
   pathJoins(leftPath: string, rightPath: string): string {
     return join(leftPath, rightPath);
   }
-  pathExist(path: string): boolean {
-    return existsSync(path);
+  async pathExist(path: string): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      access(path, constants.F_OK, err => {
+        resolve(err == null);
+      });
+    });
   }
   getCurrentPath(): string {
     return process.execPath;

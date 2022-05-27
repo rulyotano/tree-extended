@@ -1,6 +1,6 @@
 export default interface IRunningEnvironment {
   pathJoins(leftPath: string, rightPath: string): string;
-  pathExist(path: string): boolean;
+  pathExist(path: string): Promise<boolean>;
   getCurrentPath(): string;
   getDirectoryContent(directoryPath: string): string[];
   isDirectory(path: string): boolean;
