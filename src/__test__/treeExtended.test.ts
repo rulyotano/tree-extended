@@ -17,12 +17,12 @@ describe('tree-extended.js', () => {
   });
 
   const runTestCase = (testCase: ITestCase) =>
-    test(`Test Case Description: ${testCase.description}`, () => {
+    test(`Test Case Description: ${testCase.description}`, async () => {
       mockFs(testCase.directories);
 
       const { targetPath, configuration } = testCase.arguments;
 
-      const result = new TreeExtended(new NodeRunningEnvironment()).getDirectoryTree(
+      const result = await new TreeExtended(new NodeRunningEnvironment()).getDirectoryTree(
         targetPath,
         configuration
       );

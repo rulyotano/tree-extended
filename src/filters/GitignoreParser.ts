@@ -10,18 +10,19 @@ export default class GitignoreParser {
     this.runningEnvironment = runningEnvironment;
   }
 
-  doesGitignoreFileExist() {
-    return this.runningEnvironment.pathExist(this.gitignoreFilePath);
+  async doesGitignoreFileExist() {
+    return await this.runningEnvironment.pathExist(this.gitignoreFilePath);
   }
 
-  getGitignoreFile() {
-    return compile(this.getCleanedGitignoreFileContent());
+  async getGitignoreFile() {
+    return compile(await this.getCleanedGitignoreFileContent());
   }
 
-  getCleanedGitignoreFileContent() {
+  async getCleanedGitignoreFileContent() {
     const endOfLine = this.runningEnvironment.getEndOfLine();
+    const gitIgnoreFileText = await this.runningEnvironment.readTextFile(this.gitignoreFilePath);
 
-    return this.runningEnvironment.readTextFile(this.gitignoreFilePath)
+    return gitIgnoreFileText
       .split(endOfLine)
       .map(GitignoreParser.getLineWithoutSlashesEndings)
       .join(endOfLine);

@@ -52,7 +52,7 @@ describe('directoryParse > DirectoryParser', () => {
     }
   };
 
-  test('When only has files should return root with all the files', () => {
+  test('When only has files should return root with all the files', async () => {
     mockFs({
       c: {
         [fakeFile1]: '',
@@ -61,14 +61,14 @@ describe('directoryParse > DirectoryParser', () => {
     });
 
     const parser = new DirectoryParser('c', emptyFilters, runningEnvironment);
-    const result = parser.parse();
+    const result = await parser.parse();
 
     checkDirectoryNode(result, null, true);
     checkDirectoryNode(result.children[0], fakeFile1, false, true, 1);
     checkDirectoryNode(result.children[1], fakeFile2, false, true, 1);
   });
 
-  test('When we have subdirectories', () => {
+  test('When we have subdirectories', async () => {
     mockFs({
       c: {
         [fakeDir1]: {
@@ -83,7 +83,7 @@ describe('directoryParse > DirectoryParser', () => {
     });
 
     const parser = new DirectoryParser('c', emptyFilters, runningEnvironment);
-    const result = parser.parse();
+    const result = await parser.parse();
 
     checkDirectoryNode(result, null, true, null, null, 3);
     checkDirectoryNode(result.children[0], fakeDir1, false, false, 1, 2);
@@ -96,7 +96,7 @@ describe('directoryParse > DirectoryParser', () => {
     checkDirectoryNode(result.children[1].children[0], fakeFile3, false, true, 2);
   });
 
-  test('When deeper (3) level should nest correctly', () => {
+  test('When deeper (3) level should nest correctly', async () => {
     mockFs({
       c: {
         [fakeDir1]: {
@@ -112,7 +112,7 @@ describe('directoryParse > DirectoryParser', () => {
     });
 
     const parser = new DirectoryParser('c', emptyFilters, runningEnvironment);
-    const result = parser.parse();
+    const result = await parser.parse();
 
     checkDirectoryNode(result, null, true, null, null, 1);
     checkDirectoryNode(result.children[0], fakeDir1, false, false, 1, 3);
@@ -129,7 +129,7 @@ describe('directoryParse > DirectoryParser', () => {
     );
   });
 
-  test('When when max level and directory no-empty should mark it as no empty (and still is leaf)', () => {
+  test('When when max level and directory no-empty should mark it as no empty (and still is leaf)', async () => {
     mockFs({
       c: {
         [fakeDir1]: {
@@ -142,7 +142,7 @@ describe('directoryParse > DirectoryParser', () => {
 
     const maxLevel = 2;
     const parser = new DirectoryParser('c', emptyFilters, runningEnvironment, maxLevel);
-    const result = parser.parse();
+    const result = await parser.parse();
 
     checkDirectoryNode(result, null, true, null, null, 1);
     checkDirectoryNode(result.children[0], fakeDir1, false, false, 1, 1);
@@ -153,7 +153,7 @@ describe('directoryParse > DirectoryParser', () => {
   });
 
   // eslint-disable-next-line max-len
-  test('When when max level and directory no-empty but option markNoEmptyDirectories = false should NOT mark it as no empty', () => {
+  test('When when max level and directory no-empty but option markNoEmptyDirectories = false should NOT mark it as no empty', async () => {
     mockFs({
       c: {
         [fakeDir1]: {
@@ -166,7 +166,7 @@ describe('directoryParse > DirectoryParser', () => {
 
     const maxLevel = 2;
     const parser = new DirectoryParser('c', emptyFilters, runningEnvironment, maxLevel, false);
-    const result = parser.parse();
+    const result = await parser.parse();
 
     checkDirectoryNode(result, null, true, null, null, 1);
     checkDirectoryNode(result.children[0], fakeDir1, false, false, 1, 1);
@@ -176,7 +176,7 @@ describe('directoryParse > DirectoryParser', () => {
     expect(nodeSecondLevelDir.isDirectoryEmpty()).toBeTruthy();
   });
 
-  test('When filters should apply them', () => {
+  test('When filters should apply them', async () => {
     mockFs({
       c: {
         [fakeDir1]: {
@@ -190,7 +190,7 @@ describe('directoryParse > DirectoryParser', () => {
     const filters = new FilterCollection();
     filters.addFilter(new FilterIgnore([new FilterConfigurationItem('dd')]));
     const parser = new DirectoryParser('c', filters, runningEnvironment);
-    const result = parser.parse();
+    const result = await parser.parse();
 
     checkDirectoryNode(result, null, true, null, null, 1);
     const expectedChildrenCount = 0;

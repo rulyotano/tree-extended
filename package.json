@@ -1,6 +1,6 @@
 {
   "name": "tree-extended",
-  "version": "3.3.0",
+  "version": "3.9.0",
   "description": "Helper library and tool for getting customized directory tree representation.",
   "main": "./dist/index.js",
   "scripts": {

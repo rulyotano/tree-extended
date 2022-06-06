@@ -8,7 +8,7 @@ export default abstract class FilterByLevel implements IFilter {
     this.configurationByLevel = FilterByLevel.getConfigurationByLevels(configurationItems);
   }
 
-  abstract matchFilter(path: string, deep: number): boolean;
+  abstract matchFilter(path: string, deep: number): Promise<boolean>;
 
   static getConfigurationByLevels(configurationItems: FilterConfigurationItem[]): {
     [level: number|null]: FilterConfigurationItem[];

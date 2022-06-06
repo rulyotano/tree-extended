@@ -20,33 +20,33 @@ describe("filters > FilterGitignore", () => {
   });
 
   afterAll(() => {
-    mockFs.restore();
+    // mockFs.restore();
   });
 
-  test("When git ignore filter is configured, should filter .git folder", () => {
+  test("When git ignore filter is configured, should filter .git folder", async () => {
     const filter = new FilterGitignore(true, directoryName, runningEnvironment);
 
-    expect(filter.matchFilter(".git")).toBeFalsy();
-    expect(filter.matchFilter(".git/")).toBeFalsy();
-    expect(filter.matchFilter("other/fake-file")).toBeTruthy();
+    expect(await filter.matchFilter(".git")).toBeFalsy();
+    expect(await filter.matchFilter(".git/")).toBeFalsy();
+    expect(await filter.matchFilter("other/fake-file")).toBeTruthy();
   });
 
-  test("When git ignore filter ins't configured, should NOT filter .git folder", () => {
+  test("When git ignore filter ins't configured, should NOT filter .git folder", async () => {
     const filter = new FilterGitignore(false, directoryName, runningEnvironment);
 
-    expect(filter.matchFilter(".git")).toBeTruthy();
-    expect(filter.matchFilter(".git/")).toBeTruthy();
-    expect(filter.matchFilter("other/fake-file")).toBeTruthy();
+    expect(await filter.matchFilter(".git")).toBeTruthy();
+    expect(await filter.matchFilter(".git/")).toBeTruthy();
+    expect(await filter.matchFilter("other/fake-file")).toBeTruthy();
   });
 
-  test("Should apply git ignore filters", () => {
+  test("Should apply git ignore filters", async () => {
     mockFileSystem(`*.txt/${endOfLine}*.jpg\\${endOfLine}*.png`);
 
     const filter = new FilterGitignore(true, directoryName, runningEnvironment);
 
-    expect(filter.matchFilter("testFile.txt")).toBeFalsy();
-    expect(filter.matchFilter("testFile.jpg")).toBeFalsy();
-    expect(filter.matchFilter("testFile.png")).toBeFalsy();
-    expect(filter.matchFilter("testFile.bmp")).toBeTruthy();
+    expect(await filter.matchFilter("testFile.txt")).toBeFalsy();
+    expect(await filter.matchFilter("testFile.jpg")).toBeFalsy();
+    expect(await filter.matchFilter("testFile.png")).toBeFalsy();
+    expect(await filter.matchFilter("testFile.bmp")).toBeTruthy();
   });
 });

@@ -11,7 +11,9 @@ export default class FilterCollection {
     this.filters.push(filter);
   }
 
-  matchFilters(path: string, deep: number) {
-    return this.filters.every((filter) => filter.matchFilter(path, deep));
+  async matchFilters(path: string, deep: number) {
+    const filterPromises = this.filters.map((filter) => filter.matchFilter(path, deep));
+    const filterResults = await Promise.all(filterPromises);
+    return filterResults.every(filterResult => filterResult);
   }
 }
