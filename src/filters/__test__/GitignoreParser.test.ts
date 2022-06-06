@@ -23,21 +23,21 @@ describe("src > GitignoreParser", () => {
     mockFs.restore();
   });
 
-  test("Should ignore text files (simple test)", () => {
+  test("Should ignore text files (simple test)", async () => {
     mockFileSystem("*.txt");
 
     const gitignoreParser = new GitignoreParser(directoryName, runningEnvironment);
-    const gitIgnore = gitignoreParser.getGitignoreFile();
+    const gitIgnore = await gitignoreParser.getGitignoreFile();
 
     expect(gitIgnore.accepts("testFile.txt")).toBeFalsy();
     expect(gitIgnore.accepts("testFile.ptx")).toBeTruthy();
   });
 
-  test("Should clean lines ending slash and backslash characters", () => {
+  test("Should clean lines ending slash and backslash characters", async () => {
     mockFileSystem(`*.txt/${endOfLine}*.jpg\\${endOfLine}*.png`);
 
     const gitignoreParser = new GitignoreParser(directoryName, runningEnvironment);
-    const gitIgnore = gitignoreParser.getGitignoreFile();
+    const gitIgnore = await gitignoreParser.getGitignoreFile();
 
     expect(gitIgnore.accepts("testFile.txt")).toBeFalsy();
     expect(gitIgnore.accepts("testFile.jpg")).toBeFalsy();

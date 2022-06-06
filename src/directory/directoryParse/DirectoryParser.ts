@@ -2,16 +2,21 @@ import { FilterCollection } from '../../filters';
 import { DirectoryNode } from '../';
 import type IRunningEnvironment from '../../IRunningEnvironment';
 
-function getSubdirectoriesMatchingFilters(
+async function getSubdirectoriesMatchingFilters(
   directoryPath: string,
   currentLevel: number,
   filters: FilterCollection,
   runningEnvironment: IRunningEnvironment
 ) {
-  return runningEnvironment.getDirectoryContent(directoryPath).filter(directoryEntry => {
-    const fullDirectoryEntryPath = runningEnvironment.pathJoins(directoryPath, directoryEntry);
-    return filters.matchFilters(fullDirectoryEntryPath, currentLevel);
-  });
+  const currentDirectoryContent = await runningEnvironment.getDirectoryContent(directoryPath);
+
+  const filteredResult = await Promise.all(
+    currentDirectoryContent.map((async directoryEntry => {
+      const fullDirectoryEntryPath = runningEnvironment.pathJoins(directoryPath, directoryEntry);
+      return await filters.matchFilters(fullDirectoryEntryPath, currentLevel);
+    })));
+
+  return currentDirectoryContent.filter((_, index) => filteredResult[index]);
 }
 
 const isMaxLevelButDirectoryIsNotEmpty = (
@@ -20,20 +25,31 @@ const isMaxLevelButDirectoryIsNotEmpty = (
   subdirectories: string[]
 ) => maxLevel && maxLevel <= currentLevel && subdirectories.length > 0;
 
-const getChildrenFolders = (
+const getChildrenFolders = async (
   children: string[],
   directory: string,
   runningEnvironment: IRunningEnvironment
-) =>
-  children.filter(it =>
-    runningEnvironment.isDirectory(runningEnvironment.pathJoins(directory, it))
+) => {
+  const filteredResult = await Promise.all(
+    children.map(
+      async it => await runningEnvironment.isDirectory(runningEnvironment.pathJoins(directory, it))
+    )
   );
+  return children.filter((_, index) => filteredResult[index]);
+};
 
-const getChildrenFiles = (
+const getChildrenFiles = async (
   children: string[],
   directory: string,
   runningEnvironment: IRunningEnvironment
-) => children.filter(it => runningEnvironment.isFile(runningEnvironment.pathJoins(directory, it)));
+) => {
+  const filteredResult = await Promise.all(
+    children.map(
+      async it => await runningEnvironment.isFile(runningEnvironment.pathJoins(directory, it))
+    )
+  );
+  return children.filter((_, index) => filteredResult[index]);
+}
 
 export default class DirectoryParser {
   directoryPath: string;
@@ -56,19 +72,19 @@ export default class DirectoryParser {
     this.runningEnvironment = runningEnvironment;
   }
 
-  parse() {
+  async parse() {
     const root = new DirectoryNode();
-    this.includeChildrenFromDirectories(root, this.directoryPath, 0);
+    await this.includeChildrenFromDirectories(root, this.directoryPath, 0);
 
     return root;
   }
 
-  includeChildrenFromDirectories(
+  async includeChildrenFromDirectories(
     parent: DirectoryNode,
     currentDirectory: string,
     currentLevel: number
   ) {
-    const subdirectories = getSubdirectoriesMatchingFilters(
+    const subdirectories = await getSubdirectoriesMatchingFilters(
       currentDirectory,
       currentLevel,
       this.filters,
@@ -82,32 +98,34 @@ export default class DirectoryParser {
       return;
     }
 
-    const childrenDirectories = getChildrenFolders(
+    const childrenDirectories = await getChildrenFolders(
       subdirectories,
       currentDirectory,
       this.runningEnvironment
     );
-    const childrenFiles = getChildrenFiles(
+    const childrenFiles = await getChildrenFiles(
       subdirectories,
       currentDirectory,
       this.runningEnvironment
     );
 
-    const getChildrenDirectoryNodes = () =>
-      childrenDirectories.map(childDirectory => {
-        const newNodeItem = DirectoryNode.createDirectory(childDirectory, currentLevel + 1);
-        this.includeChildrenFromDirectories(
-          newNodeItem,
-          this.runningEnvironment.pathJoins(currentDirectory, childDirectory),
-          currentLevel + 1
-        );
-        return newNodeItem;
-      });
+    const getChildrenDirectoryNodes = async () =>
+      await Promise.all(
+        childrenDirectories.map(async childDirectory => {
+          const newNodeItem = DirectoryNode.createDirectory(childDirectory, currentLevel + 1);
+          await this.includeChildrenFromDirectories(
+            newNodeItem,
+            this.runningEnvironment.pathJoins(currentDirectory, childDirectory),
+            currentLevel + 1
+          );
+          return newNodeItem;
+        })
+      );
 
     const getChildrenFileNodes = () =>
       childrenFiles.map(childFile => DirectoryNode.createFile(childFile, currentLevel + 1));
 
-    parent.addChildren(getChildrenDirectoryNodes());
+    parent.addChildren(await getChildrenDirectoryNodes());
     parent.addChildren(getChildrenFileNodes());
   }
 }

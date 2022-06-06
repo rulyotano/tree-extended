@@ -1,8 +1,8 @@
-import type Filter from './IFilter';
+import type IFilter from './IFilter';
 import GitignoreParser from './GitignoreParser';
 import type IRunningEnvironment from '../IRunningEnvironment';
 
-export default class FilterGitignore implements Filter {
+export default class FilterGitignore implements IFilter {
   useGitignore: boolean;
   absolutePath: string;
   gitIgnore: {
@@ -10,6 +10,7 @@ export default class FilterGitignore implements Filter {
     denies(input: string): boolean;
     maybe(input: string): boolean;
   };
+  runningEnvironment: IRunningEnvironment;
 
   constructor(
     useGitignore: boolean,
@@ -18,29 +19,39 @@ export default class FilterGitignore implements Filter {
   ) {
     this.useGitignore = useGitignore;
     this.absolutePath = absolutePath;
-    this.gitIgnore = FilterGitignore.configureGitignore(
-      useGitignore,
-      absolutePath,
-      runningEnvironment
-    );
+    this.runningEnvironment = runningEnvironment;
+    this.gitIgnore = undefined;
   }
 
-  matchFilter(path: string) {
+  async matchFilter(path: string) {
     const pathIsGitDirectory = path.match(/\.git[/|\\]?$/);
     if (this.useGitignore && pathIsGitDirectory) return false;
 
-    return !this.gitIgnore || this.gitIgnore.accepts(path);
+    const gitIgnore = await this.getGitIgnoreOrCreate();
+    return !gitIgnore || gitIgnore.accepts(path);
+  }
+  
+  private async getGitIgnoreOrCreate() {
+    if (this.gitIgnore === undefined) {
+      this.gitIgnore = await FilterGitignore.configureGitignore(
+        this.useGitignore,
+        this.absolutePath,
+        this.runningEnvironment
+      );
+    }
+
+    return this.gitIgnore;
   }
 
-  static configureGitignore(
+  static async configureGitignore(
     useGitignore: boolean,
     absolutePath: string,
     runningEnvironment: IRunningEnvironment
   ) {
     const gitIgnoreParser = new GitignoreParser(absolutePath, runningEnvironment);
 
-    if (useGitignore && gitIgnoreParser.doesGitignoreFileExist()) {
-      return gitIgnoreParser.getGitignoreFile();
+    if (useGitignore && await gitIgnoreParser.doesGitignoreFileExist()) {
+      return await gitIgnoreParser.getGitignoreFile();
     }
 
     return null;

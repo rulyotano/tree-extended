@@ -24,31 +24,31 @@ describe('bin > index.js', () => {
     consoleLogSpy = jest.spyOn(console, 'log');
   });
 
-  test('Default call should call treeExtended with default arguments', () => {
-    printTreeExtendedResult();
+  test('Default call should call treeExtended with default arguments', async () => {
+    await printTreeExtendedResult();
 
     expect(mockedGetDirectoryTree).toHaveBeenCalledWith(undefined, new Configuration());
     expect(consoleLogSpy).toHaveBeenCalledWith(FAKE_RESULT);
   });
 
-  test('Should receive argument -charset={charset} and pass it to configuration', () => {
+  test('Should receive argument -charset={charset} and pass it to configuration', async () => {
     const fakeCharset = 'fake-charset';
-    printTreeExtendedResult([`-charset=${fakeCharset}`]);
+    await printTreeExtendedResult([`-charset=${fakeCharset}`]);
 
     expect(mockedGetDirectoryTree).toHaveBeenCalledWith(undefined, new Configuration(fakeCharset));
     expect(consoleLogSpy).toHaveBeenCalledWith(FAKE_RESULT);
   });
 
-  test('when help argument should return help string', () => {
-    printTreeExtendedResult(['-h']);
+  test('when help argument should return help string', async () => {
+    await printTreeExtendedResult(['-h']);
 
     expect(mockedGetDirectoryTree).not.toHaveBeenCalled();
     expect(consoleLogSpy).toHaveBeenCalledWith(helpText);
   });
 
-  test('when all arguments should transform them correctly', () => {
+  test('when all arguments should transform them correctly', async () => {
     const fakeCharset = 'fake-charset';
-    printTreeExtendedResult([
+    await printTreeExtendedResult([
       FAKE_CUSTOM_PATH,
       '-max=4',
       '-max-show-not-empty',

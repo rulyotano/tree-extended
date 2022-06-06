@@ -11,8 +11,8 @@ export default class TreeExtended {
     this.runningEnvironment = runningEnvironment;
   }
 
-  getDirectoryTree(targetPath = './', configuration: Configuration = new Configuration()) {
-    const absoluteTargetPath = getAbsolutePathOrThrow(targetPath, this.runningEnvironment);
+  async getDirectoryTree(targetPath = './', configuration: Configuration = new Configuration()) {
+    const absoluteTargetPath = await getAbsolutePathOrThrow(targetPath, this.runningEnvironment);
 
     const filters = new CustomFilterCollection(
       this.runningEnvironment,
@@ -34,6 +34,6 @@ export default class TreeExtended {
     );
     const directoryWriter = new DirectoryWriter(directoryRepresentation);
 
-    return directoryWriter.getDirectoryRepresentation(directoryParser.parse());
+    return directoryWriter.getDirectoryRepresentation(await directoryParser.parse());
   }
 }

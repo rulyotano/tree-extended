@@ -6,7 +6,7 @@ export default class FilterIgnore extends FilterByLevel {
     super(configurationItems);
   }
 
-  matchFilter(path: string, deep: number): boolean {
+  async matchFilter(path: string, deep: number): Promise<boolean> {
     const existGlobalFilterAndSomeIsIgnoring =
       this.configurationByLevel[EMPTY_DEEP] &&
       this.configurationByLevel[EMPTY_DEEP].some(it => it.isMatch(path));

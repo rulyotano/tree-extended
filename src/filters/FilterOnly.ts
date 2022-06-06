@@ -6,7 +6,7 @@ export default class FilterOnly extends FilterByLevel {
     super(configurationItems);
   }
 
-  matchFilter(path: string, deep: number) {
+  async matchFilter(path: string, deep: number): Promise<boolean> {
     const existGlobalFilterAndThereIsNoOneMatching = this.configurationByLevel[EMPTY_DEEP]
       && this.configurationByLevel[EMPTY_DEEP].every((it) => !it.isMatch(path));
 

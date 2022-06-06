@@ -1,14 +1,15 @@
 import type IRunningEnvironment from './IRunningEnvironment';
 
-export function getAbsolutePathOrThrow(
+export async function getAbsolutePathOrThrow(
   targetPath: string,
   runningEnvironment: IRunningEnvironment
 ) {
   if (runningEnvironment.pathExist(targetPath)) {
     return targetPath;
   }
+  const currentPath = await runningEnvironment.getCurrentPath();
   const absolutePath = runningEnvironment.pathJoins(
-    runningEnvironment.getCurrentPath(),
+    currentPath,
     targetPath
   );
   if (!runningEnvironment.pathExist(absolutePath)) {
