@@ -4,7 +4,7 @@ export async function getAbsolutePathOrThrow(
   targetPath: string,
   runningEnvironment: IRunningEnvironment
 ) {
-  if (runningEnvironment.pathExist(targetPath)) {
+  if (await runningEnvironment.pathExist(targetPath)) {
     return targetPath;
   }
   const currentPath = await runningEnvironment.getCurrentPath();
@@ -12,7 +12,7 @@ export async function getAbsolutePathOrThrow(
     currentPath,
     targetPath
   );
-  if (!runningEnvironment.pathExist(absolutePath)) {
+  if (!await runningEnvironment.pathExist(absolutePath)) {
     throw new Error(`Path ${absolutePath} doesn't exist.`);
   }
   return absolutePath;
