@@ -1,4 +1,4 @@
-import type FilterConfigurationItem from './filters/FilterConfigurationItem';
+import FilterConfigurationItem from './filters/FilterConfigurationItem';
 
 export interface IConfiguration {
   charset?: string;
@@ -22,14 +22,14 @@ export default class Configuration implements IConfiguration {
     maximumDeep: number = null,
     showIndicatorWhenDirectoryIsNotEmpty = false,
     includeGitIgnore = false,
-    ignoreFilters: FilterConfigurationItem[] = [],
-    onlyFilters: FilterConfigurationItem[] = []
+    ignoreFilters = "",
+    onlyFilters = ""
   ) {
     this.charset = charset;
     this.maximumDeep = maximumDeep;
     this.showIndicatorWhenDirectoryIsNotEmpty = showIndicatorWhenDirectoryIsNotEmpty;
     this.includeGitIgnore = includeGitIgnore;
-    this.ignoreFilters = ignoreFilters;
-    this.onlyFilters = onlyFilters;
+    this.ignoreFilters = FilterConfigurationItem.parseArray(ignoreFilters);
+    this.onlyFilters =  FilterConfigurationItem.parseArray(onlyFilters);
   }
 }

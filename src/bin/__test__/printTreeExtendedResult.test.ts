@@ -1,6 +1,5 @@
 /* eslint-disable global-require */
 import Configuration from '../../Configuration';
-import FilterConfiguration from '../../filters/FilterConfigurationItem';
 import helpText from '../helpText';
 import printTreeExtendedResult from '../printTreeExtendedResult';
 
@@ -65,16 +64,8 @@ describe('bin > index.js', () => {
         4,
         true,
         true,
-        [
-          new FilterConfiguration('ba', 1),
-          new FilterConfiguration('bafile1', 2),
-          new FilterConfiguration('c'),
-        ],
-        [
-          new FilterConfiguration('b', 0),
-          new FilterConfiguration('bc', 1),
-          new FilterConfiguration('bca', 2),
-        ]
+        '1:ba, 2:bafile1, c',
+        '0:b, 1:bc, 2:bca'
       )
     );
     expect(consoleLogSpy).toHaveBeenCalledWith(FAKE_RESULT);

@@ -120,11 +120,7 @@ const testCases: ITestCase[] = [{
   directories: directories.directory1,
   arguments: {
     targetPath: undefined,
-    configuration: new Configuration(undefined, undefined, undefined, undefined, [
-      new FilterConfigurationItem("ba", 1),
-      new FilterConfigurationItem("bafile1", 2),
-      new FilterConfigurationItem("c"),
-    ]),
+    configuration: new Configuration(undefined, undefined, undefined, undefined, "1:ba, 2:bafile1, c"),
   },
   expected: `├───a/
 │   ├───aa/
@@ -144,11 +140,7 @@ const testCases: ITestCase[] = [{
   directories: directories.directory2,
   arguments: {
     targetPath: undefined,
-    configuration: new Configuration(undefined, undefined, undefined, undefined, undefined, [
-      new FilterConfigurationItem("b", 0),
-      new FilterConfigurationItem("bc", 1),
-      new FilterConfigurationItem("bca", 2),
-    ]),
+    configuration: new Configuration(undefined, undefined, undefined, undefined, undefined, "0:b, 1:bc, 2:bca"),
   },
   expected: `├───b/
 │   └───bc/
@@ -162,11 +154,7 @@ const testCases: ITestCase[] = [{
   directories: directories.directory2,
   arguments: {
     targetPath: undefined,
-    configuration: new Configuration(undefined, undefined, undefined, undefined, undefined, [
-      new FilterConfigurationItem("b$", 0),
-      new FilterConfigurationItem("bc", 1),
-      new FilterConfigurationItem("bca", 2),
-    ]),
+    configuration: new Configuration(undefined, undefined, undefined, undefined, undefined, "0:b$, 1:bc, 2:bca"),
   },
   expected: `└───b/
     └───bc/

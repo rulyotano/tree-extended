@@ -1,4 +1,3 @@
-import { FilterConfigurationItem } from '../filters';
 import Configuration from '../Configuration';
 
 class ParseParameter {
@@ -38,20 +37,6 @@ type parameterKey =
   | 'CHARSET'
   | 'CHARSET_SHORT';
 
-const parseFilterArgument = (arg: string): FilterConfigurationItem[] => {
-  const result: FilterConfigurationItem[] = [];
-  arg
-    .split(',')
-    .map(it => it.trim())
-    .forEach(it => {
-      const itArray = it.split(':');
-      if (itArray.length === 1) result.push(new FilterConfigurationItem(itArray[0]));
-      else if (itArray.length === 2)
-        result.push(new FilterConfigurationItem(itArray[1], Number(itArray[0])));
-    });
-  return result;
-};
-
 export function isHelp(args: string[]): boolean {
   return args.some(it => parameters.HELP.check(it.toLowerCase()));
 }
@@ -67,8 +52,6 @@ function getConfigurationAndPathFromArguments(args: string[]) {
   const showNotEmpty = args.some(it => parameters.SHOW_NOT_EMPTY.check(it.toLowerCase()));
   const gitignore = args.some(it => parameters.GIT_IGNORE.check(it.toLowerCase()));
   let maxLevel = null;
-  let ignores: FilterConfigurationItem[] = [];
-  let only: FilterConfigurationItem[] = [];
 
   let charset;
 
@@ -84,19 +67,26 @@ function getConfigurationAndPathFromArguments(args: string[]) {
   if (maxLevelParam) maxLevel = Number(parameters.MAX_LEVEL.getValue(maxLevelParam));
 
   const ignoresParam = args.find(it => parameters.IGNORES.check(it.toLowerCase()));
+  let ignoresStrValue = '';
   if (ignoresParam) {
-    const ignoresStrValue = parameters.IGNORES.getValue(ignoresParam);
-    ignores = parseFilterArgument(ignoresStrValue);
+    ignoresStrValue = parameters.IGNORES.getValue(ignoresParam);
   }
   const onlyParam = args.find(it => parameters.ONLY.check(it.toLowerCase()));
+  let onlyStrValue = '';
   if (onlyParam) {
-    const onlyStrValue = parameters.ONLY.getValue(onlyParam);
-    only = parseFilterArgument(onlyStrValue);
+    onlyStrValue = parameters.ONLY.getValue(onlyParam);
   }
 
   return {
     path,
-    configuration: new Configuration(charset, maxLevel, showNotEmpty, gitignore, ignores, only),
+    configuration: new Configuration(
+      charset,
+      maxLevel,
+      showNotEmpty,
+      gitignore,
+      ignoresStrValue,
+      onlyStrValue
+    ),
   };
 }
 
