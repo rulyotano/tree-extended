@@ -28,9 +28,10 @@ export default class FilterGitignore implements IFilter {
     if (this.useGitignore && pathIsGitDirectory) return false;
 
     const gitIgnore = await this.getGitIgnoreOrCreate();
-    return !gitIgnore || gitIgnore.accepts(path);
+    const relativePath = this.getRelativeMatchPath(path);
+    return !gitIgnore || gitIgnore.accepts(relativePath);
   }
-  
+
   private async getGitIgnoreOrCreate() {
     if (this.gitIgnore === undefined) {
       this.gitIgnore = await FilterGitignore.configureGitignore(
@@ -43,6 +44,14 @@ export default class FilterGitignore implements IFilter {
     return this.gitIgnore;
   }
 
+  private getRelativeMatchPath(path: string) {
+    const isPathAbsolute = path.includes(this.absolutePath);
+    if (isPathAbsolute) {
+      return path.replace(this.absolutePath, '');
+    }
+    return path;
+  }
+
   static async configureGitignore(
     useGitignore: boolean,
     absolutePath: string,
@@ -50,7 +59,7 @@ export default class FilterGitignore implements IFilter {
   ) {
     const gitIgnoreParser = new GitignoreParser(absolutePath, runningEnvironment);
 
-    if (useGitignore && await gitIgnoreParser.doesGitignoreFileExist()) {
+    if (useGitignore && (await gitIgnoreParser.doesGitignoreFileExist())) {
       return await gitIgnoreParser.getGitignoreFile();
     }
 

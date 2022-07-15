@@ -6,9 +6,10 @@ import NodeRunningEnvironment from "../../bin/NodeRunningEnvironment";
 
 describe("filters > FilterGitignore", () => {
   const directoryName = "fake-directory";
+  const directoryNameAbsolute = "/usr/fake-directory";
   const endOfLine = os.EOL;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const mockFileSystem = (config: any) => mockGitignoreInFileSystem(config, directoryName);
+  const mockFileSystem = (config: any, directory = directoryName) => mockGitignoreInFileSystem(config, directory);
   const runningEnvironment = new NodeRunningEnvironment();
 
   beforeEach(() => {
@@ -40,7 +41,7 @@ describe("filters > FilterGitignore", () => {
   });
 
   test("Should apply git ignore filters", async () => {
-    mockFileSystem(`*.txt/${endOfLine}*.jpg\\${endOfLine}*.png`);
+    mockFileSystem(`*.txt${endOfLine}*.jpg${endOfLine}*.png`);
 
     const filter = new FilterGitignore(true, directoryName, runningEnvironment);
 
@@ -48,5 +49,16 @@ describe("filters > FilterGitignore", () => {
     expect(await filter.matchFilter("testFile.jpg")).toBeFalsy();
     expect(await filter.matchFilter("testFile.png")).toBeFalsy();
     expect(await filter.matchFilter("testFile.bmp")).toBeTruthy();
+  });
+
+  test("When absolute path, should also match git ignore expressions", async () => {
+      mockFileSystem(`/node_modules${endOfLine}directoryA/${endOfLine}*.png`, directoryNameAbsolute);
+
+      const filter = new FilterGitignore(true, directoryNameAbsolute, runningEnvironment);
+
+      expect(await filter.matchFilter(`${directoryNameAbsolute}/node_modules`)).toBeFalsy();
+      expect(await filter.matchFilter(`${directoryNameAbsolute}/node_modules/`)).toBeFalsy();
+      expect(await filter.matchFilter(`${directoryNameAbsolute}/directoryA/test.txt`)).toBeFalsy();
+      expect(await filter.matchFilter(`${directoryNameAbsolute}/nested/node_modules`)).toBeTruthy();
   });
 });
