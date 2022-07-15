@@ -47,9 +47,17 @@ export default class FilterGitignore implements IFilter {
   private getRelativeMatchPath(path: string) {
     const isPathAbsolute = path.includes(this.absolutePath);
     if (isPathAbsolute) {
-      return path.replace(this.absolutePath, '');
+      return this.removeAbsolutePath(path);
     }
     return path;
+  }
+
+  private removeAbsolutePath(path: string) {
+    const relativePath = path.replace(this.absolutePath, '');
+    if (relativePath.startsWith('\\') || relativePath.startsWith('/')) {
+      return relativePath.slice(1);
+    }
+    return relativePath;
   }
 
   static async configureGitignore(
