@@ -1,5 +1,4 @@
 import directories from "./mockDirectories";
-import FilterConfigurationItem from "../filters/FilterConfigurationItem";
 import Configuration from "../Configuration";
 import asciiCharset from "../directory/directoryWriter/charset/ascii";
 import utf8Charset from "../directory/directoryWriter/charset/utf8";
@@ -204,6 +203,17 @@ const testCases: ITestCase[] = [{
 │   ├───d1/
 │   └───d2/
 └───.gitignore
+`,
+},
+{
+  description: "When ignore filter without level, should apply it to all levels",
+  directories: directories.directoryExcludeSeveralLevels,
+  arguments: {
+    targetPath: undefined,
+    configuration: new Configuration(undefined, undefined, undefined, true, 'b'),
+  },
+  expected: `└───aa/
+    └───a.txt
 `,
 },
 ];
