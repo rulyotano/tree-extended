@@ -37,6 +37,9 @@ describe('src > helpers', () => {
     getEndOfLine(): string {
       throw new Error('Method not implemented.');
     }
+    getPathParts(path: string): string[] {
+      throw new Error('Method not implemented.');
+    }
   }
 
   const runningEnvironment = new FakeRunningEnvironment();
