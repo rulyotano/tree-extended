@@ -214,7 +214,45 @@ const testCases: ITestCase[] = [{
   },
   expected: `└───aa/
     └───a.txt
-`,
+`
+},
+{
+  description: "Only filter global case",
+  directories: directories.onlyGlobalFilter,
+  arguments: {
+    targetPath: undefined,
+    configuration: new Configuration(undefined, 3, undefined, true, undefined, 'b,d,c'),
+  },
+  expected: `├───bbb/
+│   └───ddd/
+│       └───d.txt
+└───ccc/
+    └───d.txt
+`
+},
+{
+  description: "Only filter, when level filter match also root, should apply level filter correctly",
+  directories: directories.onlyFilterNestedByLevel,
+  arguments: {
+    targetPath: undefined,
+    configuration: new Configuration(undefined, undefined, undefined, true, undefined, '2:aaa'),
+  },
+  expected: `└───aaa/
+    └───bbb/
+        └───aaa/
+`
+},
+{
+  description: "Ignore filter, when level filter match also root, should apply level filter correctly",
+  directories: directories.onlyFilterNestedByLevel,
+  arguments: {
+    targetPath: undefined,
+    configuration: new Configuration(undefined, undefined, undefined, true, '2:aaa'),
+  },
+  expected: `└───aaa/
+    └───bbb/
+        └───ddd/
+`
 },
 ];
 

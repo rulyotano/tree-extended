@@ -25,11 +25,11 @@ describe('directoryParse > DirectoryParser', () => {
 
   const checkDirectoryNode = (
     node: DirectoryNode,
-    name: string = null,
-    isRoot: boolean = null,
-    isFile: boolean = null,
-    level: number = null,
-    childrenCount: number = null
+    name: string|null = null,
+    isRoot: boolean|null = null,
+    isFile: boolean|null = null,
+    level: number|null = null,
+    childrenCount: number|null = null
   ) => {
     if (name !== null) {
       expect(node.name).toBe(name);
@@ -188,7 +188,7 @@ describe('directoryParse > DirectoryParser', () => {
     });
 
     const filters = new FilterCollection();
-    filters.addFilter(new FilterIgnore([new FilterConfigurationItem('dd')]));
+    filters.addFilter(new FilterIgnore(runningEnvironment, [new FilterConfigurationItem('dd')]));
     const parser = new DirectoryParser('c', filters, runningEnvironment);
     const result = await parser.parse();
 

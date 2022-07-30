@@ -1,4 +1,4 @@
-import { join } from 'path';
+import { join, sep } from 'path';
 import { existsSync, readdirSync, lstatSync, readFileSync } from 'fs';
 import { EOL } from 'os';
 import type IRunningEnvironment from '../IRunningEnvironment';
@@ -27,5 +27,8 @@ export default class NodeRunningEnvironment implements IRunningEnvironment {
   }
   getEndOfLine(): string {
     return EOL;
+  }
+  getPathParts(path: string): string[] {
+    return path.split(sep);
   }
 }

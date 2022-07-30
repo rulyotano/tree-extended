@@ -7,4 +7,5 @@ export default interface IRunningEnvironment {
   isFile(path: string): Promise<boolean>;
   readTextFile(path: string): Promise<string>;
   getEndOfLine(): string;
+  getPathParts(path: string): string[];
 }

@@ -14,8 +14,8 @@ export default class CustomFilterCollection extends FilterCollection {
     absolutePath = ''
   ) {
     super();
-    this.addIgnoreFilter(ignoreItems);
-    this.addOnlyFilter(onlyItems);
+    this.addIgnoreFilter(runningEnvironment, ignoreItems);
+    this.addOnlyFilter(runningEnvironment, onlyItems);
     this.addGitignoreFilter(runningEnvironment, useGitignore, absolutePath);
   }
 
@@ -27,11 +27,11 @@ export default class CustomFilterCollection extends FilterCollection {
     this.addFilter(new FilterGitignore(useGitignore, absolutePath, runningEnvironment));
   }
 
-  addIgnoreFilter(configurationItems: FilterConfigurationItem[] = []) {
-    this.addFilter(new FilterIgnore(configurationItems));
+  addIgnoreFilter(runningEnvironment: IRunningEnvironment, configurationItems: FilterConfigurationItem[] = []) {
+    this.addFilter(new FilterIgnore(runningEnvironment, configurationItems));
   }
 
-  addOnlyFilter(configurationItems: FilterConfigurationItem[] = []) {
-    this.addFilter(new FilterOnly(configurationItems));
+  addOnlyFilter(runningEnvironment: IRunningEnvironment, configurationItems: FilterConfigurationItem[] = []) {
+    this.addFilter(new FilterOnly(runningEnvironment, configurationItems));
   }
 }

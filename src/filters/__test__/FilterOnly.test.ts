@@ -1,9 +1,11 @@
 import FilterOnly from "../FilterOnly";
 import FilterConfigurationItem from "../FilterConfigurationItem";
+import NodeRunningEnvironment from "../../bin/NodeRunningEnvironment";
 
 describe("filters > FilterOnly", () => {
+  const runningEnvironment = new NodeRunningEnvironment();
   test("When global filter should filter no matter level", async () => {
-    const filter = new FilterOnly([new FilterConfigurationItem("abc")]);
+    const filter = new FilterOnly(runningEnvironment, [new FilterConfigurationItem("abc")]);
 
     expect(await filter.matchFilter("/path/file-abc.txt", 1)).toBeTruthy();
     expect(await filter.matchFilter("/path/second/abc-def.txt", 2)).toBeTruthy();
@@ -11,7 +13,7 @@ describe("filters > FilterOnly", () => {
   });
 
   test("When specific level filter should filter only in that level", async () => {
-    const filter = new FilterOnly([new FilterConfigurationItem("abc", 2)]);
+    const filter = new FilterOnly(runningEnvironment, [new FilterConfigurationItem("abc", 2)]);
 
     expect(await filter.matchFilter("/path/file.txt", 0)).toBeTruthy();
     expect(await filter.matchFilter("/path/file-any.txt", 1)).toBeTruthy();

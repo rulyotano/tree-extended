@@ -44,11 +44,42 @@ const directoryExcludeSeveralLevels = {
   aa: {
     'a.txt': '',
     b: {
-      'b.txt': ''
-    }
+      'b.txt': '',
+    },
   },
   b: {
     'b.txt': '',
+  },
+};
+
+const onlyGlobalFilter = {
+  aaaa: {
+    ddd: {
+      fff: {
+        'f.txt': '',
+      },
+      'd.txt': '',
+    },
+    eee: {},
+    'a.txt': '',
+  },
+  bbb: {
+    ddd: {
+      'd.txt': '',
+    },
+    yyy: {},
+  },
+  ccc: {
+    'd.txt': '',
+  },
+};
+
+const onlyFilterNestedByLevel = {
+  aaa: {
+    bbb: {
+      aaa: {},
+      ddd: {},
+    },
   },
 };
 
@@ -59,5 +90,7 @@ export default {
     ...directory1,
     '.gitignore': '**.txt',
   },
-  directoryExcludeSeveralLevels
+  directoryExcludeSeveralLevels,
+  onlyGlobalFilter,
+  onlyFilterNestedByLevel,
 };

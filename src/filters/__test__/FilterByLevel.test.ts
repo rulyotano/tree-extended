@@ -1,8 +1,10 @@
 import type FilterByLevel from "../FilterByLevel";
 import FilterOnly from "../FilterOnly";
 import FilterConfigurationItem from "../FilterConfigurationItem";
+import NodeRunningEnvironment from "../../bin/NodeRunningEnvironment";
 
 describe("filters > FilterByLevel", () => {
+  const runningEnvironment = new NodeRunningEnvironment();
   test("Should create filter FilterByLevel by level", () => {
     const [key1, key2, key3] = ["es", "abc", "cde"];
     const filterItems = [
@@ -10,7 +12,7 @@ describe("filters > FilterByLevel", () => {
       new FilterConfigurationItem(key2, 1),
       new FilterConfigurationItem(key3, 1),
     ];
-    const filterByLevel: FilterByLevel = new FilterOnly(filterItems);
+    const filterByLevel: FilterByLevel = new FilterOnly(runningEnvironment, filterItems);
 
     expect(Object.keys(filterByLevel.configurationByLevel)).toHaveLength(2);
     expect(filterByLevel.configurationByLevel[2][0].pattern).toBe(key1);
