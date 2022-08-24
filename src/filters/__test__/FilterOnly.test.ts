@@ -22,4 +22,17 @@ describe("filters > FilterOnly", () => {
     expect(await filter.matchFilter("/path/file-efb.txt", 2)).toBeFalsy();
     expect(await filter.matchFilter("/path/file-efb.txt", 3)).toBeTruthy();
   });
+
+  test("When combining global filters with level specific filters should match both", async () => {
+    const filter = new FilterOnly(runningEnvironment, [
+      new FilterConfigurationItem("aaa"),
+      new FilterConfigurationItem("bbb"),
+      new FilterConfigurationItem("ddd", 2)
+    ]);
+
+    expect(await filter.matchFilter("ddd.txt", 2)).toBeTruthy();
+    expect(await filter.matchFilter("ddd.txt", 0)).toBeFalsy();
+    expect(await filter.matchFilter("aaa-ddd.txt", 0)).toBeTruthy();
+    expect(await filter.matchFilter("bbb-ddd.txt", 0)).toBeTruthy();
+  });
 });

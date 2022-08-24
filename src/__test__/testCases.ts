@@ -243,14 +243,15 @@ const testCases: ITestCase[] = [{
 `
 },
 {
-  description: "Ignore filter, when level filter match also root, should apply level filter correctly",
+  description: "Only filter, when having global filters and level specific filters, should include level specific items matching",
   directories: directories.onlyFilterNestedByLevel,
   arguments: {
     targetPath: undefined,
-    configuration: new Configuration(undefined, undefined, undefined, true, '2:aaa'),
+    configuration: new Configuration(undefined, undefined, undefined, true, undefined, 'aaa,bbb,2:ddd'),
   },
   expected: `└───aaa/
     └───bbb/
+        ├───aaa/
         └───ddd/
 `
 },
