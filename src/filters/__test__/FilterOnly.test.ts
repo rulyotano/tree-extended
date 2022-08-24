@@ -32,7 +32,7 @@ describe("filters > FilterOnly", () => {
 
     expect(await filter.matchFilter("ddd.txt", 2)).toBeTruthy();
     expect(await filter.matchFilter("ddd.txt", 0)).toBeFalsy();
-    expect(await filter.matchFilter("aaa/ddd.txt", 0)).toBeTruthy();
-    expect(await filter.matchFilter("bbb/ddd.txt", 0)).toBeTruthy();
+    expect(await filter.matchFilter("aaa-ddd.txt", 0)).toBeTruthy();
+    expect(await filter.matchFilter("bbb-ddd.txt", 0)).toBeTruthy();
   });
 });
